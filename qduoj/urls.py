@@ -27,5 +27,6 @@ urlpatterns = patterns('',
 	url(r'^rank/page=(?P<page>\d+)/$', 'oj.views.rank'),
 	url(r'^user_info/name=(?P<nick>\w+)/$', 'oj.views.user_info'),
 	url('^submit_code/num=(?P<num>\d+)/$', 'oj.views.submit_code'),
-	url('^status','oj.views.status'),
+	url('^status/$','oj.views.status'),
+	url('^source_code/runid=(?P<runid>\d+)/$', 'oj.views.source_code'),
 )

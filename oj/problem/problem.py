@@ -51,7 +51,6 @@ def problemlist_sc(req, page, context):
 	problemset  = problem[(page-1)*100:page*100-1]
 	return render_to_response('problemlist.html', {"problemset":problemset, "context":context, 'list_info':list_info})
 
-
 def submit_code_sc(req,num,context):
 
 	if req.method == 'POST':
@@ -73,7 +72,7 @@ def submit_code_sc(req,num,context):
 					solution.save()
 					source = Source_code.objects.create(
 
-							solution_id =  solution.solution_id,
+							solution_id =  int(solution.solution_id),
 							code = submit_code 
 							)
 					source.save()
@@ -90,33 +89,16 @@ def submit_code_sc(req,num,context):
 
 	return render_to_response('submit_code.html',{"num" : num,"form_code":form_code,"context" : context})
 
-
 def status_sc(req,context):
-
 	if req.method == 'POST':
-
 		problem_id = int(req.POST['problem_id'])
 		language = int(req.POST['language'])
 		user_id = req.POST['user_id']
 		jresult = int(req.POST['jresult'])
-
-
 	else:
 		form_status = Status()
 
 	return render_to_response('status.html',{"context" : context})
-
-
-
-
-
-
-
-
-
-
-
-
 
 def problem_Handle(problem):
 	ab = {}

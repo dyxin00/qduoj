@@ -186,7 +186,7 @@ span.exadmin {
 }
 
 .list_one {
-	
+	background:#fff;
 }
 
 .list_two{
@@ -201,8 +201,9 @@ span.exadmin {
 	background-color:lightblue;
 }
 
-#rankset tr{
+#rankset tr td{
 	text-align:center;
+	padding:5px 5px;
 }
 #rankset tr:hover {
 	background:#e5effa;
@@ -251,10 +252,17 @@ div.content {
 	resize: none;
 }
 
+/*user's infomation*/
 .user_info .user_site{
 	font-size:20px;
 }
 
 .user_info p{
 	width:50%;
+}
+
+/*login sumbit button*/
+.login_submit{
+	position:absolute;
+	right:40%;
 }

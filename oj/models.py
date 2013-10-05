@@ -37,8 +37,8 @@ class Problem(models.Model):
 
 class Solution(models.Model):
 	solution_id = models.AutoField(primary_key=True)
-	problem = models.ForeignKey('Problem')
-	user = models.ForeignKey('User')
+	problem = models.ForeignKey(Problem)
+	user = models.ForeignKey(User)
 	score = models.IntegerField(default=0)
 	time = models.IntegerField(default=0)
 	memory = models.IntegerField(default=0) # ...
@@ -49,14 +49,14 @@ class Solution(models.Model):
 	code_length = models.IntegerField(default=0)
 	
 	def __unicode__(self):
-		return self.solution_id
+		return str(self.solution_id)
 
 class Source_code(models.Model):
 	solution_id = models.IntegerField(primary_key=True)
 	code = models.TextField()
 	
 	def __unicode__(self):
-		return self.solution_id
+		return str(self.solution_id)
 
 class Compileinfo(models.Model):
 	solution_id = models.IntegerField(primary_key=True)

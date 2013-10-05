@@ -35,4 +35,21 @@ def user_info_sc(req, nick, context):
 		title = '404 not found!'
 		return render_to_response('error.html', {'pageInfo':pageInfo, 'title':title, 'context':context})
 	submitions = Solution.objects.filter(user=user[0])
-	return render_to_response('user_info.html', {'user':user[0]})
+	return render_to_response('user_info.html', {'user':user[0],'context':context})
+
+
+def source_code_sc(req, runid, context):
+	submit = Solution.objects.filter(solution_id=runid)
+	if not 'ojlogin' in context or len(submit) == 0:
+		pageInfo = "user not login or cant found the submit"
+		title = "404 not found"
+		return render_to_response('error.html', {'context':context, 'pageInfo':pageInfo, 'title':title})
+	user = context['ojlogin'].nick
+	if user != submit[0].user.nick:
+		pageInfo = "the code is not yours!"
+		title = '404 not found'
+		return render_to_response('error.html', {'context':context, 'pageInfo':pageInfo, 'title':title})
+	source = Source_code.objects.filter(solution_id=runid)
+	return render_to_response('source.html', {'context':context, 'source':source[0], 'submit':submit[0]})
+
+		
