@@ -1,0 +1,120 @@
+
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>{% block title %}{% endblock %} QDUCXSYS Online Judge</title>
+		{%block metajump%}{%endblock%}
+ 		<link rel=stylesheet href='/static/css/hoj.css' type='text/css'>
+	</head>
+	<body>
+		<div id="wrapper">
+			<div id=head>
+				<h2><img id=logo src="static/image/logo.png"><span class="red">QDUOJ</span></h2>
+			</div><!--end head-->
+			<div id=headlogin>
+				{%if context%}
+					{% if context.ojlogin%}
+						<a href="userinfo">{{context.ojlogin.nick}}</a> | <b>ac: {{context.ojlogin.ac}}</b> | <a href="/oj/userlogout">Logout</a> 
+					{%else%}
+						<span class="green"><a href="/oj/userlogin">登录</a></span> | <span class = "green"><a href ="/oj/userregister">注册</a></span>
+					{%endif%}
+				{%endif%}
+			</div>
+			<div id=subhead>
+				<div id=menu class=navbar>
+					<a  class='btn'  href="/"><i class="icon-home"></i>
+						Home						
+					</a>
+
+				<!--	<a  class='btn '  hrefd="bbs.php">
+						<i class="icon-comment"></i>Web Board</a> -->
+					<a  class='btn  btn-warning' href="/">
+						<i class="icon-question-sign"></i>ProblemSet</a>
+
+					<!-- <a  class='btn ' href="submitpage.php">
+						<i class="icon-pencil"></i>编辑器</a>
+					-->
+					<a  class='btn ' href="status.php">
+						<i class="icon-check"></i>Status</a>
+
+					<a class='btn ' href="ranklist.php">
+						<i class="icon-signal"></i>Ranklist</a>
+
+					<a class='btn '  href="contest.php">
+						<i class="icon-fire"></i>Contest</a>
+
+					<a class='btn ' href="recent-contest.php">
+						<i class="icon-share"></i>Recent</a>
+
+					<a class='btn ' href="faqs.php">
+						<i class="icon-info-sign"></i>F.A.Qs</a>
+
+				</div><!--end menu-->
+				<div id=profile >
+					<script src="include/profile.php?698640137" ></script>
+				</div><!--end profile-->
+			</div><!--end subhead-->
+			<div id=broadcast class="container">
+				<marquee id=broadcast scrollamount=1 direction=up scrolldelay=250 onMouseOver='this.stop()' onMouseOut='this.start()';>
+				{%for new in context.news%}
+					{{new.title}}<br>
+					{{new.content}}<br>
+					{{new.time}}<br>
+				{%endfor%} 
+				</marquee>
+			</div>
+			<br>
+			<div id=main>
+				<script type="text/javascript" src="/static/js/jquery-latest.js"></script> 
+				<script type="text/javascript" src="/static/js/jquery.tablesorter.js"></script> 
+				<script type="text/javascript">
+					$(document).ready(function() 
+						{ 
+						$("#problemset").tablesorter(); 
+						} 
+						); 
+					</script>
+
+				{% block content %}
+				{% endblock  %}
+				<div id=foot>
+					<span class=center>
+					
+						Anything about the Problems, Please Contact Admin:<a href="mailto:root@localhost">admin</a>
+
+						<script type="text/javascript" charset="utf-8">
+							(function(){
+							 var _w = 86 , _h = 50;
+							 var param = {
+								url:location.href,
+								type:'6',
+								count:'1', /**是否显示分享数，1显示(可选)*/
+								appkey:'', /**您申请的应用appkey,显示分享来源(可选)*/
+								title:'', /**分享的文字内容(可选，默认为所在页面的title)*/
+								pic:'', /**分享图片的路径(可选)*/
+								ralateUid:'', /**关联用户的UID，分享微博会@该用户(可选)*/
+								language:'zh_cn', /**设置语言，zh_cn|zh_tw(可选)*/
+								rnd:new Date().valueOf()
+							}
+							var temp = [];
+							for( var p in param ){
+								temp.push(p + '=' + encodeURIComponent( param[p] || '' ) )
+							}
+							document.write('<iframe allowTransparency="true" frameborder="0" scrolling="no" src="http://hits.sinajs.cn/A1/weiboshare.html?' + temp.join('&') + '" width="'+ _w+'" height="'+_h+'"></iframe>')
+							})()
+						</script>
+						
+						<br>
+						All Copyright Reserved 2013-2014 <a href='./'>QDUOJ</a><br>
+						<a href=gpl-2.0.txt><span class=green>GPL2.0</span></a> 2013-2014 <a href='http://www.qdu.edu.cn' target="_blank">QDU</a><br>
+
+
+
+					</span>
+
+			</div><!--end foot-->
+		</div><!--end main-->
+	</div><!--end wrapper-->
+</body>
+</html>
+<!--not cached-->

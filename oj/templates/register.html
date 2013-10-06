@@ -1,0 +1,15 @@
+{%extends "ojbase.html"%}
+
+{%block title%}Register{%endblock%}
+
+{%block content%}
+	<center>
+		{%if error.error %}
+			<span class="red">{{error.error}}</span>
+		{%endif%}
+		<form action="" method = "post">
+			{{form.as_p}}
+		<input type = "submit" value = "Register"/> 
+		</form>
+	</center>
+{%endblock%}

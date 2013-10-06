@@ -1,0 +1,65 @@
+{% extends "ojbase.html" %}
+
+{%block title%}problemlist{%endblock%}
+{% block content %}
+
+<h3 align='center'>
+	{%for pagenum in list_info.len%}
+		{%if pagenum  == list_info.page%}
+			<span class=red>{{pagenum}}</span>
+		{% else %}
+			<a href="problemlist/page={{pagenum}}">{{pagenum}} </a>
+		{%endif%}
+	{%endfor%}
+
+</h3><center>
+	
+<table>
+	<tr align='center' class='evenrow'><td width='5'></td>
+		<td width='50%' colspan='1'>
+			<form class=form-search action= "/problemlist">
+				Problem ID<input class="input-small search-query" type='text' name='id' size=5 style="height:24px">
+				<button class="btn btn-mini" type='submit'  >Go</button></form>
+		</td>
+		<td width='50%' colspan='1'>
+			<form class="form-search">
+				<input style="height:24px" type="text" name=search class="input-large search-query">
+				<button type="submit" class="btn btn-mini">Search</button>
+			</form>
+	</td></tr>
+</table>
+
+
+<table id="problemset" width="90%" >
+		<thead>
+			<tr class="toprow">
+			<!--<th width="5" class="header"></th> -->
+			<th width="120" class="header"><a>Problem ID</a></th>
+			<th class="header">Title</th>
+			<th width="10%" class="header">Source</th>
+			<th style="cursor:hand" width="60" class="header">AC</th>
+			<th style="cursor:hand" width="60" class="header">Submit</th>
+		  </tr>
+		 </thead>
+<tbody>
+		{% for problem in problemset %}
+			{% if problem.visible == True %}
+				<tr class = "{% cycle 'list_one' 'list_two' %}">
+					<td>{{problem.problem_id}}</td>
+					<td><a 
+					href="/problem/num={{problem.problem_id}}">{{problem.title}}</a></td>
+					<td></td>
+					<td>{{problem.accepted}}</td>
+					<td>{{problem.submit}}</td>
+				<tr>						
+			{%endif%} 
+			
+		{%endfor%}
+	<tr>
+		<td>
+		</td>
+		</tr>
+	</tbody>
+</table></center>
+
+{% endblock %}
