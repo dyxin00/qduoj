@@ -11,14 +11,18 @@ import sys, os
 path = os.path.abspath(os.path.dirname(sys.argv[0]))
 path_pro = path + '/oj/problem' 
 path_login = path + '/oj/login_register'
+path_status_rank = path + '/oj/status_rank'
 
 if not path_pro in sys.path:
 	sys.path.append(path_pro)
 if not path_login in sys.path:
 	sys.path.append(path_login)
+if not path_status_rank in sys.path:
+	sys.path.append(path_status_rank)
 
 from problem import *
 from login_register import *
+from status_rank import *
 
 def baseInfo(req):    #the news and the session!
 	context = {}
@@ -52,3 +56,7 @@ def register(req):
 def logout(req):
 	return logout_sc(req)
 
+def rank(req, page='1'):
+	context = baseInfo(req)
+	return rank_sc(req, page, context)
+	
