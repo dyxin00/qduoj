@@ -7,8 +7,31 @@
 		{%if error.error %}
 			<span class="red">{{error.error}}</span>
 		{%endif%}
-		<form action="" method = "post">
-			{{form.as_p}}
+		<form action="" method = "post"><br><br>
+			<table>
+				<tbody>
+					<tr>
+						<td width = "25%"> User ID :</td>
+						<td width = "75%">{{form.name}} *</td>
+					</tr>
+					<tr>
+						<td width = "25%"> Password :</td>
+						<td width = "75%">{{form.password}} *</td>
+					</tr>
+					<tr>
+						<td width = "25%">Repeat Password :&nbsp&nbsp</td>
+						<td width = "75%">{{form.ensure_pw}} *</td>
+					</tr>
+					<tr>
+						<td width = "25%"> Email :</td>
+						<td width = "75%">{{form.email}}</td>
+					</tr>  
+					<tr>
+						<td width = "25%"> Website :</td>
+						<td width = "75%">{{form.website}}</td>
+					</tr>  
+				</tbody>
+			</table>
 		<input type = "submit" value = "Register"/> 
 		</form>
 	</center>
