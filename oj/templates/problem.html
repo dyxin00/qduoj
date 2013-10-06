@@ -13,15 +13,15 @@
 	<br>
 
 	<h2>题目描述</h2>
-	<div class="content">{{problem.description}}</div>
+	<div class="content">{{problem_ab.description|safe}}</div>
 	<h2>输入</h2>
-	<div class="content">{{problem.input_data}}</div>
+	<div class="content">{{problem_ab.input_data|safe}}</div>
 	<h2>输出</h2>
-	<div class="content">{{problem.output_data}}</div>
+	<div class="content">{{problem_ab.output_data|safe}}</div>
 	<h2>样例输入</h2>
-	<div class="content">{{problem.sample_input|safe}}</div>
+	<div class="content">{{problem_ab.sample_input|safe}}</div>
 	<h2>样例输出</h2>
-	<div class="content">{{problem.sameple_output|safe}}</div>
+	<div class="content">{{problem_ab.sameple_output|safe}}</div>
 	{%if problem.hint%}
 		<h2>提示</h2>
 		<div class="content">{{problem.hint}}</div>

@@ -59,7 +59,6 @@ def problemId(req):
 
 	ID = req.GET['id']
 	context = baseInfo(req)
-	print ID
 
 	return problem_sc(req,ID,context)
 
@@ -68,12 +67,10 @@ def problem_search(req):
 	search = req.GET['search']
 	context = baseInfo(req)
 
-	#print search
-	#Problem.objects.filter(title =str(search))
-	#ID = Problem.objects.filter(title =str(search)).problem_id
-	#print Problem.objects.filter(title = str(search)).problem_id
+	problem = Problem.objects.filter(title = str(search))
+	ID = problem[0].problem_id
 
-	return problem_sc(req,1,context)
+	return problem_sc(req,ID,context)
 
 
 
