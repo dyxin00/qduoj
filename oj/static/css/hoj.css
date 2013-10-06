@@ -24,7 +24,7 @@ input{
     color: #FFFFFF;
     font-weight: bold;
     white-space: nowrap;
-    background: url("../image/menu_bg.png");
+    /*background: url("../image/menu_bg.png");*/
 }
 .toprow a {
     color: #FFFFFF;
@@ -117,7 +117,7 @@ span.exadmin {
     z-index: 1;
 }
 #menu {
-    background: url("../image/menu_bg.png") repeat scroll 0 0 transparent;
+    /*background: url("../image/menu_bg.png") repeat scroll 0 0 transparent;*/
     font-weight: bold;
     height: 35px;
     position: static;
