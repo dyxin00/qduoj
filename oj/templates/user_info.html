@@ -8,6 +8,11 @@
 <center class = "user_info">
 	<h1>{{user.nick}}</h1><br/>
 	<p class = "user_site">Email:<a href="mailto:{{user.email}}">{{user.email}}</a>  Website:<a href="{{user.website}}"/>{{user.website}}</p>
+	{%if context.ojlogin%}
+		{%if user.nick == context.ojlogin.nick%}
+			Change: <a href="/changepw">Password</a> <a href="/changeinfo">UserInfo</a>
+		{%endif%}
+	{%endif%}
 	<hr/>
 	<h3><span class = "green">AC: </span>{{user.ac}}
 	<span class = "green">Submit: </span>{{user.submit}}</h3>

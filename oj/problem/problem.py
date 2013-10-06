@@ -35,20 +35,20 @@ def problem_sc(req, num, context):
 def problemlist_sc(req, page, context):
 	list_info = {}
 	page_num = []
-	page = int(page)
+	page = int(page) #抛异常
 	problem = Problem.objects.order_by('problem_id')
 	pro_len = len(problem)
-	for i in range(0, pro_len/100 + 1):
+	for i in range(0, pro_len/50 + 1):
 		page_num.append(i+1)
 	list_info['len'] = page_num
 	list_info['page'] = page
 	#if the requst is out of bound, error!
-	if page == 0 or (page - 1) * 100 > pro_len:
+	if page == 0 or (page - 1) * 50 > pro_len:
 		pageInfo = "page not found!"
 		title = "404 not found"
 		return render_to_response('error.html', {"pageInfo": pageInfo, "title":title, "context":context})
 
-	problemset  = problem[(page-1)*100:page*100-1]
+	problemset  = problem[(page-1)*50:page*50]
 	return render_to_response('problemlist.html', {"problemset":problemset, "context":context, 'list_info':list_info})
 
 def submit_code_sc(req,num,context):
@@ -90,8 +90,10 @@ def submit_code_sc(req,num,context):
 	return render_to_response('submit_code.html',{"num" : num,"form_code":form_code,"context" : context})
 
 
-def status_sc(req,context,problem_id = -1,language = -1,user = '',jresult = -1):
-
+def status_sc(req,context, page, problem_id = -1,language = -1,user = '',jresult = -1):
+	list_info = {}
+	page_num = []
+	page = int(page)
 	Result = {
 			4 : 'Accpepted',
 			5 : 'Presentation Error',
@@ -108,7 +110,6 @@ def status_sc(req,context,problem_id = -1,language = -1,user = '',jresult = -1):
 			1: 'C++'
 			}
 	solution = Solution.objects.order_by('-solution_id')
-	print len(solution)
 	if problem_id != -1 :
 		solution = solution.filter(problem_id = Problem.objects.get(problem_id = problem_id))
 	if len(user):
@@ -117,8 +118,19 @@ def status_sc(req,context,problem_id = -1,language = -1,user = '',jresult = -1):
 		solution = solution.filter(language = language)
 	if jresult != -1:
 		solution = solution.filter(result = jresult)
-	print len(solution)
-	return render_to_response('status.html',{"context" : context,'Result' : Result,'language_ab' : language_ab, 'solution' : solution})
+	
+	submit_len = len(solution)
+	for i in range(0, submit_len/50 + 1):
+		page_num.append(i + 1)
+	list_info['len'] = page_num
+	list_info['page'] = page
+	
+	if page <= 0 or (page - 1) * 50 > submit_len:
+		pageInfo = "page not found!"
+		title = "404 not found"
+		return render_to_response('error.html', {"pageInfo": pageInfo, "title":title, "context":context})
+	solution = solution[(page - 1)*50 : page*50]
+	return render_to_response('status.html',{"context" : context,'Result' : Result,'language_ab' : language_ab, 'solution' : solution, 'list_info':list_info})
 
 def problem_Handle(problem):
 	ab = {}

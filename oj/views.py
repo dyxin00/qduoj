@@ -12,6 +12,7 @@ path = os.path.abspath(os.path.dirname(sys.argv[0]))
 path_pro = path + '/oj/problem' 
 path_login = path + '/oj/login_register'
 path_status_rank = path + '/oj/status_rank'
+path_change_info = path + '/oj/change_info'
 
 if not path_pro in sys.path:
 	sys.path.append(path_pro)
@@ -19,10 +20,13 @@ if not path_login in sys.path:
 	sys.path.append(path_login)
 if not path_status_rank in sys.path:
 	sys.path.append(path_status_rank)
+if not path_change_info in sys.path:
+	sys.path.append(path_change_info)
 
 from problem import *
 from login_register import *
 from status_rank import *
+from change_info import *
 
 def baseInfo(req):    #the news and the session!
 	context = {}
@@ -89,13 +93,11 @@ def user_info(req, nick):
 	context = baseInfo(req)
 	return user_info_sc(req, nick, context)
 	
-def status(req):
+def status(req, page='1'):
 	context = baseInfo(req)
+	return status_sc(req, context, page)
 
-	return status_sc(req,context)
-
-def status_Search(req):
-
+def status_Search(req, page='1'):
 	context = baseInfo(req)
 	if req.method == 'GET':
 		problem_id = -1
@@ -115,15 +117,17 @@ def status_Search(req):
 			title = "404 not found"
 			return render_to_response('error.html', {"pageInfo":pageInfo, "title":title, "context":context})
 
-		return status_sc(req,context,problem_id,language,user_id,jresult)
-
-
-
-
-
-
+		return status_sc(req, context, page, problem_id, language, user_id, jresult)
 
 def source_code(req, runid):
 	context = baseInfo(req)
 	return source_code_sc(req, runid, context)
+
+def changepw(req):
+	context = baseInfo(req)
+	return changepw_sc(req, context)
+
+def changeinfo(req):
+	context = baseInfo(req)
+	return changeinfo_sc(req, context)
 

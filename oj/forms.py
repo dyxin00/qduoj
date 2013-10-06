@@ -39,5 +39,7 @@ class Status(forms.Form):
 	language = forms.ChoiceField(choices = [('-1','All'),('0','c'),('1','c++')])
 	result = forms.ChoiceField(choices = Result_choices)
 	
-
-
+class ChangePw(forms.Form):
+	pw_current = forms.CharField(widget = forms.PasswordInput)
+	pw_now = forms.CharField(widget = forms.PasswordInput)
+	ensure_pw = forms.CharField(widget = forms.PasswordInput)
