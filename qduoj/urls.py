@@ -23,4 +23,5 @@ urlpatterns = patterns('',
 	url(r'^admin/', include(admin.site.urls)),
 	url('^problemid','oj.views.problemId'),
 	url('^problem_search','oj.views.problem_search'),
+	url(r'^rank/$', 'oj.views.rank'),
 )
