@@ -36,3 +36,4 @@ def problemlist_sc(req, page, context):
 
 	problemset  = problem[(page-1)*100:page*100-1]
 	return render_to_response('problemlist.html', {"problemset":problemset, "context":context, 'list_info':list_info})
+
