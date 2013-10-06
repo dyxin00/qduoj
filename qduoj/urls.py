@@ -21,5 +21,6 @@ urlpatterns = patterns('',
 	url('^oj/userregister/$', 'oj.views.register'),				   #register
 	url('^oj/userlogout/$', 'oj.views.logout'),                    #logout
 	url(r'^admin/', include(admin.site.urls)),
-	url(r'index', 'oj.views.index'),	
+	url('^problemid','oj.views.problemId'),
+	url('^problem_search','oj.views.problem_search'),
 )

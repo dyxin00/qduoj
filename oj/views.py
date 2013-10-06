@@ -25,7 +25,6 @@ def baseInfo(req):    #the news and the session!
 	news = News.objects.order_by("-time");
 	if len(news) > 3:
 		news = news[0:3]
-	print "1"
 #	print req.session['ojlogin']
 	context['news'] = news
 
@@ -51,4 +50,40 @@ def register(req):
 
 def logout(req):
 	return logout_sc(req)
+
+def problemId(req):
+
+	ID = req.GET['id']
+	context = baseInfo(req)
+	print ID
+
+	return problem_sc(req,ID,context)
+
+def problem_search(req):
+
+	search = req.GET['search']
+	context = baseInfo(req)
+
+	#print search
+	#Problem.objects.filter(title =str(search))
+	#ID = Problem.objects.filter(title =str(search)).problem_id
+	#print Problem.objects.filter(title = str(search)).problem_id
+
+	return problem_sc(req,1,context)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
