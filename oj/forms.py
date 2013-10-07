@@ -12,6 +12,10 @@ class Register(forms.Form):
 	email = forms.EmailField(label='Email')
 	website = forms.URLField(label='website', required=False)
 
+class Submit_code(forms.Form):
+		language = forms.ChoiceField(choices = [('1','c'),('2','c++')])
+		submit_code = forms.CharField(label='code',widget=forms.Textarea(attrs={'rows' : '30'}))
+
 
 
 

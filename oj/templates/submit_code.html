@@ -1,0 +1,17 @@
+{% extends "ojbase.html" %}
+ 
+{% block title %} submit_code {%endblock%}
+
+{%block content%}
+
+<center>
+<form action ="" method = "post" >
+
+	<p width = "120"> Problem ID :&nbsp {{num}} </p><br>
+	<p>	Language : {{form_code.language}} </p> <br>
+	<p>{{form_code.submit_code}} </p>
+
+	<input type = "submit" value = "sumbit"/>
+</form>
+</center>
+{%endblock%}
