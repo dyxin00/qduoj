@@ -50,8 +50,8 @@ def register_sc(req, context):
 				password = form.cleaned_data['password']
 				email = form.cleaned_data['email']
 				web_site = form.cleaned_data['website']
-				#user_register = User.objects.create(nick=username, password=password, email=email,website=web_site)
-				#user_register.save()
+				user_register = User.objects.create(nick=username, password=password, email=email,website=web_site)
+				user_register.save()
 				url = '/' 
 				info = '注册成功,'
 				return render_to_response('jump.html', {'url':url, 'info':info, 'context':context})
