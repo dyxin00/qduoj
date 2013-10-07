@@ -24,4 +24,5 @@ urlpatterns = patterns('',
 	url('^problemid','oj.views.problemId'),
 	url('^problem_search','oj.views.problem_search'),
 	url(r'^rank/$', 'oj.views.rank'),
+	url('^submit_code/num=(?P<num>\d+)/$', 'oj.views.submit_code'),
 )
