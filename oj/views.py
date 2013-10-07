@@ -78,6 +78,10 @@ def problem_search(req):
 		return render_to_response('error.html', {"pageInfo":pageInfo, "title":title, "context":context})
 
 
+def submit_code(req,num='1'):
+
+	context = baseInfo(req)
+	return submit_code_sc(req,num,context)
 
 
 
