@@ -10,6 +10,7 @@ from string import join,split
 def problem_sc(req, num, context):
 	
 	try:
+		ID = int(num)
 		problem = Problem.objects.get(problem_id=int(num))
 
 		if problem.visible == False:
@@ -25,7 +26,10 @@ def problem_sc(req, num, context):
 		pageInfo ="problem not found!"
 		title = "404 not found"
 		return render_to_response('error.html', {"pageInfo":pageInfo, "title":title, "context":context})
-
+	except ValueError: 
+		pageInfo ="problem not found!"
+		title = "404 not found"
+		return render_to_response('error.html', {"pageInfo":pageInfo, "title":title, "context":context})
 
 
 def problemlist_sc(req, page, context):
@@ -46,6 +50,45 @@ def problemlist_sc(req, page, context):
 
 	problemset  = problem[(page-1)*100:page*100-1]
 	return render_to_response('problemlist.html', {"problemset":problemset, "context":context, 'list_info':list_info})
+
+
+def submit_code_sc(req,num,context):
+
+	if req.method == 'POST':
+		form_code = Submit_code(req.POST)
+		if form_code.is_valid():
+			submit_code = form_code.cleaned_data['submit_code']
+			language_code = form_code.cleaned_data['language']
+		
+			if 'login' in req.session:   # wei chu li yi chang 
+				if len(submit_code):
+					solution = Solution.objects.create(
+
+							result = 1,
+							problem=Problem.objects.get(problem_id=int(num)),
+							user = User.objects.get(nick=req.session['login']['username']),
+							code_length = len(submit_code),
+							language = int(language_code)
+							)
+					solution.save()
+					source = Source_code.objects.create(
+
+							solution_id =  solution.solution_id,
+							code = submit_code 
+							)
+					source.save()
+				
+					return problem_sc(req,int(language_code),context) # 提交成功跳转
+				else:
+					return render_to_response('submit_code.html',{"form_code":form_code,"context" : context})#submit_code  未添加
+			else:
+				pass # 未登录跳转
+			
+	else:
+		form_code = Submit_code()
+
+	return render_to_response('submit_code.html',{"num" : num,"form_code":form_code,"context" : context})
+
 
 
 def problem_Handle(problem):
