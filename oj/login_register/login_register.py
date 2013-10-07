@@ -15,6 +15,7 @@ def login_sc(req, context):
 		if form.is_valid():
 			username = form.cleaned_data['name']
 			password = form.cleaned_data['password']
+
 			user = User.objects.filter(nick=username)
 			if len(user) == 0:
 				error_info = "用户名错误,请重新输入!"
@@ -49,8 +50,8 @@ def register_sc(req, context):
 				password = form.cleaned_data['password']
 				email = form.cleaned_data['email']
 				web_site = form.cleaned_data['website']
-				user_register = User.objects.create(nick=username, password=password, email=email,website=web_site)
-				user_register.save()
+				#user_register = User.objects.create(nick=username, password=password, email=email,website=web_site)
+				#user_register.save()
 				url = '/' 
 				info = '注册成功,'
 				return render_to_response('jump.html', {'url':url, 'info':info, 'context':context})
