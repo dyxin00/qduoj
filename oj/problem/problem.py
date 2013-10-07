@@ -9,16 +9,23 @@ from string import join,split
 
 def problem_sc(req, num, context):
 	
-	problem = Problem.objects.filter(problem_id=int(num))
+	try:
+		problem = Problem.objects.get(problem_id=int(num))
 
-	problem_ab = problem_Handle(problem[0])
-	
-	if problem[0] == None or problem[0].visible == False:
+		if problem.visible == False:
+			pageInfo ="problem not found!"
+			title = "404 not found"
+			return render_to_response('error.html', {"pageInfo":pageInfo, "title":title, "context":context})
+
+		problem_ab = problem_Handle(problem)
+		return render_to_response('problem.html', {"problem":problem, "context":context,"problem_ab" : problem_ab})
+
+	except Problem.DoesNotExist:
+
 		pageInfo ="problem not found!"
 		title = "404 not found"
 		return render_to_response('error.html', {"pageInfo":pageInfo, "title":title, "context":context})
-	
-	return render_to_response('problem.html', {"problem":problem[0], "context":context,"problem_ab" : problem_ab})
+
 
 
 def problemlist_sc(req, page, context):

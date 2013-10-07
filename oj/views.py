@@ -68,9 +68,14 @@ def problem_search(req):
 	context = baseInfo(req)
 
 	problem = Problem.objects.filter(title = str(search))
-	ID = problem[0].problem_id
 
-	return problem_sc(req,ID,context)
+	if len(problem):
+		ID = problem[0].problem_id
+		return problem_sc(req,ID,context)
+	else:
+		pageInfo ="problem not found!"
+		title = "404 not found"
+		return render_to_response('error.html', {"pageInfo":pageInfo, "title":title, "context":context})
 
 
 
