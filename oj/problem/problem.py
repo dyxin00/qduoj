@@ -51,10 +51,10 @@ def problemlist_sc(req, page, context):
 def problem_Handle(problem):
 	ab = {}
 
-	l = problem.description.split('\r\n')
 	ab['description'] = '<br>'.join( problem.description.split('\r\n'))
 	ab['input_data'] = '<br>'.join( problem.input_data.split('\r\n'))
 	ab['output_data'] = '<br>'.join( problem.output_data.split('\r\n'))
 	ab['sample_input'] = '<br>'.join( problem.sample_input.split('\r\n'))
 	ab['sameple_output'] = '<br>'.join( problem.sameple_output.split('\r\n'))
+
 	return ab
