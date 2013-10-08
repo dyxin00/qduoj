@@ -1,0 +1,4 @@
+*.pyc
+*~
+/oj/*.pyc
+/qduoj/*.pyc
