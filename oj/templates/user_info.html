@@ -5,8 +5,20 @@
 {%endblock%}
 
 {%block content%}
-<center>
-	hehe
+<center class = "user_info">
+	<h1>{{user.nick}}</h1><br/>
+	<p class = "user_site">Email:<a href="mailto:{{user.email}}">{{user.email}}</a>  Website:<a href="{{user.website}}"/>{{user.website}}</p>
+	<hr/>
+	<h3><span class = "green">AC: </span>{{user.ac}}
+	<span class = "green">Submit: </span>{{user.submit}}</h3>
+	<hr/>
+	<h3>list of solved problems</h3>
+	<p clsss = "user_submit">
+	{%for submit in submitions%}
+		<a href = "problem/num={{submit.problem.problem_id}}"/>{{submit.problem.problem_id}}
+	{%endfor%}
+	</p>
+	
 </center>
 {%endblock%}
 

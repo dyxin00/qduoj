@@ -250,3 +250,11 @@ div.content {
 .submit{
 	resize: none;
 }
+
+.user_info .user_site{
+	font-size:20px;
+}
+
+.user_info .user_submit{
+	width:50%;
+}
