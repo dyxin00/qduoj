@@ -16,7 +16,7 @@ class User(models.Model):
 
 class Problem(models.Model):
 	problem_id = models.AutoField(primary_key=True)
-	title = models.TextField()
+	title = models.CharField(max_length=50)
 	description = models.TextField()
 	input_data = models.TextField()
 	output_data = models.TextField()

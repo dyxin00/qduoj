@@ -20,7 +20,7 @@ def rank_sc(req, page, context):
 		pageInfo = 'page not found maybe you are far behind!'
 		title = '404 not found'
 		return render_to_response('error.html', {'pageInfo':pageInfo, 'title':title, 'context':context})	
-	users = users[2 * (page - 1):3 * page - 1]
+	users = users[2 * (page - 1):2 * page]
 	k = 1
 	for user in users:
 		User.objects.filter(nick=user.nick).update(rank=(page - 1)*2 + k)
@@ -34,4 +34,5 @@ def user_info_sc(req, nick, context):
 		pageInfo = "there is no this user!"
 		title = '404 not found!'
 		return render_to_response('error.html', {'pageInfo':pageInfo, 'title':title, 'context':context})
+	submitions = Solution.objects.filter(user=user[0])
 	return render_to_response('user_info.html', {'user':user[0]})
