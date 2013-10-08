@@ -247,3 +247,6 @@ div.content {
     z-index: 6;
 }
 
+.submit{
+	resize: none;
+}

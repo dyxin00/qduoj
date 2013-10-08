@@ -2,3 +2,11 @@
 *~
 /oj/*.pyc
 /qduoj/*.pyc
+<<<<<<< HEAD
+=======
+/oj/static/css/*.css~
+*.swp
+*.swo
+oj/problem/*.pyc
+
+>>>>>>> 8981f9d9e79f08d3e5789f3b0fa86a8d414b1bb4

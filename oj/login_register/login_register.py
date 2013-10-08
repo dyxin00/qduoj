@@ -15,6 +15,7 @@ def login_sc(req, context):
 		if form.is_valid():
 			username = form.cleaned_data['name']
 			password = form.cleaned_data['password']
+
 			user = User.objects.filter(nick=username)
 			if len(user) == 0:
 				error_info = "用户名错误,请重新输入!"

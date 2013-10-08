@@ -39,14 +39,14 @@ class Solution(models.Model):
 	solution_id = models.AutoField(primary_key=True)
 	problem = models.ForeignKey('Problem')
 	user = models.ForeignKey('User')
-	score = models.IntegerField()
-	time = models.IntegerField()
-	memory = models.IntegerField()
+	score = models.IntegerField(default=0)
+	time = models.IntegerField(default=0)
+	memory = models.IntegerField(default=0) # ...
 	in_date = models.DateTimeField(auto_now_add=True)
 	result = models.IntegerField(default=0)
 	language = models.IntegerField(default=0)
-	judgetime = models.DateTimeField(auto_now_add=False)
-	code_length = models.IntegerField()
+	judgetime = models.DateTimeField(auto_now_add=True)
+	code_length = models.IntegerField(default=0)
 	
 	def __unicode__(self):
 		return self.solution_id

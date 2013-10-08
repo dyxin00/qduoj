@@ -59,23 +59,27 @@ def problemId(req):
 
 	ID = req.GET['id']
 	context = baseInfo(req)
-	print ID
-
 	return problem_sc(req,ID,context)
 
 def problem_search(req):
 
 	search = req.GET['search']
 	context = baseInfo(req)
+	problem = Problem.objects.filter(title = str(search))
 
-	#print search
-	#Problem.objects.filter(title =str(search))
-	#ID = Problem.objects.filter(title =str(search)).problem_id
-	#print Problem.objects.filter(title = str(search)).problem_id
+	if len(problem):
+		ID = problem[0].problem_id
+		return problem_sc(req,ID,context)
+	else:
+		pageInfo ="problem not found!"
+		title = "404 not found"
+		return render_to_response('error.html', {"pageInfo":pageInfo, "title":title, "context":context})
 
-	return problem_sc(req,1,context)
 
+def submit_code(req,num='1'):
 
+	context = baseInfo(req)
+	return submit_code_sc(req,num,context)
 
 
 
