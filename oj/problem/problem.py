@@ -79,10 +79,11 @@ def submit_code_sc(req,num,context):
 					source.save()
 				
 					return problem_sc(req,int(language_code),context) # 提交成功跳转
-				else:
-					return render_to_response('submit_code.html',{"form_code":form_code,"context" : context})#submit_code  未添加
 			else:
 				pass # 未登录跳转
+		else:
+			error = 'Code too short!'
+			return render_to_response('submit_code.html',{"form_code":form_code,"context":context,"error":error,"num":num})#submit_code  未添加
 			
 	else:
 		form_code = Submit_code()
