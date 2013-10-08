@@ -59,15 +59,12 @@ def problemId(req):
 
 	ID = req.GET['id']
 	context = baseInfo(req)
-
 	return problem_sc(req,ID,context)
 
 def problem_search(req):
 
 	search = req.GET['search']
-
 	context = baseInfo(req)
-
 	problem = Problem.objects.filter(title = str(search))
 
 	if len(problem):
@@ -89,4 +86,9 @@ def submit_code(req,num='1'):
 def rank(req, page='1'):
 	context = baseInfo(req)
 	return rank_sc(req, page, context)
+
+def user_info(req, nick):
+	context = baseInfo(req)
+	return user_info_sc(req, nick, context)
+
 	
