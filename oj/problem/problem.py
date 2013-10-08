@@ -11,7 +11,7 @@ def problem_sc(req, num, context):
 	
 	try:
 		ID = int(num)
-		problem = Problem.objects.get(problem_id=int(num))
+		problem = Problem.objects.get(problem_id = ID)
 
 		if problem.visible == False:
 			pageInfo ="problem not found!"

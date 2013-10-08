@@ -237,3 +237,10 @@ div.content {
     z-index: 6;
 }
 
+.submit{
+
+	height = 150px;
+	width = 100%;
+	resize: none;
+
+}

@@ -65,6 +65,7 @@ def problemId(req):
 def problem_search(req):
 
 	search = req.GET['search']
+
 	context = baseInfo(req)
 
 	problem = Problem.objects.filter(title = str(search))
