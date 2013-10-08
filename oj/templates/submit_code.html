@@ -4,14 +4,15 @@
 
 {%block content%}
 
+<center>
 <form action ="" method = "post" >
 
-	<p width = "120"> Problem ID :&nbsp {{num}} </p><br>
+	<p width = "220"> Problem ID :&nbsp {{num}} </p><br>
 	<p>	Language : {{form_code.language}} </p> <br>
 	<p>{{form_code.submit_code}} </p>
 
-	<p><textarea class="submit" cols="100"  name="submit_code" rows="100"></textarea></p>
-
-	<input type = "submit" value = "sumbit"/>
+	<input id="Submit" class="btn btn-info" type="submit" value="Submit">
+	<input type="reset" class="btn btn-danger" value="重置">
 </form>
+</center>
 {%endblock%}

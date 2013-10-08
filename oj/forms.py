@@ -14,7 +14,7 @@ class Register(forms.Form):
 
 class Submit_code(forms.Form):
 		language = forms.ChoiceField(choices = [('1','c'),('2','c++')])
-		submit_code = forms.CharField(label='code',widget=forms.Textarea(attrs={'class' : 'submit','cols' : '100','rows':'10'}))
+		submit_code = forms.CharField(label='code',widget=forms.Textarea(attrs={'id':'source','cols':'120','style':'width:70%','rows' : '20'}))
 
 
 
