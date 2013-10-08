@@ -185,11 +185,11 @@ span.exadmin {
 	text-align:center;
 }
 
-#problemset .list_one {
+.list_one {
 	
 }
 
-#problemset .list_two{
+.list_two{
 	background:#eee;
 }
 
@@ -197,6 +197,16 @@ span.exadmin {
 	background:#e5effa; 
 }
 
+#rankset th{
+	background-color:lightblue;
+}
+
+#rankset tr{
+	text-align:center;
+}
+#rankset tr:hover {
+	background:#e5effa;
+}	
 /*the login and register or the usr_info*/
 #headlogin {
 	position: absolute;

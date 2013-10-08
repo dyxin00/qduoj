@@ -82,4 +82,9 @@ def problem_search(req):
 def rank(req, page='1'):
 	context = baseInfo(req)
 	return rank_sc(req, page, context)
+
+def user_info(req, nick):
+	context = baseInfo(req)
+	return user_info_sc(req, nick, context)
+
 	

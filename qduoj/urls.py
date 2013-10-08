@@ -15,7 +15,7 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
 	url('^$', 'oj.views.problemlist'),  # the init page is one
 	url('^oj/$', 'oj.views.problemlist'),
-	url('problemlist/page=(?P<num>\d+)/$', 'oj.views.problemlist'),#through the num to shift page 
+	url('problemlist/page=(?P<page>\d+)/$', 'oj.views.problemlist'),#through the num to shift page 
 	url('^problem/num=(?P<num>\d+)/$', 'oj.views.problem'),
 	url('^oj/userlogin/$', 'oj.views.login'),                      #log
 	url('^oj/userregister/$', 'oj.views.register'),				   #register
@@ -24,4 +24,6 @@ urlpatterns = patterns('',
 	url('^problemid','oj.views.problemId'),
 	url('^problem_search','oj.views.problem_search'),
 	url(r'^rank/$', 'oj.views.rank'),
+	url(r'^rank/page=(?P<page>\d+)/$', 'oj.views.rank'),
+	url(r'^user_info/name=(?P<nick>\w+)/$', 'oj.views.user_info'),
 )

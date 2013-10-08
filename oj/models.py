@@ -9,7 +9,8 @@ class User(models.Model):
 	website = models.CharField(max_length=50)
 	ac = models.IntegerField(default=0)
 	submit = models.IntegerField(default=0)
-	
+	rank = models.IntegerField(default=0)
+
 	def __unicode__(self):
 		return self.nick
 
