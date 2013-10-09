@@ -108,7 +108,7 @@ def status_sc(req,context,problem_id = -1,language = -1,user = '',jresult = -1):
 			1: 'C++'
 			}
 	solution = Solution.objects.order_by('-solution_id')
-	print len(solution)
+
 	if problem_id != -1 :
 		solution = solution.filter(problem_id = Problem.objects.get(problem_id = problem_id))
 	if len(user):
@@ -117,9 +117,6 @@ def status_sc(req,context,problem_id = -1,language = -1,user = '',jresult = -1):
 		solution = solution.filter(language = language)
 	if jresult != -1:
 		solution = solution.filter(result = jresult)
-		
-	print len(solution)
-	
 
 	return render_to_response('status.html',{"context" : context,'Result' : Result,'language_ab' : language_ab, 'solution' : solution})
 
@@ -128,17 +125,6 @@ def status_sc(req,context,problem_id = -1,language = -1,user = '',jresult = -1):
 
 
 
-
-def status_sc(req,context):
-	if req.method == 'POST':
-		problem_id = int(req.POST['problem_id'])
-		language = int(req.POST['language'])
-		user_id = req.POST['user_id']
-		jresult = int(req.POST['jresult'])
-	else:
-		form_status = Status()
-
-	return render_to_response('status.html',{"context" : context})
 
 def problem_Handle(problem):
 	ab = {}
