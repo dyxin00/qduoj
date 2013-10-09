@@ -92,3 +92,17 @@ def user_info(req, nick):
 	return user_info_sc(req, nick, context)
 
 	
+def status(req):
+
+	context = baseInfo(req)
+	return status_sc(req,context)
+
+
+
+
+
+
+
+
+
+
