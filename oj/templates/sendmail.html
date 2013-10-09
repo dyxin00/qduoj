@@ -6,7 +6,6 @@ sendmail
 
 {%block content%}
 
-
 	<center class = "usermail">
 		{%if fun == '1' %}<a href = "/mail" class = "choose">Receive</a>
 		{%else%}<a href = "/mail" class = "nochoose">Receive</a>{%endif%}
@@ -22,6 +21,10 @@ sendmail
 		
 	</center>
 	<form method = "POST">
+		<center>{%if error.error%}
+			<span class = "green">{{error.error}}</span>
+		{%endif%}
+		</center>
 		<table class = "tabmail">
 			<tr>
 				<td>SentTO:<td>
