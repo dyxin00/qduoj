@@ -32,6 +32,7 @@ urlpatterns = patterns('',
 	url('^status/page=(?P<page>\d+)/$', 'oj.views.status'),
 	url('^Search_status','oj.views.status_Search'),
 	url('^Search_status/page=(?P<page>\d+>)/$', 'oj.views.status_Search'),
+	
 	url('^source_code/runid=(?P<runid>\d+)/$', 'oj.views.source_code'),
 	url('^changepw/$', 'oj.views.changepw'),
 	url('^changeinfo/$', 'oj.views.changeinfo'),

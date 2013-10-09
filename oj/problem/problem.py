@@ -110,6 +110,7 @@ def status_sc(req,context, page, problem_id = -1,language = -1,user = '',jresult
 			1: 'C++'
 			}
 	solution = Solution.objects.order_by('-solution_id')
+
 	if problem_id != -1 :
 		solution = solution.filter(problem_id = Problem.objects.get(problem_id = problem_id))
 	if len(user):
@@ -118,6 +119,7 @@ def status_sc(req,context, page, problem_id = -1,language = -1,user = '',jresult
 		solution = solution.filter(language = language)
 	if jresult != -1:
 		solution = solution.filter(result = jresult)
+
 	
 	submit_len = len(solution)
 	for i in range(0, submit_len/50 + 1):
@@ -131,6 +133,8 @@ def status_sc(req,context, page, problem_id = -1,language = -1,user = '',jresult
 		return render_to_response('error.html', {"pageInfo": pageInfo, "title":title, "context":context})
 	solution = solution[(page - 1)*50 : page*50]
 	return render_to_response('status.html',{"context" : context,'Result' : Result,'language_ab' : language_ab, 'solution' : solution, 'list_info':list_info})
+
+
 
 def problem_Handle(problem):
 	ab = {}
