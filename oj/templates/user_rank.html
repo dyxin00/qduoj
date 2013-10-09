@@ -15,12 +15,12 @@ user_rank
 		{%endif%}
 	{%endfor%}
 </h3>
-
+<br/>
 	<table width = "70%" align = "center" id = "rankset">
 		<thead>
-			<th width="5%" align="center"><b>名次</b></td> 
-			<th width="10%" align="center"><b>用户</b></td>
-			<th width="10%" align="center"><b>昵称</b></td>
+			<th width="5%" align="center"><b>Rank</b></b></td> 
+			<th width="10%" align="center"><b>User</b></td>
+			<th width="10%" align="center"><b>Nick</b></b></td>
 			<th width="5%" align="center"><b>AC</b></td>
 			<th width="5%" align="center"><b>Submit</b></b></td>
 		</thead>
@@ -30,7 +30,7 @@ user_rank
  				<tr class = "{% cycle 'list_one' 'list_two' %}">
 					<td>{{user.rank}}</td>
 					<td><a href="/user_info/name={{user.nick}}">{{user.nick}}</a></td>
-					<td>{{info.nick}}</td>
+					<td>{{user.nick}}</td>
 					<td>{{user.ac}}</td>
 					<td>{{user.submit}}</td>
 				</tr>						 
