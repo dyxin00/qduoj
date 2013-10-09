@@ -37,8 +37,8 @@ class Problem(models.Model):
 
 class Solution(models.Model):
 	solution_id = models.AutoField(primary_key=True)
-	problem = models.ForeignKey('Problem')
-	user = models.ForeignKey('User')
+	problem = models.ForeignKey(Problem)
+	user = models.ForeignKey(User)
 	score = models.IntegerField(default=0)
 	time = models.IntegerField(default=0)
 	memory = models.IntegerField(default=0) # ...

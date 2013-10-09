@@ -34,6 +34,7 @@ def baseInfo(req):    #the news and the session!
 
 	if 'login' in req.session:
 		context['ojlogin'] = User.objects.get(nick=req.session['login']['username'])
+		req.session.set_expiry(1200)
 	return context
 
 def problemlist(req, page = "1"):
@@ -56,13 +57,11 @@ def logout(req):
 	return logout_sc(req)
 
 def problemId(req):
-
 	ID = req.GET['id']
 	context = baseInfo(req)
 	return problem_sc(req,ID,context)
 
 def problem_search(req):
-
 	search = req.GET['search']
 	context = baseInfo(req)
 	problem = Problem.objects.filter(title = str(search))
@@ -77,7 +76,6 @@ def problem_search(req):
 
 
 def submit_code(req,num='1'):
-
 	context = baseInfo(req)
 	return submit_code_sc(req,num,context)
 
@@ -90,10 +88,8 @@ def rank(req, page='1'):
 def user_info(req, nick):
 	context = baseInfo(req)
 	return user_info_sc(req, nick, context)
-
 	
 def status(req):
-
 	context = baseInfo(req)
 
 	return status_sc(req,context)
@@ -127,7 +123,7 @@ def status_Search(req):
 
 
 
-
-
-
+def source_code(req, runid):
+	context = baseInfo(req)
+	return source_code_sc(req, runid, context)
 

@@ -32,4 +32,6 @@ urlpatterns = patterns('',
 
 	url('^status/','oj.views.status'),
 	url('^Search_status','oj.views.status_Search'),
+	url('^status/$','oj.views.status'),
+	url('^source_code/runid=(?P<runid>\d+)/$', 'oj.views.source_code'),
 )

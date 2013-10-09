@@ -1,0 +1,39 @@
+{%extends "ojbase.html"%}
+
+{%block title%}
+{{problem.problem_id}}code!
+{%endblock%}
+
+
+{%block content%}
+<script type="text/javascript" src="/static/syntaxhighlighter/scripts/shCore.js"></script> 
+<script type="text/javascript" src="/static/syntaxhighlighter/scripts/shBrushCpp.js"></script> 
+<script type="text/javascript" src="/static/syntaxhighlighter/scripts/shBrushJava.js"></script> 
+<link type="text/css" rel="stylesheet" href="/static/syntaxhighlighter/styles/shCoreDefault.css"/> 
+<script type="text/javascript">SyntaxHighlighter.all();</script> 
+<center>
+	<h3>SourceCode</h3>
+	<h3><span class='green'>Result:</span> {{submit.result}}</h3>
+	<h3><span class='green'>RunID</span>: {{submit.problem.problem_id}} -- <span class ="green">Title:</span> {{submit.problem.title}} -- 
+	<span class='green'>Author:</span> {{submit.user.nick}}</h3> 
+</center>	
+<pre class="brush: {% ifequal submit.language JAVA %}java{% else %}cpp{% endifequal %};"> 
+/*
+username:	{{submit.user.nick}}
+problemID:	{{submit.problem.problem_id}}
+time:		{{submit.in_date}}ms
+memory:		{{submit.memory}}KB
+result:		{{submit.result}}	
+language:	{{submit.language}}
+*/
+
+{{source.code}}
+</pre>
+
+<center>
+	<span class='blue'>remark</span>：Double-click the code to select all</span>
+</center>	 
+{%endblock%}
+
+
+

@@ -8,8 +8,15 @@
 			<span class="red">{{error.error}}</span>
 		{%endif%}
 		<form action="" method = "post">
-			{{form.as_p}}
-		<input type = "submit" value = "submit"/> 
+			<table>
+				<tr>
+				<td>User ID:</td> <td>{{form.name}}</td>
+				</tr>
+				<tr>
+				<td>Password:</td><td>{{form.password}}</td>
+				</tr>
+			</table>
+		<input type = "submit" value = "submit" class = "login_submit"/> 
 		</form>
 	</center>
 {%endblock%}
