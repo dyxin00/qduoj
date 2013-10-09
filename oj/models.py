@@ -31,7 +31,7 @@ class Problem(models.Model):
 	accepted = models.IntegerField(default=0)
 	submit = models.IntegerField(default=0)
 	visible = models.BooleanField(default=False)
-	
+	oi_mode = models.BooleanField(default=False)
 	def __unicode__(self):
 		return self.title
 
@@ -47,7 +47,6 @@ class Solution(models.Model):
 	language = models.IntegerField(default=0)
 	judgetime = models.DateTimeField(auto_now_add=True)
 	code_length = models.IntegerField(default=0)
-	
 	def __unicode__(self):
 		return str(self.solution_id)
 
@@ -82,16 +81,17 @@ class News(models.Model):
 		return self.title
 
 class Mail(models.Model):
-	mail_id = models.IntegerField(primary_key=True)
+	mail_id = models.AutoField(primary_key=True)
 	mail_to = models.CharField(max_length=50)
 	mail_from = models.CharField(max_length=50)
 	title = models.TextField()
 	content = models.TextField()
 	is_new = models.BooleanField(default=False)
 	in_date = models.DateTimeField(auto_now_add=True)
-	
+	reply = models.CharField(max_length=20, null=True, blank=True)
+
 	def __unicode__(self):
-		return self.mail_id
+		return str(self.mail_id)
 
 class Bbs(models.Model):
 	problem = models.ForeignKey('Problem')
@@ -99,6 +99,16 @@ class Bbs(models.Model):
 	time = models.DateTimeField(auto_now_add=True)	
 	text = models.TextField()
 	reply_id = models.IntegerField() #if the id == 0, this reply is to the LZ, else to the flaw
+	stairs = models.IntegerField()
 
 	def __unicode__(self):
-		return self.problem.problem_id
+		return str(self.problem.problem_id)
+
+class Runtimeinfo(models.Model):
+	solution_id = models.AutoField(primary_key=True)
+	error = models.TextField()
+
+	def __unicode__(self):
+		return str(self.solution_id)
+
+

@@ -36,4 +36,6 @@ urlpatterns = patterns('',
 	url('^source_code/runid=(?P<runid>\d+)/$', 'oj.views.source_code'),
 	url('^changepw/$', 'oj.views.changepw'),
 	url('^changeinfo/$', 'oj.views.changeinfo'),
+	
+	url('^mail/$', 'oj.views.mail'),
 )

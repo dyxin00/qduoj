@@ -13,6 +13,7 @@ path_pro = path + '/oj/problem'
 path_login = path + '/oj/login_register'
 path_status_rank = path + '/oj/status_rank'
 path_change_info = path + '/oj/change_info'
+path_mail = path + '/oj/usermail'
 
 if not path_pro in sys.path:
 	sys.path.append(path_pro)
@@ -22,11 +23,14 @@ if not path_status_rank in sys.path:
 	sys.path.append(path_status_rank)
 if not path_change_info in sys.path:
 	sys.path.append(path_change_info)
+if not path_mail in sys.path:
+	sys.path.append(path_mail)
 
 from problem import *
 from login_register import *
 from status_rank import *
 from change_info import *
+from usermail import *
 
 def baseInfo(req):    #the news and the session!
 	context = {}
@@ -131,3 +135,10 @@ def changeinfo(req):
 	context = baseInfo(req)
 	return changeinfo_sc(req, context)
 
+def mail(req, fun='1'):   #fun=1 all the mail  2 the new mail 3 sent mail
+	context = baseInfo(req)
+	if not 'ojlogin' in context:
+		pageInfo = 'you must login first!'
+		title = '404 not found'
+		return render_to_response('error.html', {'pageInfo':pageInfo, 'title':title, 'context':context})
+	return mail_sc(req, fun, context)
