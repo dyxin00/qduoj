@@ -525,7 +525,7 @@ void _update_solution_mysql(int solution_id, int result, int time, int memory,do
 			sql,
 			//"UPDATE oj_solution SET result=%d,time=%d,memory=%d,judgetime=NOW(),pass_rate=%f WHERE solution_id=%d LIMIT 1%c",
 			"UPDATE oj_solution SET result=%d,time=%d,memory=%d,judgetime=NOW(),score=%f WHERE solution_id=%d LIMIT 1%c",
-			result, time, memory, pass_rate,solution_id, 0);
+			result, time, memory, pass_rate * 100,solution_id, 0);
 
 		if(DEBUG && oi_mode)
 			printf("pass_rate%f\n",pass_rate);
@@ -726,19 +726,26 @@ void addcustomout(int solution_id) {
 	_addreinfo_mysql(solution_id,"user.out");
 	
 }
-//未修改！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
-void _update_user_mysql(char * user_id) {
+
+void _update_user_mysql(char * user_id,int ACflg) {
 	char sql[BUFFER_SIZE];
+	if(ACflg ==4){
+		sprintf(
+			sql,
+			//"UPDATE `users` SET `solved`=(SELECT count(DISTINCT `problem_id`) FROM `solution` WHERE `user_id`=\'%s\' AND `result`=\'4\') WHERE `user_id`=\'%s\'",
+			//user_id, user_id
+			"UPDATE oj_user SET ac = ac + 1 WHERE user_id=%d",atoi(user_id)
+			);
+		if (mysql_real_query(conn, sql, strlen(sql)))
+			write_log(mysql_error(conn));
+	}
 	sprintf(
 		sql,
-		"UPDATE `users` SET `solved`=(SELECT count(DISTINCT `problem_id`) FROM `solution` WHERE `user_id`=\'%s\' AND `result`=\'4\') WHERE `user_id`=\'%s\'",
-		user_id, user_id);
-	if (mysql_real_query(conn, sql, strlen(sql)))
-		write_log(mysql_error(conn));
-	sprintf(
-		sql,
-		"UPDATE `users` SET `submit`=(SELECT count(*) FROM `solution` WHERE `user_id`=\'%s\') WHERE `user_id`=\'%s\'",
-		user_id, user_id);
+		//"UPDATE `users` SET `submit`=(SELECT count(*) FROM `solution` WHERE `user_id`=\'%s\') WHERE `user_id`=\'%s\'",
+		//user_id, user_id
+		"UPDATE oj_user SET submit = submit + 1 WHERE user_id=%d",atoi(user_id)
+		);
+		printf("..%s..\n",user_id);
 	if (mysql_real_query(conn, sql, strlen(sql)))
 		write_log(mysql_error(conn));
 }
@@ -751,9 +758,9 @@ void _update_user_http(char * user_id) {
 	pclose(fjobs);
 }
 * */
-void update_user(char  * user_id) {
+void update_user(char  * user_id,int ACflg) {
 	
-	_update_user_mysql(user_id);
+	_update_user_mysql(user_id,ACflg);
 }
 /*
 void _update_problem_http(int pid) {
@@ -764,25 +771,31 @@ void _update_problem_http(int pid) {
 }
 * */
 
-//未修改
-void _update_problem_mysql(int p_id) {
+
+void _update_problem_mysql(int p_id,int ACflg) {
 	char sql[BUFFER_SIZE];
+	if(ACflg == 4){
+		sprintf(
+			sql,
+			//"UPDATE `oj_problem` SET `accepted`=(SELECT count(*) FROM `solution` WHERE `problem_id`=\'%d\' AND `result`=\'4\') WHERE `problem_id`=\'%d\'",
+			//p_id, p_id
+			  "UPDATE oj_problem SET accepted= accepted + 1 WHERE problem_id=%d",p_id
+			);
+		if (mysql_real_query(conn, sql, strlen(sql)))
+			write_log(mysql_error(conn));
+	}
 	sprintf(
 		sql,
-		"UPDATE `problem` SET `accepted`=(SELECT count(*) FROM `solution` WHERE `problem_id`=\'%d\' AND `result`=\'4\') WHERE `problem_id`=\'%d\'",
-		p_id, p_id);
-	if (mysql_real_query(conn, sql, strlen(sql)))
-		write_log(mysql_error(conn));
-	sprintf(
-		sql,
-		"UPDATE `problem` SET `submit`=(SELECT count(*) FROM `solution` WHERE `problem_id`=\'%d\') WHERE `problem_id`=\'%d\'",
-		p_id, p_id);
+		//"UPDATE `oj_problem` SET `submit`=(SELECT count(*) FROM `solution` WHERE `problem_id`=\'%d\') WHERE `problem_id`=\'%d\'",
+		//p_id, p_id
+		"UPDATE oj_problem SET submit = submit + 1 WHERE problem_id=%d",p_id
+		);
 	if (mysql_real_query(conn, sql, strlen(sql)))
 		write_log(mysql_error(conn));
 }
-void update_problem(int pid) {
+void update_problem(int pid,int ACflg) {
 	
-	_update_problem_mysql(pid);
+	_update_problem_mysql(pid,ACflg);
 	
 }
 int compile(int lang) {
@@ -1042,11 +1055,14 @@ void _get_solution_info_mysql(int solution_id, int & p_id, char * user_id, int &
 		sql,
 		"SELECT problem_id, user_id, language FROM oj_solution where solution_id=%d",
 		solution_id);
+	//printf("!!!...%s...\n",row[1].nick);
+	
 	//printf("%s\n",sql);
 	mysql_real_query(conn, sql, strlen(sql));
 	res = mysql_store_result(conn);
 	row = mysql_fetch_row(res);
 	p_id = atoi(row[0]);
+	
 	strcpy(user_id, row[1]);
 	lang = atoi(row[2]);
 	mysql_free_result(res);
@@ -1850,8 +1866,8 @@ int main(int argc, char** argv) {
 	init_parameters(argc, argv, solution_id, runner_id); //初始化
 
 	if(DEBUG)
-		printf("..%d %d...",solution_id,runner_id);
-	getchar();
+		printf("..%d %d...\n",solution_id,runner_id);
+	//getchar();   //看这里。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。
 
 	init_mysql_conf();
 
@@ -1909,8 +1925,10 @@ int main(int argc, char** argv) {
 	if (Compile_OK != 0) {
 		update_solution(solution_id, OJ_CE, 0, 0, 0.0);
 		addceinfo(solution_id);
-		update_user(user_id);
-		update_problem(p_id);
+		update_user(user_id,OJ_CE);
+		update_problem(p_id,OJ_CE);
+		//update_user(user_id);
+		//update_problem(p_id);
 		if(!http_judge)
 			mysql_close(conn);
 		if (!DEBUG)
@@ -2087,8 +2105,15 @@ int main(int argc, char** argv) {
 		if(DEBUG) printf("add diff info of %d..... \n",solution_id);
 		adddiffinfo(solution_id);
 	}
-	update_user(user_id);
-	update_problem(p_id);
+	
+	if(oi_mode){
+		update_problem(p_id,finalACflg);
+		update_user(user_id,finalACflg);
+	}
+	else{
+		update_user(user_id,ACflg);
+		update_problem(p_id,ACflg);
+	}
 	clean_workdir(work_dir);
 
 	if (DEBUG)
