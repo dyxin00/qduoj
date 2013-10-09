@@ -16,7 +16,14 @@
 					{% if context.ojlogin%}
 						<div class="userinfo">
 							<a href="/user_info/name={{context.ojlogin.nick}}" class = "wqu">{{context.ojlogin.nick}}</a> | 
-							<b><a href="/mail">mail:</a>(<a href=""></a>)</b> | <b>ac: {{context.ojlogin.ac}}</b><br/>
+							<b><a href="/mail">mail:</a>
+							(
+							{%if context.mail_count > 0%}<a href="/mail/pattern=2"><span class = "red">{{context.mail_count}}</span></a>
+							{%else%}
+							<a href = "/mail/pattern=1">0</a>
+							{%endif%}
+							)</b> | 
+							<b>ac: {{context.ojlogin.ac}}</b><br/>
 						</div>
 						
 						<div class = 'logout'>

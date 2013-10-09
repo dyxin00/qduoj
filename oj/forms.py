@@ -16,6 +16,10 @@ class Submit_code(forms.Form):
 		language = forms.ChoiceField(choices = [('0','c'),('1','c++')])
 		submit_code = forms.CharField(label='code',widget=forms.Textarea(attrs={'class':'submit','cols':'120','style':'width:70%','rows' : '20'}))
 
+class Send_mail(forms.Form):
+	send_to = forms.CharField(max_length=20)
+	title = forms.CharField(max_length=50)
+	content = forms.CharField(label='mail',widget=forms.Textarea(attrs={'class':'submit','cols':'120','style':'width:40%','rows' : '20'}))
 
 class Status(forms.Form):
 	Result_choices = [
