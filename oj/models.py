@@ -49,14 +49,14 @@ class Solution(models.Model):
 	code_length = models.IntegerField(default=0)
 	
 	def __unicode__(self):
-		return self.solution_id
+		return str(self.solution_id)
 
 class Source_code(models.Model):
 	solution_id = models.IntegerField(primary_key=True)
 	code = models.TextField()
 	
 	def __unicode__(self):
-		return self.solution_id
+		return str(self.solution_id)
 
 class Compileinfo(models.Model):
 	solution_id = models.IntegerField(primary_key=True)

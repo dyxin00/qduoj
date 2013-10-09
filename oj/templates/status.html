@@ -5,7 +5,7 @@
 
 {% block content %}
 <div id="center" class="input-append">
-	<form id="simform" action="" method="POST">
+	<form id="Search" action="/Search_status" method="GET">
 		Problem ID:<input class="input-mini" style="height:24px" type="text" size="4" name="problem_id" value="">
 		User:<input class="input-mini" style="height:24px" type="text" size="4" name="user_id" value="">
 		Language:<select class="input-small" size="1" name="language">
@@ -23,8 +23,8 @@
 			<option value="9">OLE</option>
 			<option value="10">RE</option>
 			<option value="11">CE</option>
-			<option value="0">PD</option>
-			<option value="1">PR</option>
+			<option value="1">PD</option>
+			<option value="0">PR</option>
 			<option value="2">CI</option>
 			<option value="3">RJ</option>
 		</select>
@@ -48,18 +48,39 @@
 		</thead>
 
 		<tbody>
-			
+			{%for solu in solution %}	
 			<tr class="evenrow">
-				<td>	1010</td>
-				<td>	<a href="     ">xin</a></td>
-				<td>	<div class="center"><a href=" ">1</a></div></td>
-				<td>	<span class="btn btn-warning">Compile Error</span></td>
-				<td>	<div id="center" class="red">0</div></td>
-				<td>	<div id="center" class="red">0</div></td>
-				<td>	C</td>
-				<td>	9 B</td>
-				<td>	2013-09-16 16:54:19</td>
-		</tr>
+				<td>	{{solu.solution_id}}</td>
+				<td>	<a href="     ">{{solu.user}}</a></td>
+				<td>	<div class="center"><a href=" ">{{solu.problem.problem_id}}</a></div></td>
+				{% for R,V in Result.items %}
+					{% if R == solu.result %}
+
+					{% if R == 1%}
+					<td>	<span class="btn gray">{{V}}</span></td>
+					{% elif R == 4%}
+					<td>	<span class="btn btn-success">{{V}}</span></td>
+					{% elif R == 6%}
+					<td>	<span class="btn btn-danger">{{V}}</span></td>
+					{% else %}
+					<td>	<span class="btn btn-warning">{{V}}</span></td>
+					{% endif %}
+
+					{% endif %}
+
+				{% endfor %}
+				<td>	<div id="center" class="red">{{solu.memory}}</div></td>
+				<td>	<div id="center" class="red">{{solu.time}}</div></td>
+				{% for R,V in language_ab.items %}
+					{% if R == solu.language %}
+					<td>{{V}}</td>
+					{% endif %}
+
+				{% endfor %}
+				<td>	{{solu.code_length}}B</td>
+				<td>	{{solu.in_date}}</td>
+			</tr>
+			{% endfor %}
 	</table>
 </div>
 {% endblock %}

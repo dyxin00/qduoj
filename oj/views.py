@@ -95,7 +95,32 @@ def user_info(req, nick):
 def status(req):
 
 	context = baseInfo(req)
+
 	return status_sc(req,context)
+
+def status_Search(req):
+
+	context = baseInfo(req)
+	if req.method == 'GET':
+		problem_id = -1
+		try:
+			problem_id_s = req.GET['problem_id']
+			if len(problem_id_s):
+				problem_id = int(problem_id_s)
+			else:
+				problem_id = -1
+			user_id = req.GET['user_id']
+
+			language = int(req.GET['language'])
+			jresult = int(req.GET['jresult'])
+
+		except ValueError:
+			pageInfo ="problem not found!"
+			title = "404 not found"
+			return render_to_response('error.html', {"pageInfo":pageInfo, "title":title, "context":context})
+
+		return status_sc(req,context,problem_id,language,user_id,jresult)
+
 
 
 

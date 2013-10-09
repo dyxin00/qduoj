@@ -78,7 +78,7 @@ def submit_code_sc(req,num,context):
 							)
 					source.save()
 				
-					return problem_sc(req,int(language_code),context) # 提交成功跳转
+					return problem_sc(req,int(num),context) # 提交成功跳转
 			else:
 				pass # 未登录跳转
 		else:
@@ -91,25 +91,38 @@ def submit_code_sc(req,num,context):
 	return render_to_response('submit_code.html',{"num" : num,"form_code":form_code,"context" : context})
 
 
-def status_sc(req,context):
+def status_sc(req,context,problem_id = -1,language = -1,user = '',jresult = -1):
 
-	if req.method == 'POST':
+	Result = {
+			4 : 'Accpepted',
+			5 : 'Presentation Error',
+			6 : 'Wrong Answer',
+			7 : 'Time Limit Exceeded',
+			8 : 'Memory Limit Exceeded',
+			9 : 'Output Limit Exceeded',
+			10: 'Runtime Error',
+			11: 'Compile Error',
+			1 : 'Pending'
+			}
+	language_ab = {
+			0: 'C',
+			1: 'C++'
+			}
+	solution = Solution.objects.order_by('-solution_id')
+	print len(solution)
+	if problem_id != -1 :
+		solution = solution.filter(problem_id = Problem.objects.get(problem_id = problem_id))
+	if len(user):
+		solution = solution.filter(user = User.objects.get(nick = user))
+	if language != -1 :
+		solution = solution.filter(language = language)
+	if jresult != -1:
+		solution = solution.filter(result = jresult)
+		
+	print len(solution)
+	
 
-		problem_id = int(req.POST['problem_id'])
-		language = int(req.POST['language'])
-		user_id = req.POST['user_id']
-		jresult = int(req.POST['jresult'])
-
-
-	else:
-		form_status = Status()
-
-	return render_to_response('status.html',{"context" : context})
-
-
-
-
-
+	return render_to_response('status.html',{"context" : context,'Result' : Result,'language_ab' : language_ab, 'solution' : solution})
 
 
 
