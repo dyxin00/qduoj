@@ -1,0 +1,65 @@
+{% extends "ojbase.html"%}
+
+{% block title %} status{% endblock %}
+
+
+{% block content %}
+<div id="center" class="input-append">
+	<form id="simform" action="" method="POST">
+		Problem ID:<input class="input-mini" style="height:24px" type="text" size="4" name="problem_id" value="">
+		User:<input class="input-mini" style="height:24px" type="text" size="4" name="user_id" value="">
+		Language:<select class="input-small" size="1" name="language">
+			<option value="-1" selected="">All</option>
+			<option value="0">C</option>
+			<option value="1">C++</option>
+		</select>
+		Result:<select class="input-small" size="1" name="jresult">
+			<option value="-1" selected="">All</option>
+			<option value="4">AC</option>
+			<option value="5">PE</option>
+			<option value="6">WA</option>
+			<option value="7">TLE</option>
+			<option value="8">MLE</option>
+			<option value="9">OLE</option>
+			<option value="10">RE</option>
+			<option value="11">CE</option>
+			<option value="0">PD</option>
+			<option value="1">PR</option>
+			<option value="2">CI</option>
+			<option value="3">RJ</option>
+		</select>
+		<input type="submit" class="input" value="Search">
+	</form>
+</div>
+<div id="center">
+	<table id="result-tab" class="table table-striped content-box-header" align="center" width="80%">
+		<thead>
+			<tr class="success toprow">
+				<th>RunID</th>
+				<th>User</th>
+				<th>Problem</th>
+				<th>Result</th>
+				<th>Memory</th>
+				<th>Time</th>
+				<th>Language</th>
+				<th>Code Length</th>
+				<th>Submit Time</th>
+			</tr>
+		</thead>
+
+		<tbody>
+			
+			<tr class="evenrow">
+				<td>	1010</td>
+				<td>	<a href="     ">xin</a></td>
+				<td>	<div class="center"><a href=" ">1</a></div></td>
+				<td>	<span class="btn btn-warning">Compile Error</span></td>
+				<td>	<div id="center" class="red">0</div></td>
+				<td>	<div id="center" class="red">0</div></td>
+				<td>	C</td>
+				<td>	9 B</td>
+				<td>	2013-09-16 16:54:19</td>
+		</tr>
+	</table>
+</div>
+{% endblock %}
