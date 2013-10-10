@@ -1,0 +1,30 @@
+
+{%extends "ojbase.html"%}
+{%block title%}
+changeinfo
+{%endblock%}
+
+{%block content%}
+<center>
+	{%if error.error%}
+		<span class='red'>{{error.error}}</span>
+	{%endif%}
+	<form method = "post">
+		<table>
+			<tr>
+			<td>Email:</td> <td><input type = 'text' name = 'email' value = {{user.email}}></td>
+			</tr>
+			{%if user.website%}
+				<tr>
+				<td>Website:</td><td><input type = 'text' name = 'website' value = {{user.website}}></td>
+				</tr>
+			{%else%}
+				<tr>
+				<td>Website:</td><td><input type = 'text' name = 'website' value = "http://"></td>
+				</tr>
+			{%endif%}
+		</table>
+		<input type = "submit" value = "submit" class = "class_submit" onclick="check()"/>
+	</form>
+</center>
+{%endblock%}
