@@ -122,10 +122,6 @@ def status_sc(req,context,problem_id = -1,language = -1,user = '',jresult = -1):
 
 
 
-
-
-
-
 def problem_Handle(problem):
 	ab = {}
 
