@@ -6,6 +6,7 @@ from oj.models import *
 from oj.forms import *
 from django.core import serializers
 from string import join,split
+from qduoj_config import *
 
 def problem_sc(req, num, context):
 	

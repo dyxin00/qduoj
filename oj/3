@@ -26,15 +26,13 @@ if not path_change_info in sys.path:
 	sys.path.append(path_change_info)
 if not path_mail in sys.path:
 	sys.path.append(path_mail)
-if not path_config in sys.path:
+if not path_config in sys.path
 	sys.path.append(path_config)
-
 from problem import *
 from login_register import *
 from status_rank import *
 from change_info import *
 from usermail import *
-from qduoj_config import *
 
 def baseInfo(req):    #the news and the session!
 	context = {}
