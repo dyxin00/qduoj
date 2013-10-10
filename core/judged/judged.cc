@@ -252,6 +252,7 @@ int init_mysql(){
 	}
 
 	printf("..init mysql..\n");
+
 	if (executesql("set names utf8"))
 		return 1;
 	return 0;
@@ -462,7 +463,6 @@ int already_running(){
 	if (lockfile(fd) < 0){
 		if (errno == EACCES || errno == EAGAIN){
 
-			printf("why\n");
 			close(fd);
 			return 1;
 		}
@@ -516,11 +516,11 @@ int main(int argc, char** argv){
 	if (!DEBUG)
 	   	daemon_init();
 
-	if ( strcmp(oj_home,"/home/judge")==0&&already_running() == 0){
+	if ( strcmp(oj_home,"/home/judge")==0&&already_running() == 0){  //....
 	//if ( strcmp(oj_home,"/home/judge")==0&&already_running()){
 		syslog(LOG_ERR|LOG_DAEMON, "This daemon program is already running!\n");  //系统日志
 
-		printf("runing fsdk "); //cs
+		printf("..runing fsdk..\n "); //cs
 		return 1; 
 	}
 
