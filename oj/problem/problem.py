@@ -129,16 +129,6 @@ def status_sc(req,context,problem_id = -1,language = -1,user = '',jresult = -1):
 
 
 
-def status_sc(req,context):
-	if req.method == 'POST':
-		problem_id = int(req.POST['problem_id'])
-		language = int(req.POST['language'])
-		user_id = req.POST['user_id']
-		jresult = int(req.POST['jresult'])
-	else:
-		form_status = Status()
-
-	return render_to_response('status.html',{"context" : context})
 
 def problem_Handle(problem):
 	ab = {}
