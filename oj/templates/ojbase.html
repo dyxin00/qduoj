@@ -5,19 +5,6 @@
 		{%block metajump%}{%endblock%}
  		<link rel=stylesheet href='/static/css/hoj.css' type='text/css'/>
  		<link rel = "shortcut icon" href="/static/image/favicon.ico"/> 
- 	<script language="Javascript">
-	   var timer;
-	   function startTimer(){
-		   timer = window.setTimeout("logout()",5); // 5 秒
-	   }
-	   function logout(){
-		   document.location = "oj/userlogout";
-	   } 
-	   function restartTimer(){
-			window.clearTimerout(timer);
-			startTimer();
-	   }
-     </script>
 	</head>
 	<body>
 		<div id="wrapper">
@@ -27,9 +14,18 @@
 			<div id=headlogin>
 				{%if context%}
 					{% if context.ojlogin%}
-						<a href="/user_info/name={{context.ojlogin.nick}}">{{context.ojlogin.nick}}</a> | <b>ac: {{context.ojlogin.ac}}</b> | <a href="/oj/userlogout">Logout</a> 
+						<div class="userinfo">
+							<a href="/user_info/name={{context.ojlogin.nick}}" class = "wqu">{{context.ojlogin.nick}}</a> | 
+							<b><a href="/mail">mail:</a>(<a href=""></a>)</b> | <b>ac: {{context.ojlogin.ac}}</b><br/>
+						</div>
+						
+						<div class = 'logout'>
+							<a href="/oj/userlogout">Logout</a>
+						</div> 
 					{%else%}
-						<span class="green"><a href="/oj/userlogin">登录</a></span> | <span class = "green"><a href ="/oj/userregister">注册</a></span>
+						<div class="userinfo">
+							<span class="green"><a href="/oj/userlogin">登录</a></span> | <span class = "green"><a href ="/oj/userregister">注册</a></span>
+						</div>
 					{%endif%}
 				{%endif%}
 			</div>

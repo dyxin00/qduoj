@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/svn/!svn/ver/2144/trunk/core/judge_client
+END
+okcalls.h
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/2144/trunk/core/judge_client/okcalls.h
+END
+judge_client.cc
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/2135/trunk/core/judge_client/judge_client.cc
+END
+ncalls.h
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/505/trunk/core/judge_client/ncalls.h
+END
+makefile
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/1397/trunk/core/judge_client/makefile
+END

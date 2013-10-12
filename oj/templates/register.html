@@ -32,7 +32,21 @@
 					</tr>  
 				</tbody>
 			</table>
-		<input type = "submit" value = "Register"/> 
+		<input type = "submit" value = "Register" onclick="check()"/> 
 		</form>
 	</center>
+	
+<script type="text/javascript">
+	function check()
+	{ 
+		with(document.all){
+	   if(password.value!=ensure_pw.value)
+	   {
+		 alert("Repeat Password does not match with the password!");
+		 password.value = "";
+		 ensure_pw.value = "";
+	   }
+	   }
+	}
+</script>
 {%endblock%}

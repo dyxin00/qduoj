@@ -197,6 +197,7 @@ span.exadmin {
 	background:#e5effa; 
 }
 
+/*rank set*/
 #rankset th{
 	background-color:lightblue;
 }
@@ -209,10 +210,17 @@ span.exadmin {
 	background:#e5effa;
 }	
 /*the login and register or the usr_info*/
-#headlogin {
+#headlogin .userinfo{
 	position: absolute;
-	right:20px;
+	right:15px;
 	top:20px;
+	font-size:18px;
+}
+
+#headlogin .logout{
+	position: absolute;
+	right:15px;
+	top:45px;
 	font-size:18px;
 }
 
@@ -262,7 +270,39 @@ div.content {
 }
 
 /*login sumbit button*/
-.login_submit{
+.class_submit{
 	position:absolute;
 	right:40%;
+}
+
+/*status's css table*/
+#result-tab th{
+	background-color:lightblue;    
+	text-align:center;
+}
+
+#result-tab tr td{
+	padding:5px 5px;
+	text-align:center;
+}
+
+/*css for user mail*/
+.usermail .btn{
+	width:150px;
+	background:lightblue;
+	font-weight:bold;
+}
+
+.usermail .btn:hover{
+	background:lightgray;
+}
+
+.usermail .tb{
+	width:45%;
+	border:1px solid #eee
+}
+
+.usermail .tb tr td{
+	text-align:center;
+	padding:5px 5px;
 }
