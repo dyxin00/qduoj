@@ -745,7 +745,8 @@ void _update_user_mysql(char * user_id,int ACflg) {
 		//user_id, user_id
 		"UPDATE oj_user SET submit = submit + 1 WHERE user_id=%d",atoi(user_id)
 		);
-		printf("..%s..\n",user_id);
+	if(DEBUG)
+		printf("user_id..%s..\n",user_id);
 	if (mysql_real_query(conn, sql, strlen(sql)))
 		write_log(mysql_error(conn));
 }
@@ -1866,7 +1867,7 @@ int main(int argc, char** argv) {
 	init_parameters(argc, argv, solution_id, runner_id); //初始化
 
 	if(DEBUG)
-		printf("..%d %d...\n",solution_id,runner_id);
+		printf("solution..%d  runner %d...\n",solution_id,runner_id);
 	//getchar();   //看这里。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。
 
 	init_mysql_conf();

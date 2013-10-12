@@ -7,13 +7,14 @@ from oj.forms import *
 from django.core import serializers
 from string import join,split
 from qduoj_config import *
+from django.core.paginator import Paginator
 
 def problem_sc(req, num, context):
 	
 	try:
 		ID = int(num)
 		problem = Problem.objects.get(problem_id = ID)
-
+	
 		if problem.visible == False:
 			pageInfo ="problem not found!"
 			title = "404 not found"
@@ -28,7 +29,7 @@ def problem_sc(req, num, context):
 		title = "404 not found"
 		return render_to_response('error.html', {"pageInfo":pageInfo, "title":title, "context":context})
 	except ValueError: 
-		pageInfo ="problem not found!"
+		pageInfo ="page not found!"
 		title = "404 not found"
 		return render_to_response('error.html', {"pageInfo":pageInfo, "title":title, "context":context})
 
@@ -36,21 +37,25 @@ def problem_sc(req, num, context):
 def problemlist_sc(req, page, context):
 	list_info = {}
 	page_num = []
-	page = int(page) #抛异常
-	problem = Problem.objects.order_by('problem_id')
-	pro_len = len(problem)
-	for i in range(0, pro_len/50 + 1):
+	try:
+		page = int(page) #抛异常
+	except ValueError:
+		pageInfo = "page not found!"
+		title = "404 not found!"
+		return render_to_response('error.html', {'pageInfo':pageInfo, 'title':title, 'context':context})
+	p = Paginator(Problem.objects.order_by('problem_id'), PAGE_PROBLEM_NUM)
+	
+	for i in range(0, p.num_pages):
 		page_num.append(i+1)
 	list_info['len'] = page_num
 	list_info['page'] = page
 	#if the requst is out of bound, error!
-	if page == 0 or (page - 1) * 50 > pro_len:
+	if page == 0 or page > p.num_pages:
 		pageInfo = "page not found!"
 		title = "404 not found"
 		return render_to_response('error.html', {"pageInfo": pageInfo, "title":title, "context":context})
 
-	problemset  = problem[(page-1)*100:page*100]
-	problemset  = problem[(page-1)*50:page*50]
+	problemset = p.page(page).object_list
 	return render_to_response('problemlist.html', {"problemset":problemset, "context":context, 'list_info':list_info})
 
 def submit_code_sc(req,num,context):
@@ -94,7 +99,12 @@ def submit_code_sc(req,num,context):
 def status_sc(req,context, page, problem_id = -1,language = -1,user = '',jresult = -1):
 	list_info = {}
 	page_num = []
-	page = int(page)
+	try:
+		page = int(page) #抛异常
+	except ValueError:
+		pageInfo = "page not found!"
+		title = "404 not found!"
+		return render_to_response('error.html', {'pageInfo':pageInfo, 'title':title, 'context':context})
 	Result = {
 			4 : 'Accpepted',
 			5 : 'Presentation Error',
@@ -104,6 +114,8 @@ def status_sc(req,context, page, problem_id = -1,language = -1,user = '',jresult
 			9 : 'Output Limit Exceeded',
 			10: 'Runtime Error',
 			11: 'Compile Error',
+			3 : 'RJ',
+			2 : 'CI',
 			1 : 'Pending'
 			}
 	language_ab = {
@@ -125,19 +137,19 @@ def status_sc(req,context, page, problem_id = -1,language = -1,user = '',jresult
 	
 	except User.DoesNotExist:
 		return render_to_response('status.html',{"context" : context})
-	return render_to_response('status.html',{"context" : context,'Result' : Result,'language_ab' : language_ab, 'solution' : solution})
 	
-	submit_len = len(solution)
-	for i in range(0, submit_len/50 + 1):
+	p = Paginator(solution, PAGE_STATUS_NUM);
+	print p.num_pages
+	for i in range(0, p.num_pages):
 		page_num.append(i + 1)
 	list_info['len'] = page_num
 	list_info['page'] = page
-	
-	if page <= 0 or (page - 1) * 50 > submit_len:
+
+	if page <= 0 or page > p.num_pages:
 		pageInfo = "page not found!"
 		title = "404 not found"
 		return render_to_response('error.html', {"pageInfo": pageInfo, "title":title, "context":context})
-	solution = solution[(page - 1)*50 : page*50]
+	solution = p.page(page).object_list
 	return render_to_response('status.html',{"context" : context,'Result' : Result,'language_ab' : language_ab, 'solution' : solution, 'list_info':list_info})
 
 

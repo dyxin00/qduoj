@@ -2,8 +2,8 @@
 
 {%block title%}题目{{problem.problem_id}}{%endblock%}
 
+
 {%block content%}
-<div id = "main">
 	<center>
 		<h2>Problem {{problem.problem_id}}: {{problem.title}}</h2> <br>
 		<span class="green">Time Limit:</span>{{problem.time_limit}} Ms| 
@@ -36,5 +36,4 @@
 	<center>
 		[<a href= "/submit_code/num={{problem.problem_id}}">Submit</a>] [<a href = "/Search_status?problem_id={{problem.problem_id}}&user_id&language=-1&jresult=-1">Status</a>] [<a href="">Discuss</a>]
 	</center>
-</div>
 {%endblock%} 

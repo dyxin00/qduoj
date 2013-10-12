@@ -327,4 +327,6 @@ div.content {
 	position:absolute;
 	right:40%
 }
-
+.page_content{
+	margin: 0,auto;
+}

@@ -33,7 +33,7 @@ class Problem(models.Model):
 	visible = models.BooleanField(default=False)
 	oi_mode = models.BooleanField(default=False)
 	def __unicode__(self):
-		return self.title
+		return str(self.problem_id) + ":  " + self.title
 
 class Solution(models.Model):
 	solution_id = models.AutoField(primary_key=True)
