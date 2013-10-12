@@ -1,4 +1,6 @@
 from django.db import models
+import os
+from qduoj import settings
 
 class User(models.Model):	
 	user_id = models.AutoField(primary_key=True)
@@ -15,6 +17,18 @@ class User(models.Model):
 		return self.nick
 
 class Problem(models.Model):
+	def upload_handler(self, filename):
+		print "hehe"
+		if self.problem_id:
+			myfile = Problem.objects.get(problem_id=self.problem_id).content_file
+			file_directory = settings.MEDIA_ROOT + str(myfile)
+			print file_directory
+			if os.path.isfile(file_directory):
+				os.remove(file_directory)
+		return	str(self.problem_id)+ "/" + filename
+#	def get_file_upload_to(instance, filename):
+#		print "hehea"
+#		return	str(instance.problem_id)+ "/" + filename
 	problem_id = models.AutoField(primary_key=True)
 	title = models.CharField(max_length=50)
 	description = models.TextField()
@@ -32,9 +46,17 @@ class Problem(models.Model):
 	submit = models.IntegerField(default=0)
 	visible = models.BooleanField(default=False)
 	oi_mode = models.BooleanField(default=False)
+	#content_file = models.FileField(upload_to=get_file_upload_to)
+	content_file = models.FileField(upload_to=upload_handler)
 	def __unicode__(self):
 		return str(self.problem_id) + ":  " + self.title
 
+	def delete_file(sender, **kwargs):
+		patch = kwargs['instance']
+		file_directory = settings.MEDIA_ROOT + str(patch.asset_file).replace('/', '\\')
+		if os.path.isfile(file_directory):
+			os.remove(file_directory)
+#	post_delete.connect(delete_file, sender=Problem)
 class Solution(models.Model):
 	solution_id = models.AutoField(primary_key=True)
 	problem = models.ForeignKey(Problem)
@@ -110,5 +132,3 @@ class Runtimeinfo(models.Model):
 
 	def __unicode__(self):
 		return str(self.solution_id)
-
-

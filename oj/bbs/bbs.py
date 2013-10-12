@@ -6,4 +6,4 @@ from django.core import serializers
 import sys, os
 
 def bbs_sc(req, pid, page):
-
+	
