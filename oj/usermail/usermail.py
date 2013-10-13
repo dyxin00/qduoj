@@ -14,7 +14,7 @@ def mail_sc(req, fun, context):
 	if fun == '1':
 		mails = Mail.objects.filter(mail_to=username)
 	elif fun == '2':
-		mails = Mail.objects.extra(where=["mail_to=username", "is_new=True"])
+		mails = Mail.objects.filter(mail_to=username).filter(is_new=True)
 	elif fun == '3':
 		mails = Mail.objects.filter(mail_from=username)
 	else:
@@ -31,14 +31,14 @@ def sendmail_sc(req, fun, context):
 		form = Send_mail(req.POST)
 		if form.is_valid():
 			sentfrom = context['ojlogin'].nick
-			sendto = form.cleaded_data['send_to']
+			sendto = form.cleaned_data['send_to']
 			user = User.objects.filter(nick=sendto)
 			if len(user) == 0:
 				pageInfo = 'the user does not exits!'
 				error['error'] = pageInfo
-			title = form.cleaded_data['title']
+			title = form.cleaned_data['title']
 			content = form.cleaned_data['content']
-			mail = Mail.create(mail_from=sentfrom, mail_to=sendto, title=title, content=content, is_new=True)
+			mail = Mail.objects.create(mail_from=sentfrom, mail_to=sendto, title=title, content=content, is_new=True)
 			mail.save()
 			url = "/mail"
 			info = "send success!"
@@ -46,3 +46,19 @@ def sendmail_sc(req, fun, context):
 	else:
 		form = Send_mail()
 	return render_to_response('sendmail.html', {'context':context, 'form':form})
+
+def readmail_sc(req, fun, msgid, context):
+	mail = Mail.objects.filter(mail_id=msgid)
+	if not 'ojlogin' in context or len(mail) == 0:
+		pageInfo = "you need login or the mail cant found!"
+		title = "404 not found"
+		return render_to_response('error.html', {'context':context, 'pageInfo':pageInfo, 'title':title})
+	username = context['ojlogin'].nick
+	mail_from = mail[0].mail_from
+	mail_to = mail[0].mail_to
+	if mail_from != username and mail_to != username:
+		pageInfo = "this is not your email"
+		title = 'error'
+		return render_to_response('error.html', {'context':context, 'pageInfo':pageInfo, 'title':title})
+	mail.update(is_new=False)
+	return render_to_response('readmail.html', {'context':context, 'mail':mail[0], 'fun':fun})

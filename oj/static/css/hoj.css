@@ -298,7 +298,7 @@ div.content {
 }
 */
 .usermail .tb{
-	width:45%;
+	width:60%;
 	border:1px solid #eee
 }
 .usermail .tb tr td{
@@ -317,5 +317,14 @@ div.content {
 	font-size:15px;
 	background:lightblue;
 	font-weight:bold;
+}
+
+.tabmail{
+	position:relative;
+	left:40%;
+}
+.mail_reply{
+	position:absolute;
+	right:40%
 }
 
