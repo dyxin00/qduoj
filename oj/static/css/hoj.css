@@ -210,10 +210,17 @@ span.exadmin {
 	background:#e5effa;
 }	
 /*the login and register or the usr_info*/
-#headlogin {
+#headlogin .userinfo{
 	position: absolute;
-	right:20px;
+	right:15px;
 	top:20px;
+	font-size:18px;
+}
+
+#headlogin .logout{
+	position: absolute;
+	right:15px;
+	top:45px;
 	font-size:18px;
 }
 
@@ -278,3 +285,46 @@ div.content {
 	padding:5px 5px;
 	text-align:center;
 }
+
+/*css for user mail*/
+/*
+.usermail .btn{
+	width:10%;
+	background:lightblue;
+	font-weight:bold;
+}
+.usermail .btn:hover{
+	background:lightgray;
+}
+*/
+.usermail .tb{
+	width:60%;
+	border:1px solid #eee
+}
+.usermail .tb tr td{
+	text-align:center;
+	padding:5px 5px;
+}
+.usermail .choose{
+	padding:5px 5px;
+	font-size:15px;
+	background:lightgray;
+	font-weight:bold;
+}
+
+.usermail .nochoose{
+	padding:5px 5px;
+	font-size:15px;
+	background:lightblue;
+	font-weight:bold;
+}
+
+.tabmail{
+	position:relative;
+	left:40%;
+}
+.mail_reply{
+	position:absolute;
+	right:40%
+}
+

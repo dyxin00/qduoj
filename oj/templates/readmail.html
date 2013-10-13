@@ -1,0 +1,31 @@
+{%extends "ojbase.html"%}
+
+{%block title%}
+readmail
+{%endblock%}
+
+{%block content%}
+	<center class = "usermail">
+		{%if fun == '1' %}<a href = "/mail" class = "choose">Receive</a>
+		{%else%}<a href = "/mail" class = "nochoose">Receive</a>{%endif%}
+		{%if fun == '2'%}<a href = "/mail/pattern=2" class = "choose">NewMail</a>
+		{%else%}<a href = "/mail/pattern=2" class = "nochoose">NewMail</a>{%endif%}
+		
+		{%if fun == '3'%}<a href = "/mail/pattern=3" class = "choose">Sended</a>
+		{%else%}<a href = "/mail/pattern=3" class = "nochoose">Sended</a>{%endif%}
+		
+		{%if sendmail%}<a href = "/mail/pattern=4" class = "choose">SendMail</a>
+		{%else%}<a href = "/mail/pattern=4" class = "nochoose">SendMail</a>{%endif%}
+		<br/> <br/>
+		
+	<hr/>
+	<h3>{{mail.title}}</h3>
+	<span class="green">send time:</span> {{mail.in_date}} | <span class = "green">sender:</span> {{mail.mail_from}}<br/>
+	<hr/>
+	{{mail.content}}
+	<hr/>
+	</center>
+	{%if fun != '3'%}
+		<div class = "mail_reply">[<a href = "/mail/pattern=4">reply</a>]
+	{%endif%}
+{%endblock%}
