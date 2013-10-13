@@ -8,6 +8,7 @@ from django.core import serializers
 import sys, os
 
 
+
 def mail_sc(req, fun, context):
 	username = context['ojlogin'].nick
 
