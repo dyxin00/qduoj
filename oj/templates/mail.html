@@ -1,0 +1,46 @@
+{%extends "ojbase.html"%}
+
+{%block title%}
+mail
+{%endblock%}
+
+{%block content%}
+
+	<center class = "usermail">
+		{%if fun == '1' %}<a href = "/mail" class = "choose">Receive</a>
+		{%else%}<a href = "/mail" class = "nochoose">Receive</a>{%endif%}
+		{%if fun == '2'%}<a href = "/mail/pattern=2" class = "choose">NewMail</a>
+		{%else%}<a href = "/mail/pattern=2" class = "nochoose">NewMail</a>{%endif%}
+		
+		{%if fun == '3'%}<a href = "/mail/pattern=3" class = "choose">Sended</a>
+		{%else%}<a href = "/mail/pattern=3" class = "nochoose">Sended</a>{%endif%}
+		
+		{%if sendmail%}<a href = "/mail/pattern=4" class = "choose">SendMail</a>
+		{%else%}<a href = "/mail/pattern=4" class = "nochoose">SendMail</a>{%endif%}
+		<br/> <br/>
+		<table class='tb'>
+			<thead>
+			<tr>
+				<th width=5%></th>
+				<th width=20%>sender</th>
+				<th width=40%>title</th>
+				<th witdh=25%>send time</th>
+			</tr>
+			</thead>
+			<tbody>
+			{%for mail in mails%}
+				<tr>
+					{% if mail.is_new%}
+						<td>new</td>
+					{%else%}
+						<td></td>
+					{%endif%}
+					<td>{{mail.mail_to}}</td>
+					<td>{{mail.title}}</td>
+					<td>{{mail.in_date}}</td>
+				</tr>
+			{%endfor%}
+			</tbody>
+		</table>
+	</center>
+{%endblock%}
