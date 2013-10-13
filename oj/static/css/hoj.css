@@ -287,22 +287,35 @@ div.content {
 }
 
 /*css for user mail*/
+/*
 .usermail .btn{
-	width:150px;
+	width:10%;
 	background:lightblue;
 	font-weight:bold;
 }
-
 .usermail .btn:hover{
 	background:lightgray;
 }
-
+*/
 .usermail .tb{
 	width:45%;
 	border:1px solid #eee
 }
-
 .usermail .tb tr td{
 	text-align:center;
 	padding:5px 5px;
 }
+.usermail .choose{
+	padding:5px 5px;
+	font-size:15px;
+	background:lightgray;
+	font-weight:bold;
+}
+
+.usermail .nochoose{
+	padding:5px 5px;
+	font-size:15px;
+	background:lightblue;
+	font-weight:bold;
+}
+

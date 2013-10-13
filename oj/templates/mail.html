@@ -5,8 +5,18 @@ mail
 {%endblock%}
 
 {%block content%}
+
 	<center class = "usermail">
-		<input id="Inbox" class="btn" type="button" value="Inbox"><input id="NewMail" class="btn" type="button" value="NewMail"><input id="Sented" class="btn" type="button" value="Sented"><input id="SendMail" class="btn" type="button" value="SentMail">
+		{%if fun == '1' %}<a href = "/mail" class = "choose">Receive</a>
+		{%else%}<a href = "/mail" class = "nochoose">Receive</a>{%endif%}
+		{%if fun == '2'%}<a href = "/mail/pattern=2" class = "choose">NewMail</a>
+		{%else%}<a href = "/mail/pattern=2" class = "nochoose">NewMail</a>{%endif%}
+		
+		{%if fun == '3'%}<a href = "/mail/pattern=3" class = "choose">Sended</a>
+		{%else%}<a href = "/mail/pattern=3" class = "nochoose">Sended</a>{%endif%}
+		
+		{%if sendmail%}<a href = "/mail/pattern=4" class = "choose">SendMail</a>
+		{%else%}<a href = "/mail/pattern=4" class = "nochoose">SendMail</a>{%endif%}
 		<br/> <br/>
 		<table class='tb'>
 			<thead>

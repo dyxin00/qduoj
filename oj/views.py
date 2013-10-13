@@ -141,4 +141,6 @@ def mail(req, fun='1'):   #fun=1 all the mail  2 the new mail 3 sent mail
 		pageInfo = 'you must login first!'
 		title = '404 not found'
 		return render_to_response('error.html', {'pageInfo':pageInfo, 'title':title, 'context':context})
+	if fun == '4':
+		return sendmail_sc(req, fun, context)
 	return mail_sc(req, fun, context)

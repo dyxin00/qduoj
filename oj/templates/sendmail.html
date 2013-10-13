@@ -1,0 +1,17 @@
+{%extends "ojbase.html"%}
+
+{%block title%}
+sendmail
+{%endblock%}
+
+{%block content%}
+<center>
+	<form method = "POST">
+		{{form.send_to}}<br>
+		{{form.title}}<br>
+		{{form.content}}<br>
+		<input id="Submit" class="btn btn-info" type="submit" value="Send">
+		<input type="reset" class="btn btn-danger" value="Reset">
+	</form>
+</center>
+{%endblock%}
