@@ -177,8 +177,8 @@ void init_mysql_conf() {
 
 		}
 
-		printf("\n..%s..\n",password);
-		printf("\n..%s..\n",db_name);
+		//printf("\n..%s..\n",password);
+		//printf("\n..%s..\n",db_name);
 
 		sprintf(query,"SELECT solution_id FROM oj_solution WHERE language in (%s) and result<2 and MOD(solution_id,%d)=%d ORDER BY result ASC,solution_id ASC limit %d",oj_lang_set,oj_tot,oj_mod,max_running*2);
 		sleep_tmp=sleep_time;
@@ -251,7 +251,8 @@ int init_mysql(){
 		}
 	}
 
-	printf("..init mysql..\n");
+	if(DEBUG)
+		printf("..init mysql..\n");
 
 	if (executesql("set names utf8"))
 		return 1;
@@ -415,6 +416,8 @@ int work(){
 			ID[i]=fork();                                   // start to fork
 			if (ID[i]==0){
 				if(DEBUG)write_log("<<=sid=%d===clientid=%d==>>\n",runid,i);
+
+
 				run_client(runid,i);    // if the process is the son, run it
 				exit(0);
 			}
@@ -517,7 +520,7 @@ int main(int argc, char** argv){
 	   	daemon_init();
 
 	if ( strcmp(oj_home,"/home/judge")==0&&already_running() == 0){  //....
-	//if ( strcmp(oj_home,"/home/judge")==0&&already_running()){
+//	if ( strcmp(oj_home,"/home/judge")==0&&already_running()){
 		syslog(LOG_ERR|LOG_DAEMON, "This daemon program is already running!\n");  //系统日志
 
 		printf("..runing fsdk..\n "); //cs
@@ -538,11 +541,13 @@ int main(int argc, char** argv){
 	signal(SIGTERM,call_for_exit); //终止信号 
 	int j=1;
 	
+
 	while (!STOP){			// start to run
 		while(j&&(http_judge||!init_mysql())){ 
 
 
 			j=work();
+			getchar();
 
 
 		}
