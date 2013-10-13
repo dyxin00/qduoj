@@ -39,4 +39,6 @@ urlpatterns = patterns('',
 	
 	url('^mail/$', 'oj.views.mail'),
 	url('^mail/pattern=(?P<fun>\d+)/$', 'oj.views.mail'),
+	url('^readmail/pattern=(?P<fun>\d+)/msgid=(?P<msgid>\d+)', 'oj.views.readmail'),
+
 )

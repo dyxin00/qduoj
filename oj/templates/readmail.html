@@ -1,12 +1,10 @@
 {%extends "ojbase.html"%}
 
 {%block title%}
-sendmail
+readmail
 {%endblock%}
 
 {%block content%}
-
-
 	<center class = "usermail">
 		{%if fun == '1' %}<a href = "/mail" class = "choose">Receive</a>
 		{%else%}<a href = "/mail" class = "nochoose">Receive</a>{%endif%}
@@ -20,25 +18,14 @@ sendmail
 		{%else%}<a href = "/mail/pattern=4" class = "nochoose">SendMail</a>{%endif%}
 		<br/> <br/>
 		
+	<hr/>
+	<h3>{{mail.title}}</h3>
+	<span class="green">send time:</span> {{mail.in_date}} | <span class = "green">sender:</span> {{mail.mail_from}}<br/>
+	<hr/>
+	{{mail.content}}
+	<hr/>
 	</center>
-	<form method = "POST">
-		<table class = "tabmail">
-			<tr>
-				<td>SentTO:<td>
-				<td>{{form.send_to}}<td>
-			</tr>
-			<tr>
-				<td>Title:<td>
-				<td>{{form.title}}<td>
-			</tr>
-			<tr>
-				<td><td>
-				<td>{{form.content}}<td>
-			</tr>
-			</table>
-		<center>
-			<input id="Submit" class="btn btn-info" type="submit" value="Send">
-			<input type="reset" class="btn btn-danger" value="Reset">
-		</center>
-	</form>
+	{%if fun != '3'%}
+		<div class = "mail_reply">[<a href = "/mail/pattern=4">reply</a>]
+	{%endif%}
 {%endblock%}

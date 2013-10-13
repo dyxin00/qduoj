@@ -21,22 +21,32 @@ mail
 		<table class='tb'>
 			<thead>
 			<tr>
-				<th width=5%></th>
+				<th width=15%></th>
+				{%if fun == '3'%}
+				<th width=20%>sendto</th>
+				{%else%}
 				<th width=20%>sender</th>
-				<th width=40%>title</th>
+				{%endif%}
+				<th width=45%>title</th>
 				<th witdh=25%>send time</th>
 			</tr>
 			</thead>
 			<tbody>
 			{%for mail in mails%}
 				<tr>
-					{% if mail.is_new%}
+					{%if fun == '3' and mail.is_new%}
+						<td>not readed</td>
+					{% elif mail.is_new %}
 						<td>new</td>
 					{%else%}
 						<td></td>
 					{%endif%}
-					<td>{{mail.mail_to}}</td>
-					<td>{{mail.title}}</td>
+					{%if fun == '3'%}
+					<td><a href = "/user_info/name={{mail.mail_from}}">{{mail.mail_to}}</a></td>
+					{%else%}
+					<td><a href = "/user_info/name={{mail.mail_from}}">{{mail.mail_from}}</a></td>
+					{%endif%}
+					<td><a href = "/readmail/pattern={{fun}}/msgid={{mail.mail_id}}">{{mail.title}}</a></td>
 					<td>{{mail.in_date}}</td>
 				</tr>
 			{%endfor%}
