@@ -16,7 +16,7 @@ def rank_sc(req, page, context):
 		page_num.append(i + 1)
 	list_info['len'] = page_num
 	list_info['page'] = page
-	if page > 15 or (page - 1) * 2 > user_len:
+	if page <=0 or page > 15 or (page - 1) * 2 > user_len:
 		pageInfo = 'page not found maybe you are far behind!'
 		title = '404 not found'
 		return render_to_response('error.html', {'pageInfo':pageInfo, 'title':title, 'context':context})	

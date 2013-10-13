@@ -197,6 +197,7 @@ span.exadmin {
 	background:#e5effa; 
 }
 
+/*rank set*/
 #rankset th{
 	background-color:lightblue;
 }
@@ -262,7 +263,18 @@ div.content {
 }
 
 /*login sumbit button*/
-.login_submit{
+.class_submit{
 	position:absolute;
 	right:40%;
+}
+
+/*status's css table*/
+#result-tab th{
+	background-color:lightblue;    
+	text-align:center;
+}
+
+#result-tab tr td{
+	padding:5px 5px;
+	text-align:center;
 }
