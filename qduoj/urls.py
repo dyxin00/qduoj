@@ -21,16 +21,16 @@ urlpatterns = patterns('',
 	url('^oj/userregister/$', 'oj.views.register'),				   #register
 	url('^oj/userlogout/$', 'oj.views.logout'),                    #logout
 	url(r'^admin/', include(admin.site.urls)),
-	url('^problemid','oj.views.problemId'),
-	url('^problem_search','oj.views.problem_search'),
+	url('^problemid/$','oj.views.problemId'),
+	url('^problem_search/$','oj.views.problem_search'),
 	url(r'^rank/$', 'oj.views.rank'),
 	url(r'^rank/page=(?P<page>\d+)/$', 'oj.views.rank'),
 	url(r'^user_info/name=(?P<nick>\w+)/$', 'oj.views.user_info'),
 	url('^submit_code/num=(?P<num>\d+)/$', 'oj.views.submit_code'),
 
-	url('^status/','oj.views.status'),
+	url('^status/$','oj.views.status'),
 	url('^status/page=(?P<page>\d+)/$', 'oj.views.status'),
-	url('^Search_status','oj.views.status_Search'),
+	url('^Search_status/$','oj.views.status_Search'),
 	url('^Search_status/page=(?P<page>\d+>)/$', 'oj.views.status_Search'),
 	
 	url('^source_code/runid=(?P<runid>\d+)/$', 'oj.views.source_code'),
@@ -39,6 +39,8 @@ urlpatterns = patterns('',
 	
 	url('^mail/$', 'oj.views.mail'),
 	url('^mail/pattern=(?P<fun>\d+)/$', 'oj.views.mail'),
-	url('^readmail/pattern=(?P<fun>\d+)/msgid=(?P<msgid>\d+)', 'oj.views.readmail'),
-
+	url('^readmail/pattern=(?P<fun>\d+)/msgid=(?P<msgid>\d+)/$', 'oj.views.readmail'),
+	
+#	url('^bbs/pid=(?P<pid>\d+)\$', 'oj.views.bbs'),
+#	url('^bbs/pid=(?P<pid>\d+)/page=(?<page>\d+)\$', 'oj.views.bbs'),
 )
