@@ -1095,7 +1095,7 @@ void get_solution_info(int solution_id, int & p_id, char * user_id, int & lang) 
 }
 
 
-void _get_problem_info_mysql(int p_id, int & time_lmt, int & mem_lmt, int & isspj) {
+void _get_problem_info_mysql(int p_id, int & time_lmt, int & mem_lmt, int & oi_mode) {
 	// get the problem info from Table:problem
 	char sql[BUFFER_SIZE];
 	MYSQL_RES *res;
@@ -1103,13 +1103,14 @@ void _get_problem_info_mysql(int p_id, int & time_lmt, int & mem_lmt, int & issp
 	sprintf(
 		sql,
 		//"SELECT time_limit,memory_limit,spj FROM oj_problem where problem_id=%d",
-		"SELECT time_limit,memory_limit FROM oj_problem where problem_id=%d",
+		"SELECT time_limit,memory_limit ,oi_mode FROM oj_problem where problem_id=%d",
 		p_id);
 	mysql_real_query(conn, sql, strlen(sql));
 	res = mysql_store_result(conn);
 	row = mysql_fetch_row(res);
 	time_lmt = atoi(row[0]);
 	mem_lmt = atoi(row[1]);
+	oi_mode = atoi(row[2]);
 	//isspj = (row[2][0] == '1');
 	mysql_free_result(res);
 }
@@ -1126,9 +1127,9 @@ void _get_problem_info_http(int p_id, int & time_lmt, int & mem_lmt, int & isspj
 }
 * */
 
-void get_problem_info(int p_id, int & time_lmt, int & mem_lmt, int & isspj) {
+void get_problem_info(int p_id, int & time_lmt, int & mem_lmt, int & oi_mode) {
 	
-	_get_problem_info_mysql(p_id,time_lmt,mem_lmt,isspj);
+	_get_problem_info_mysql(p_id,time_lmt,mem_lmt,oi_mode);
 	
 }
 
@@ -1868,7 +1869,7 @@ int main(int argc, char** argv) {
 
 	if(DEBUG)
 		printf("solution..%d  runner %d...\n",solution_id,runner_id);
-	//getchar();   //看这里。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。
+	
 
 	init_mysql_conf();
 
@@ -1892,7 +1893,7 @@ int main(int argc, char** argv) {
 	if(p_id==0){  //ceshi timu
 		time_lmt=5;mem_lmt=128;isspj=0;
 	}else{
-		get_problem_info(p_id, time_lmt, mem_lmt, isspj);
+		get_problem_info(p_id, time_lmt, mem_lmt, oi_mode);
 	}
 	//copy source file
 
