@@ -7,7 +7,7 @@ class User(models.Model):
 	nick = models.CharField(max_length=50)
 	password = models.CharField(max_length=100)
 	email = models.EmailField(null=True, blank=True)
-	isManager = models.IntegerField(default=5)
+	isManager = models.IntegerField(default=0)
 	website = models.CharField(max_length=50)
 	ac = models.IntegerField(default=0)
 	submit = models.IntegerField(default=0)
@@ -47,7 +47,7 @@ class Problem(models.Model):
 	visible = models.BooleanField(default=False)
 	oi_mode = models.BooleanField(default=False)
 	#content_file = models.FileField(upload_to=get_file_upload_to)
-	content_file = models.FileField(upload_to=upload_handler)
+	content_file = models.FileField(upload_to=upload_handler, null=True, blank = True)
 	def __unicode__(self):
 		return str(self.problem_id) + ":  " + self.title
 

@@ -1,8 +1,9 @@
 from django.conf.urls import patterns, include, url
 
 #Uncomment the next two lines to enable the admin:
-from django.contrib import admin
-admin.autodiscover()
+#from django.contrib import admin
+#admin.autodiscover()
+
 
 urlpatterns = patterns('',
     # Examples:
@@ -20,7 +21,7 @@ urlpatterns = patterns('',
 	url('^oj/userlogin/$', 'oj.views.login'),                      #log
 	url('^oj/userregister/$', 'oj.views.register'),				   #register
 	url('^oj/userlogout/$', 'oj.views.logout'),                    #logout
-	url(r'^admin/', include(admin.site.urls)),
+	#url(r'^admin/', include(admin.site.urls)),
 	url('^problemid/$','oj.views.problemId'),
 	url('^problem_search/$','oj.views.problem_search'),
 	url(r'^rank/$', 'oj.views.rank'),
@@ -43,4 +44,12 @@ urlpatterns = patterns('',
 	
 #	url('^bbs/pid=(?P<pid>\d+)\$', 'oj.views.bbs'),
 #	url('^bbs/pid=(?P<pid>\d+)/page=(?<page>\d+)\$', 'oj.views.bbs'),
+)
+
+urlpatterns += patterns('',
+	url('^admin/$', 'admin.views.index'),
+	url('^admin/welcome/$', 'admin.views.welcome'),
+	url('^admin/menu/$', 'admin.views.menu'),
+	url('^admin/admin_login/$', 'admin.views.admin_login'),
+	url('admin/news_list/$', 'admin.views.news'),
 )
