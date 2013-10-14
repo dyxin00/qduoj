@@ -103,6 +103,8 @@ def status_sc(req,context, page, problem_id = -1,language = -1,user = '',jresult
 			9 : 'Output Limit Exceeded',
 			10: 'Runtime Error',
 			11: 'Compile Error',
+			3 : 'RJ',
+			2 : 'CI',
 			1 : 'Pending'
 			}
 	language_ab = {

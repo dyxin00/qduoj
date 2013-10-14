@@ -111,8 +111,6 @@ def status_Search(req, page='1'):
 			problem_id_s = req.GET['problem_id']
 			if len(problem_id_s):
 				problem_id = int(problem_id_s)
-			else:
-				problem_id = -1
 			user_id = req.GET['user_id']
 
 			language = int(req.GET['language'])
