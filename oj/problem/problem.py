@@ -39,11 +39,12 @@ def problemlist_sc(req, page, context):
 	page = int(page) #抛异常
 	
 	p = Paginator(Problem.objects.order_by('problem_id'), 2)
-	print p.count
+	print p
 	print p.num_pages
 	print p.page_range
-
+	print p.page(1).object_list
 	problem = Problem.objects.order_by('problem_id')
+	print problem
 	pro_len = len(problem)
 	for i in range(0, pro_len/50 + 1):
 		page_num.append(i+1)
