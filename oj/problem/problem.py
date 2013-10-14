@@ -6,13 +6,14 @@ from oj.models import *
 from oj.forms import *
 from django.core import serializers
 from string import join,split
+from django.core.paginator import Paginator
 
 def problem_sc(req, num, context):
 	
 	try:
 		ID = int(num)
 		problem = Problem.objects.get(problem_id = ID)
-
+	
 		if problem.visible == False:
 			pageInfo ="problem not found!"
 			title = "404 not found"
@@ -36,6 +37,12 @@ def problemlist_sc(req, page, context):
 	list_info = {}
 	page_num = []
 	page = int(page) #抛异常
+	
+	p = Paginator(Problem.objects.order_by('problem_id'), 2)
+	print p.count
+	print p.num_pages
+	print p.page_range
+
 	problem = Problem.objects.order_by('problem_id')
 	pro_len = len(problem)
 	for i in range(0, pro_len/50 + 1):

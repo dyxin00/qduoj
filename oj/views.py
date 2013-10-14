@@ -149,3 +149,6 @@ def readmail(req, fun, msgid):
 	context = baseInfo(req)
 	return readmail_sc(req, fun, msgid, context)
 
+def bbs(req, pid, page = '1'):
+	context = baseInfo(req)
+	return bbs_sc(req, pid, page)
