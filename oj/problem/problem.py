@@ -88,7 +88,8 @@ def submit_code_sc(req,num,context):
 
 					return HttpResponseRedirect('/status')
 			else:
-				pass # 未登录跳转
+				error = 'Please login first!!'
+				return render_to_response('submit_code.html',{"form_code":form_code,"context":context,"error":error,"num":num})#未登录
 		else:
 			error = 'Code too short!'
 			return render_to_response('submit_code.html',{"form_code":form_code,"context":context,"error":error,"num":num})#submit_code  未添加
