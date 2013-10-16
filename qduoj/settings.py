@@ -8,6 +8,9 @@ ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
 
+WEB_ROOT = os.path.dirname(os.path.abspath(__file__)).replace('\\', '/').decode('gbk')
+STATICFILES_DIRS = (os.path.join(WEB_ROOT, '/static/').replace('\\', '/'),)
+
 MANAGERS = ADMINS
 
 DATABASES = {
@@ -51,7 +54,7 @@ USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
-MEDIA_ROOT = ''
+MEDIA_ROOT = '/home/hunting/'
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -159,6 +162,4 @@ LOGGING = {
     }
 }
 
-WEB_ROOT = os.path.dirname(os.path.abspath(__file__)).replace('\\', '/').decode('gbk')
-STATICFILES_DIRS = (os.path.join(WEB_ROOT, '/static/').replace('\\', '/'),)
 
