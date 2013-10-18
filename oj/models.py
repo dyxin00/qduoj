@@ -36,7 +36,7 @@ class Problem(models.Model):
 	output_data = models.TextField()
 	sample_input = models.TextField()
 	sameple_output = models.TextField()
-	source = models.TextField(null=True, blank=True)
+	source = models.CharField(max_length=50, null=True, blank=True)
 	hint = models.TextField(null=True, blank=True)
 	in_date = models.DateTimeField(auto_now_add=True)
 	time_limit = models.IntegerField()

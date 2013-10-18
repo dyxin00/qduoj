@@ -1,0 +1,13 @@
+{%extends "admin_base.html"%}
+
+{%block title%}
+add_data
+{%endblock%}
+
+{%block content%}
+<center>
+	<h3 style="color:red">add data for problem--{{problem.problem_id}}--{{problem.title}}</h3>
+	<a href = '/admin/problem_testdata/proid={{problem.problem_id}}'>yes!!!</a>
+	<a href = '/admin/problem_list'>No!!!</a>
+</center>
+{%endblock%}

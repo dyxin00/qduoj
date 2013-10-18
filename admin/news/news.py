@@ -3,7 +3,7 @@ from django.shortcuts import render_to_response
 from django.core.paginator import Paginator
 from oj.forms import *
 from oj.models import *
-from is_login import *
+from admin.is_login.is_login import *
 from qduoj_config import *
 
 def news_sc(req, context):
@@ -67,6 +67,4 @@ def news_visible_sc(req, msgid, context):
 		new.update(visible=False)
 	else:
 		new.update(visible=True)
-	news = News.objects.all()
-	return render_to_response('admin_news.html',{'news':news})
-
+	return HttpResponseRedirect('/admin/news_list')

@@ -9,8 +9,8 @@
 			
 			title: {{form.title}}<br/>
 			<hr/>
-			time_limit: {{form.time_limit}}<br/>
-			memory_limit: {{form.memory_limit}}<br/>
+			time_limit: {{form.time_limit}} S<br/>
+			memory_limit: {{form.memory_limit}} Kb<br/>
 			<hr/>
 			difficult: {{form.hard}}<br/>
 			<hr/>
@@ -27,7 +27,7 @@
 			source:{{form.source}}<br/>
 			hint:<br/>
 			{{form.hint}}<br/>
-			<input type = 'submit' name = 'submit'/>
+			<input type = 'submit' name = 'submit' value = 'submit'/>
 		</form>
 
 {%endblock%}

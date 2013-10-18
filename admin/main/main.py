@@ -1,6 +1,6 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
-from is_login import *
+from admin.is_login.is_login import *
 
 #index page
 def index_sc(req, context):

@@ -24,3 +24,5 @@ class admin_problem(forms.Form):
 class adminsearch(forms.Form):
 	search_id = forms.DecimalField()
 
+class Admin_UploadFiles(forms.Form):
+	files = forms.FileField(widget=forms.FileInput) 
