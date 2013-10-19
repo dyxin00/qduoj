@@ -50,6 +50,7 @@
 				<th>User</th>
 				<th>Problem</th>
 				<th>Result</th>
+				<th>score</th>
 				<th>Memory</th>
 				<th>Time</th>
 				<th>Language</th>
@@ -87,6 +88,7 @@
 					{% endif %}
 
 				{% endfor %}
+				<td>	<div id="center" class="red">{{solu.score}}</div></td>
 				<td>	<div id="center" class="red">{{solu.memory}}</div></td>
 				<td>	<div id="center" class="red">{{solu.time}}</div></td>
 				{% for R,V in language_ab.items %}

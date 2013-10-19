@@ -14,6 +14,7 @@ path_login = path + '/oj/login_register'
 path_status_rank = path + '/oj/status_rank'
 path_change_info = path + '/oj/change_info'
 path_mail = path + '/oj/usermail'
+path_contest = path + '/oj/contest'
 
 if not path_pro in sys.path:
 	sys.path.append(path_pro)
@@ -25,12 +26,15 @@ if not path_change_info in sys.path:
 	sys.path.append(path_change_info)
 if not path_mail in sys.path:
 	sys.path.append(path_mail)
+if not path_contest in sys.path:
+	sys.path.append(path_contest)
 
 from problem import *
 from login_register import *
 from status_rank import *
 from change_info import *
 from usermail import *
+from contest import *
 
 def baseInfo(req):    #the news and the session!
 	context = {}
