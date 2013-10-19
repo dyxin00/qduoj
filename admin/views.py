@@ -1,19 +1,13 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.shortcuts import render_to_response
 import os, sys
-
+from django.conf import settings
 from oj.models import *
 
-path = os.path.abspath(os.path.dirname(sys.argv[0]))
-path_config = path + '/oj/qduoj_config'
-
-if not path_config in sys.path:
-	sys.path.append(path_config)
-
+from oj.qduoj_config.qduoj_config import *
 from admin.main.main import *
 from admin.news.news import *
 from admin.is_login.is_login import *
-from qduoj_config import *
 from admin.adminproblem.adminproblem import *
 
 def baseInfo(req):
@@ -97,4 +91,8 @@ def problem_testdata(req, proid):
 
 def delete_testdata(req, proid, filename):
 	context = baseInfo(req)
-	return delete_testdata(req, proid, filename, context)
+	return delete_testdata_sc(req, proid, filename, context)
+
+def download_testfile(req, proid, filename):
+	context = baseInfo(req)
+	return download_testfile_sc(req, proid, filename, context)

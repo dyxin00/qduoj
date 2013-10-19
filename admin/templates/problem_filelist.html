@@ -28,8 +28,8 @@ add_data
 		<tbody>
 			{%for file in files%}
 			<tr>
-			<td><a href = ""><img src="/static/image/txt.gif">{{file}}</a></td>
-			<td>view</td>
+			<td><a href = "/admin/down_files/proid={{proid}}/filename={{file}}"><img src="/static/image/txt.gif">{{file}}</a></td>
+			<td><a href = "/admin/down_files/proid={{proid}}/filename={{file}}">download</a></td>
 			<td><a href = "/admin/delete_testdata/proid={{proid}}/filename={{file}}">delete</a></td>
 			{%endfor%}
 			</tr>

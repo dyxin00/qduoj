@@ -7,7 +7,7 @@ from django.core.paginator import Paginator
 import os, os.path
 from oj.models import *
 from admin.is_login.is_login import *
-from qduoj_config import *
+from oj.qduoj_config.qduoj_config import *
 from admin.uploadfile.uploadfile import *
 
 def admin_problem_list_sc(req, page, context):
@@ -167,37 +167,7 @@ def if_add_data_sc(req, proid, context):
 		os.makedirs(targetDir)
 	problem = Problem.objects.filter(problem_id = proid)
 	return render_to_response('admin_if_add_data.html', {'problem':problem[0]})
-'''
-def unzipfiles(proid, files):
-	filename = '%s' % files.name
-	name, ext = os.path.splitext(filename)
-	filedir = r'%s/%s' % (proid, filename)
-	targetFile = os.path.join(TEST_DATA_PATH, filedir)
-	targetDir = os.path.join(TEST_DATA_PATH, proid)
 
-	print ext + 'hehe'
-	if ext == '.zip':
-		cmd = r'unzip -o -d %s %s' % (targetDir, targetFile)
-		os.system(cmd)
-		os.remove(targetFile)
-	elif ext == '.tar':
-		os.remove(targetFile)
-	elif ext == '.rar':
-		cmd = r'unrar e -o+ %s %s' % (targetFile, targetDir)
-		os.system(cmd)
-		os.remove(targetFile)
-	
-def handle_load_files(proid, files):
-	name = r'%s/%s' % (proid, files.name)
-	targetDir = os.path.join(TEST_DATA_PATH, name)
-	if os.path.isfile(targetDir):
-		os.remove(targetDir)
-	destination = open(targetDir, 'w')
-	for chunk in files.chunks():
-		destination.write(chunk)
-	destination.close()
-	unzipfiles(proid, files)
-'''
 
 def problem_testdata_sc(req, proid, context):
 	is_ok = is_manager_login(req, context)
@@ -225,5 +195,21 @@ def problem_testdata_sc(req, proid, context):
 		form = Admin_UploadFiles()
 	return render_to_response('problem_filelist.html', {'files':files, 'proid':proid, 'form':form})
 
-#def delete_testdata_sc(req, proid, filename, context):
+def delete_testdata_sc(req, proid, filename, context):
+	(targetFile, is_file) = is_file_exists(req, proid, filename)
+	if is_file == 0:
+		pageInfo = 'the file %s not exist' % filename
+		return render_to_response('admin_error.html', {'pageInfo':pageInfo})
+	elif is_file == 1: #if 1, it is a file folder
+		remove_file_folder(req, targetFile)
+	else:
+		os.remove(targetFile)
+	return HttpResponseRedirect('/admin/problem_testdata/proid=%s'%proid)
 
+def download_testfile_sc(req, proid, filename, context):
+	(targetFile, is_file) = is_file_exists(req, proid, filename)
+	if is_file == 0:
+		pageInfo = 'the file %s not exist'%filename
+		return render_to_response('admin_error.html', {'pageInfo':pageInfo})
+	return downfile_via_url(req, targetFile, filename)
+	

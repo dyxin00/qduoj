@@ -4,7 +4,7 @@ from django.core.paginator import Paginator
 from oj.forms import *
 from oj.models import *
 from admin.is_login.is_login import *
-from qduoj_config import *
+from oj.qduoj_config.qduoj_config import *
 
 def news_sc(req, context):
 	is_ok = is_manager_login(req, context)

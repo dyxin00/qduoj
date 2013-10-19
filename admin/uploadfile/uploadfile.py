@@ -7,7 +7,7 @@ from django.core.paginator import Paginator
 import os, os.path
 from oj.models import *
 from admin.is_login.is_login import *
-from qduoj_config import *
+from oj.qduoj_config.qduoj_config import *
 from admin.uploadfile.uploadfile import *
 
 def unzipfiles(proid, files):
@@ -17,7 +17,6 @@ def unzipfiles(proid, files):
 	targetFile = os.path.join(TEST_DATA_PATH, filedir)
 	targetDir = os.path.join(TEST_DATA_PATH, proid)
 
-	print ext + 'hehe'
 	if ext == '.zip':
 		cmd = r'unzip -o -d %s %s' % (targetDir, targetFile)
 		os.system(cmd)
@@ -39,3 +38,32 @@ def handle_load_files(proid, files):
 		destination.write(chunk)
 	destination.close()
 	unzipfiles(proid, files)
+
+def remove_file_folder(req, targetFile):
+	if os.path.isfile(targetFile):
+		os.remove(targetFile)
+	elif os.path.isdir(targetFile):
+		for item in os.listdir(targetFile):
+			src = os.path.join(targetFile, item)
+			remove_file_folder(req, src)
+		os.rmdir(targetFile)	
+
+def is_file_exists(req, proid, filename):
+	name = r'%s/%s' % (proid, filename)
+	targetFile = os.path.join(TEST_DATA_PATH, name)
+	print targetFile
+	if os.path.isfile(targetFile):
+		return (targetFile, 2)
+	elif os.path.isdir(targetFile):
+		return (targetFile, 1)
+	else:
+		return (targetFile, 0)
+
+def downfile_via_url(req, targetDir, filename):
+	files = open(targetDir)
+	data = files.read()
+	files.close()
+	response = HttpResponse(data, mimetype='application/ontet-stream')
+	response['Content-Disposition'] = 'attachment; filename=%s' % filename
+	return response
+
