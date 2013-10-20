@@ -2,10 +2,11 @@
 *~
 /oj/*.pyc
 /qduoj/*.pyc
-<<<<<<< HEAD
 /oj/static/css/*.css~
 *.swp
 *.swo
 oj/problem/*.pyc
 *.swn
 *.swm
+*.swl
+*.swk

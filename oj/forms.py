@@ -13,8 +13,8 @@ class Register(forms.Form):
 	website = forms.URLField(label='website', required=False)
 
 class Submit_code(forms.Form):
-		language = forms.ChoiceField(choices = [('0','c'),('1','c++')])
-		submit_code = forms.CharField(label='code',widget=forms.Textarea(attrs={'class':'submit','cols':'120','style':'width:70%','rows' : '20'}))
+	language = forms.ChoiceField(choices = [('0','c'),('1','c++')])
+	submit_code = forms.CharField(label='code',widget=forms.Textarea(attrs={'class':'submit','cols':'120','style':'width:70%','rows' : '20'}))
 
 class Send_mail(forms.Form):
 	send_to = forms.CharField(max_length=20)

@@ -43,7 +43,7 @@ def problemlist_sc(req, page, context):
 		pageInfo = "page not found!"
 		title = "404 not found!"
 		return render_to_response('error.html', {'pageInfo':pageInfo, 'title':title, 'context':context})
-	p = Paginator(Problem.objects.order_by('problem_id'), PAGE_PROBLEM_NUM)
+	p = Paginator(Problem.objects.order_by('problem_id'), ADMIN_PAGE_PROBLEM_NUM)
 	
 	for i in range(0, p.num_pages):
 		page_num.append(i+1)

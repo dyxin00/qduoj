@@ -35,6 +35,7 @@ from change_info import *
 from usermail import *
 from qduoj_config import *
 
+print sys.path
 def baseInfo(req):    #the news and the session!
 	context = {}
 	news = News.objects.order_by("-time");
@@ -47,7 +48,7 @@ def baseInfo(req):    #the news and the session!
 		mail_count = Mail.objects.filter(mail_to=req.session['login']['username']).filter(is_new=True).count()
 		context['mail_count'] = mail_count
 		context['ojlogin'] = User.objects.get(nick=req.session['login']['username'])
-		req.session.set_expiry(1200)
+		#req.session.set_expiry(1200)
 	return context
 
 def problemlist(req, page = "1"):

@@ -44,7 +44,7 @@ class Problem(models.Model):
 	hard = models.IntegerField()
 	accepted = models.IntegerField(default=0)
 	submit = models.IntegerField(default=0)
-	visible = models.BooleanField(default=False)
+	visible = models.BooleanField(default=True)
 	oi_mode = models.BooleanField(default=False)
 	#content_file = models.FileField(upload_to=get_file_upload_to)
 	content_file = models.FileField(upload_to=upload_handler, null=True, blank = True)
@@ -97,8 +97,8 @@ class LoginLog(models.Model):
 class News(models.Model):
 	title = models.TextField()
 	content = models.TextField()
-	time = models.DateTimeField()
-
+	time = models.DateTimeField(auto_now_add=True)
+	visible = models.BooleanField(default=True)
 	def __unicode__(self):
 		return self.title
 
