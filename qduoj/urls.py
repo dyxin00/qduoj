@@ -1,8 +1,8 @@
 from django.conf.urls import patterns, include, url
 
 #Uncomment the next two lines to enable the admin:
-from django.contrib import admin
-admin.autodiscover()
+#from django.contrib import admin
+#admin.autodiscover()
 
 
 urlpatterns = patterns('',
@@ -25,7 +25,7 @@ urlpatterns = patterns('',
 	url('^oj/userregister/$', 'oj.views.register'),				   #register
 	url('^oj/userlogout/$', 'oj.views.logout'),                    #logout
 
-	url(r'^admin/', include(admin.site.urls)),
+#	url(r'^admin/', include(admin.site.urls)),
 
 	url('^problemid/$','oj.views.problemId'),
 	url('^problem_search/$','oj.views.problem_search'),
@@ -64,7 +64,7 @@ urlpatterns = patterns('',
 #	url('^bbs/pid=(?P<pid>\d+)\$', 'oj.views.bbs'),
 #	url('^bbs/pid=(?P<pid>\d+)/page=(?<page>\d+)\$', 'oj.views.bbs'),
 )
-'''
+
 urlpatterns += patterns('',
 	url('^admin/$', 'admin.views.index'),
 	#url('^admin/oj$', 'admin.views.oj'),
@@ -84,6 +84,7 @@ urlpatterns += patterns('',
 	url('admin/problem_oi_mode/proid=(?P<proid>\d+)/page=(?P<page>\d+)/$', 'admin.views.problem_oi_mode'),
 	url('^admin/problem_testdata/proid=(?P<proid>\d+)/$', 'admin.views.problem_testdata'),
 	url('^admin/if_add_data/proid=(?P<proid>\d+)/$', 'admin.views.if_add_data'),
-	url('^admin/delete_testdata/proid=(?P<proid>\d+)/filename=(?P<filename>\d+)/$', 'admin.views.delete_testdata'),
+	url('^admin/delete_testdata/proid=(?P<proid>\d+)/filename=(?P<filename>[\w.]+)/$', 'admin.views.delete_testdata'),
+    url('^admin/down_files/proid=(?P<proid>\d+)/filename=(?P<filename>[\w.]+)/$', 'admin.views.download_testfile')
 )
-'''
+
