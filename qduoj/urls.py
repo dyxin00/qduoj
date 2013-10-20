@@ -60,5 +60,4 @@ urlpatterns += patterns('',
 	url('^admin/problem_list/page=(?P<page>\d+)/$', 'admin.views.problem_list'),
 	url('^admin/add_problem/$', 'admin.views.add_problem'),
 	url('^admin/pro_search/$', 'admin.views.admin_search'),
-	url(''),
 )

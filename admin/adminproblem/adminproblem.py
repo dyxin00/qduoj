@@ -71,9 +71,6 @@ def admin_add_problem_sc(req, context):
 
 def admin_search_sc(req, proid, context):
 	problem = Problem.objects.filter(problem_id=proid)
-	if len(problem) == 0:
-		pageInfo = "page not found!"
-		return render_to_response('error.html', {"pageInfo": pageInfo, "title":title, "context":context})
 	return render_to_response('admin_problem_list.html', {'problems':problem})
 
 def admin_edit_problem_sc(req, proid, context):
