@@ -1,20 +1,30 @@
 {%extends "admin_base.html"%}
 
 {%block content%}
+
 <center>
-	<table border=1>
+	<h1>the news</h1>
+	<table width=90% style = "border-collapse:collapse" border=1px>
 		<thead>
 			<tr>
-			<th></th>
-			<th>title</th>
-			<th>time</th>
+			<th width=5%></th>
+			<th width=10%>title</th>
+			<th width=5%>edit</th>
+			<th width=5%>visible</th>
+			<th width=10%>time</th>
 			</tr>
 		</thead>
 		<tbody>
 			{%for msg in news %}
 				<tr>
-					<td></td>
-					<td>{{msg.title}}</td>
+					<td>{{msg.id}}</td>
+					<td><a href="/admin/edit_news/msgid={{msg.id}}">{{msg.title}}</a></td>
+					<td><a href='/admin/edit_news/msgid={{msg.id}}'>edit</a></td>
+					{%if msg.visible %}
+					<td><a href='/admin/news_visible/msgid={{msg.id}}'>True</td>
+					{%else%}
+					<td><a href='/admin/news_visible/msgid={{msg.id}}'>False</a></td>
+					{%endif%}
 					<td>{{msg.time}}</td>
 				</tr>			
 			{%endfor%}

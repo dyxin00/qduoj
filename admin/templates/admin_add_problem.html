@@ -1,0 +1,33 @@
+{%extends "admin_base.html"%}
+
+{%block title%}
+{%endblock%}
+
+{%block content%}
+		<h1>add new problems</h1>
+		<form method = "post">
+			
+			title: {{form.title}}<br/>
+			<hr/>
+			time_limit: {{form.time_limit}} S<br/>
+			memory_limit: {{form.memory_limit}} Kb<br/>
+			<hr/>
+			difficult: {{form.hard}}<br/>
+			<hr/>
+			description: <br/>
+			{{form.description}}<br/>
+			input: <br/>
+			{{form.input_data}}<br/>
+			output: <br/>
+			{{form.output_data}}<br/>
+			sample_input: <br/>
+			{{form.sample_input}}<br/>
+			sample_output: <br/>
+			{{form.sample_output}}<br/>
+			source:{{form.source}}<br/>
+			hint:<br/>
+			{{form.hint}}<br/>
+			<input type = 'submit' name = 'submit' value = 'submit'/>
+		</form>
+
+{%endblock%}

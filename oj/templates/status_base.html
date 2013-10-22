@@ -1,0 +1,64 @@
+{% extends "ojbase.html"%}
+
+{% block title %} status{% endblock %}
+
+{% block content %}
+	
+<div id="center" class="input-append">
+	<form id="Search" action="/Search_status" method="GET">
+		Problem ID:<input class="input-mini" style="height:24px" type="text" size="4" name="problem_id" value="">
+		User:<input class="input-mini" style="height:24px" type="text" size="4" name="user_id" value="">
+		Language:<select class="input-small" size="1" name="language">
+			<option value="-1" selected="">All</option>
+			<option value="0">C</option>
+			<option value="1">C++</option>
+		</select>
+		Result:<select class="input-small" size="1" name="jresult">
+			<option value="-1" selected="">All</option>
+			<option value="4">AC</option>
+			<option value="5">PE</option>
+			<option value="6">WA</option>
+			<option value="7">TLE</option>
+			<option value="8">MLE</option>
+			<option value="9">OLE</option>
+			<option value="10">RE</option>
+			<option value="11">CE</option>
+			<option value="1">PD</option>
+			<option value="0">PR</option>
+			<option value="2">CI</option>
+			<option value="3">RJ</option>
+		</select>
+		<input type="submit" class="input" value="Search">
+	</form>
+</div>
+
+<h3 align='center'>
+	{%block page%}
+	{%endblock%}
+</h3>
+<center>
+<div id="center">
+	<table id="result-tab" class="table table-striped content-box-header" align="center" width="80%">
+		<thead>
+			<tr>
+				<th>RunID</th>
+				<th>User</th>
+				<th>Problem</th>
+				<th>Result</th>
+				<th>score</th>
+				<th>Memory</th>
+				<th>Time</th>
+				<th>Language</th>
+				<th>Code Length</th>
+				<th>Submit Time</th>
+			</tr>
+		</thead>
+
+		<tbody>
+			{%block status_base%}
+			{% endblock %}
+		</tbody>
+	</table>
+</div>
+</center>
+{% endblock %}

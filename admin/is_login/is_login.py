@@ -36,6 +36,7 @@ def admin_login_sc(req, context):
 			logininfo.save()
 			req.session['login'] = u
 			return HttpResponseRedirect('/admin')
+			#return render_to_response('welcome.html')
 	else:
 		form = manager_login()
 	return render_to_response('admin_login.html', {'context':context, 'form':form, 'error':error})

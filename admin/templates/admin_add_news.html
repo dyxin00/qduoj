@@ -1,0 +1,17 @@
+{%extends "admin_base.html"%}
+{%block title%}
+add_news
+{%endblock%}
+{%block content%}
+
+	<center>
+			<h1>Add news</h1>
+			<form method='POST'>
+				Title<br>
+				{{form.title}}<br/>
+				Content<br/>
+				{{form.content}}<br/>
+				<input type='submit' name='submit' value = 'submit'/>
+			</form>
+	</center>
+{%endblock%}
