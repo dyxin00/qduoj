@@ -9,6 +9,7 @@ ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
 
+
 MANAGERS = ADMINS
 
 DATABASES = {
@@ -52,7 +53,7 @@ USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
-MEDIA_ROOT = ''
+MEDIA_ROOT = '/home/hunting/'
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -70,10 +71,12 @@ STATIC_ROOT = ''
 STATIC_URL = '/static/'
 
 # Additional locations of static files
+WEB_ROOT = os.path.dirname(os.path.abspath(__file__)).replace('\\', '/').decode('gbk')
 STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+	os.path.join(WEB_ROOT, '/static/').replace('\\', '/'),
 )
 
 # List of finder classes that know how to find static files in
@@ -123,10 +126,12 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'oj',
+	#'admin',
 	# Uncomment the next line to enable the admin:
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
+	'south',
 )
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
@@ -160,6 +165,4 @@ LOGGING = {
     }
 }
 
-WEB_ROOT = os.path.dirname(os.path.abspath(__file__)).replace('\\', '/').decode('gbk')
-STATICFILES_DIRS = (os.path.join(WEB_ROOT, '/static/').replace('\\', '/'),)
 

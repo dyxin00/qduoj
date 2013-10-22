@@ -330,3 +330,10 @@ div.content {
 .page_content{
 	margin: 0,auto;
 }
+.contest_time{
+
+	color: #993399;
+}
+.contest_st{
+	font-size : 20px;
+}

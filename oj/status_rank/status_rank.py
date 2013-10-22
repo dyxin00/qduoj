@@ -5,25 +5,31 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from oj.models import *
 from oj.forms import *
+from django.core.paginator import Paginator
+from oj.qduoj_config.qduoj_config import *
+from oj.util.util import *
+
 
 def rank_sc(req, page, context):
 	list_info = {}
 	page_num = []
-	page = int(page)
-	users = User.objects.order_by('-ac','submit')
-	user_len = len(users)
-	for i in range(0, user_len/2 + 1):
-		page_num.append(i + 1)
-	list_info['len'] = page_num
-	list_info['page'] = page
-	if page <=0 or page > 15 or (page - 1) * 2 > user_len:
+	try:
+		page = int(page)
+	except ValueError:
+		pageInfo = "page not found"
+		title = '404 not found'
+		return render_to_response('error.html', {'context':context, 'pageInfo':pageInfo, 'title':title})
+
+	(users,list_info) = paging(User.objects.order_by('-ac','submit'), PAGE_RANK_NUM,page)
+
+	if users == None:
 		pageInfo = 'page not found maybe you are far behind!'
 		title = '404 not found'
 		return render_to_response('error.html', {'pageInfo':pageInfo, 'title':title, 'context':context})	
-	users = users[2 * (page - 1):2 * page]
+
 	k = 1
 	for user in users:
-		User.objects.filter(nick=user.nick).update(rank=(page - 1)*2 + k)
+		User.objects.filter(nick=user.nick).update(rank=(page - 1)*PAGE_RANK_NUM + k)
 		k = k + 1
 	return render_to_response('user_rank.html', {'users':users, 'context':context, 'list_info':list_info})
 

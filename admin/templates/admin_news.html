@@ -1,0 +1,25 @@
+{%extends "admin_base.html"%}
+
+{%block content%}
+<center>
+	<table border=1>
+		<thead>
+			<tr>
+			<th></th>
+			<th>title</th>
+			<th>time</th>
+			</tr>
+		</thead>
+		<tbody>
+			{%for msg in news %}
+				<tr>
+					<td></td>
+					<td>{{msg.title}}</td>
+					<td>{{msg.time}}</td>
+				</tr>			
+			{%endfor%}
+		</tbody>
+	</table>
+	
+</center>
+{%endblock%}
