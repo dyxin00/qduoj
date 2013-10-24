@@ -11,3 +11,4 @@ oj/problem/*.pyc
 *.swl
 *.swk
 *.swj
+*.o

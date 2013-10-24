@@ -8,6 +8,29 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
+        # Adding model 'Contest'
+        db.create_table(u'oj_contest', (
+            ('contest_id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('title', self.gf('django.db.models.fields.CharField')(max_length=50)),
+            ('start_time', self.gf('django.db.models.fields.DateTimeField')()),
+            ('end__time', self.gf('django.db.models.fields.DateTimeField')()),
+            ('defunct', self.gf('django.db.models.fields.BooleanField')(default=True)),
+            ('private', self.gf('django.db.models.fields.BooleanField')(default=True)),
+            ('oi_mode', self.gf('django.db.models.fields.BooleanField')(default=False)),
+        ))
+        db.send_create_signal(u'oj', ['Contest'])
+
+        # Adding model 'Contest_problem'
+        db.create_table(u'oj_contest_problem', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('problem_id', self.gf('django.db.models.fields.IntegerField')(default=0)),
+            ('contest_id', self.gf('django.db.models.fields.IntegerField')(default=0)),
+            ('title', self.gf('django.db.models.fields.CharField')(max_length=50)),
+            ('num', self.gf('django.db.models.fields.IntegerField')(default=0)),
+            ('score', self.gf('django.db.models.fields.IntegerField')(default=100)),
+        ))
+        db.send_create_signal(u'oj', ['Contest_problem'])
+
         # Adding model 'User'
         db.create_table(u'oj_user', (
             ('user_id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
@@ -41,7 +64,6 @@ class Migration(SchemaMigration):
             ('submit', self.gf('django.db.models.fields.IntegerField')(default=0)),
             ('visible', self.gf('django.db.models.fields.BooleanField')(default=True)),
             ('oi_mode', self.gf('django.db.models.fields.BooleanField')(default=False)),
-            ('content_file', self.gf('django.db.models.fields.files.FileField')(max_length=100, null=True, blank=True)),
         ))
         db.send_create_signal(u'oj', ['Problem'])
 
@@ -50,7 +72,8 @@ class Migration(SchemaMigration):
             ('solution_id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('problem', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['oj.Problem'])),
             ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['oj.User'])),
-            ('score', self.gf('django.db.models.fields.FloatField')(default=0.0)),
+            ('contest_id', self.gf('django.db.models.fields.IntegerField')(default=-1)),
+            ('score', self.gf('django.db.models.fields.FloatField')(default=0)),
             ('time', self.gf('django.db.models.fields.IntegerField')(default=0)),
             ('memory', self.gf('django.db.models.fields.IntegerField')(default=0)),
             ('in_date', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
@@ -121,13 +144,19 @@ class Migration(SchemaMigration):
 
         # Adding model 'Runtimeinfo'
         db.create_table(u'oj_runtimeinfo', (
-            ('solution_id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('solution_id', self.gf('django.db.models.fields.IntegerField')(primary_key=True)),
             ('error', self.gf('django.db.models.fields.TextField')()),
         ))
         db.send_create_signal(u'oj', ['Runtimeinfo'])
 
 
     def backwards(self, orm):
+        # Deleting model 'Contest'
+        db.delete_table(u'oj_contest')
+
+        # Deleting model 'Contest_problem'
+        db.delete_table(u'oj_contest_problem')
+
         # Deleting model 'User'
         db.delete_table(u'oj_user')
 
@@ -175,6 +204,25 @@ class Migration(SchemaMigration):
             'error': ('django.db.models.fields.TextField', [], {}),
             'solution_id': ('django.db.models.fields.IntegerField', [], {'primary_key': 'True'})
         },
+        u'oj.contest': {
+            'Meta': {'object_name': 'Contest'},
+            'contest_id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'defunct': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
+            'end__time': ('django.db.models.fields.DateTimeField', [], {}),
+            'oi_mode': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'private': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
+            'start_time': ('django.db.models.fields.DateTimeField', [], {}),
+            'title': ('django.db.models.fields.CharField', [], {'max_length': '50'})
+        },
+        u'oj.contest_problem': {
+            'Meta': {'object_name': 'Contest_problem'},
+            'contest_id': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'num': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
+            'problem_id': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
+            'score': ('django.db.models.fields.IntegerField', [], {'default': '100'}),
+            'title': ('django.db.models.fields.CharField', [], {'max_length': '50'})
+        },
         u'oj.loginlog': {
             'Meta': {'object_name': 'LoginLog'},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
@@ -204,7 +252,6 @@ class Migration(SchemaMigration):
         u'oj.problem': {
             'Meta': {'object_name': 'Problem'},
             'accepted': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
-            'content_file': ('django.db.models.fields.files.FileField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
             'description': ('django.db.models.fields.TextField', [], {}),
             'hard': ('django.db.models.fields.IntegerField', [], {}),
             'hint': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
@@ -225,18 +272,19 @@ class Migration(SchemaMigration):
         u'oj.runtimeinfo': {
             'Meta': {'object_name': 'Runtimeinfo'},
             'error': ('django.db.models.fields.TextField', [], {}),
-            'solution_id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})
+            'solution_id': ('django.db.models.fields.IntegerField', [], {'primary_key': 'True'})
         },
         u'oj.solution': {
             'Meta': {'object_name': 'Solution'},
             'code_length': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
+            'contest_id': ('django.db.models.fields.IntegerField', [], {'default': '-1'}),
             'in_date': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             'judgetime': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             'language': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
             'memory': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
             'problem': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['oj.Problem']"}),
             'result': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
-            'score': ('django.db.models.fields.FloatField', [], {'default': '0.0'}),
+            'score': ('django.db.models.fields.FloatField', [], {'default': '0'}),
             'solution_id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'time': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['oj.User']"})

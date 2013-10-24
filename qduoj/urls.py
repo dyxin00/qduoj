@@ -27,7 +27,7 @@ urlpatterns = patterns('',
 
 	url(r'^admin/', include(admin.site.urls)),
 
-	url('^problemid/$','oj.views.problemId'),
+	url('^problemid/$','oj.views.problemid'),
 	url('^problem_search/$','oj.views.problem_search'),
 
 	url(r'^rank/$', 'oj.views.rank'),
@@ -39,10 +39,11 @@ urlpatterns = patterns('',
 
 	url('^status/$','oj.views.status'),
 	url('^status/page=(?P<page>\d+)/$', 'oj.views.status'),
-	url('^Search_status/$','oj.views.status_Search'),
-	url('^Search_status/page=(?P<page>\d+>)/$', 'oj.views.status_Search'),
+	url('^Search_status/$','oj.views.status_search'),
+	url('^Search_status/page=(?P<page>\d+>)/$', 'oj.views.status_search'),
 	
 	url('^source_code/runid=(?P<runid>\d+)/$', 'oj.views.source_code'),
+
 	url('^changepw/$', 'oj.views.changepw'),
 	url('^changeinfo/$', 'oj.views.changeinfo'),
 	
@@ -55,6 +56,9 @@ urlpatterns = patterns('',
 	url('^contest/$', 'oj.views.contest'),
 	url('^contest/cid=(?P<cid>\d+)/$', 'oj.views.contest'),
 	url('^contest_status/cid=(?P<cid>\d+)/$', 'oj.views.contest_status'),
+	url('^contest_status/cid=(?P<cid>\d+)/page=(?P<page>\d+)/$', 'oj.views.contest_status'),
+	url('^contest_rank/cid=(?P<cid>\d+)/$', 'oj.views.contest_rank'),
+
 
 
 	url('^compile_error/num=(?P<num>\d+)/$', 'oj.views.compile_error'),

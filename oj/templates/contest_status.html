@@ -5,13 +5,16 @@
 {%if pagenum  == list_info.page%}
 	<span class=red>{{pagenum}}</span>
 {% else %}
-<a href="/contest_status/cid={{cid}}/page={{pagenum}}">{{pagenum}}</a>
+<a href="/contest_status/cid={{contest.contest_id}}/page={{pagenum}}">{{pagenum}}</a>
 {%endif%}
 {%endfor%}
 {%endblock%}
 
 {% block status_base%}
-<div align ="center"><a class ="contest_st" href ="/contest/cid={{cid}}/">[Problem]</a><a class = "contest_st" href = "">[Standing]</a></div><br>
+<div align ="center">
+	<a class ="contest_st" href ="/contest/cid={{contest.contest_id}}/">[Problem]</a>
+	<a class = "contest_st" href = "/contest_rank/cid={{contest.contest_id}}">[Rank]</a>
+</div><br>
 {%for solu in solution %}	
 	<tr class="{% cycle "evenrow" "oddrow" %}">
 		{%if context.ojlogin.nick == solu.user.nick%}
@@ -52,7 +55,7 @@
 
 		{% endfor %}
 		{%if context.ojlogin.nick == solu.user.nick%}
-			{%if solu.problem.oi_mode == 1%}
+			{%if contest.oi_mode == 1%}
 				<td>	<div id="center" class="red">{{solu.score}}</div></td>
 			{%else %}
 				<td>	<div id="center" class="red">----</div></td>

@@ -2,7 +2,7 @@ from django.contrib import admin
 from oj.models import *
 
 class AuthorAdmin(admin.ModelAdmin):
-	pass
+    pass
 
 admin.site.register(User)
 admin.site.register(Problem)
