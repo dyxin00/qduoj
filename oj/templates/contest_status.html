@@ -24,7 +24,7 @@
 		{% endif %}
 
 		<td>	<a href="/user_info/name={{solu.user.nick}}">{{solu.user.nick}}</a></td>
-		<td>	<div class="center"><a href="/problem/num={{solu.problem.problem_id}} ">{{solu.problem.title}}</a></div></td>
+        <td>	<div class="center"><a href="/problem/num={{solu.problem.problem_id}}/cid={{contest.contest_id}} ">{{solu.problem.title}}</a></div></td>
 
 		{% for R,V in Result.items %}
 			{% if R == solu.result %}
