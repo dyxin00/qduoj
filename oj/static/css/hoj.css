@@ -42,10 +42,12 @@ input{
 }
 .oddrow {
     background-color: #E5ECF9;
+    padding:8px;
     white-space: nowrap;
 }
 .evenrow {
     background-color: #FFFFFF;
+    padding:8px;
     white-space: nowrap;
 }
 body {
@@ -210,6 +212,18 @@ span.exadmin {
 	background:#e5effa;
 }	
 /*the login and register or the usr_info*/
+#contest{
+    
+	background-color:lightblue;
+	padding:8px 8px;
+}
+#contest tr td{
+	text-align:center;
+	padding:8px 8px;
+}
+#contest tr:hover {
+	background:#e5effa;
+}	
 #headlogin .userinfo{
 	position: absolute;
 	right:15px;
