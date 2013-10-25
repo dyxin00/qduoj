@@ -142,11 +142,11 @@ def readmail(req, fun, msgid):
 def contest_list(req, page = '1'):
 
     context = base_info(req)
-    return contest_list_sc(req, context, page)
+    return contest_list_sc(context, page)
 def contest(req, cid):
 
     context = base_info(req)
-    return contest_sc(req, context, cid)
+    return contest_sc(context, cid)
 
 def contest_problem(req, num, cid):
     context = base_info(req)
@@ -161,7 +161,7 @@ def contest_status(req, cid, page = '1'):
     return status_sc(req, context, page, cid)
 def contest_rank(req, cid):
     context = base_info(req)
-    return contest_rank_sc(req, context, cid)
+    return contest_rank_sc(context, cid)
 
 
 def compile_error(req, num):
