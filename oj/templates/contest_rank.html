@@ -39,7 +39,10 @@
             {%if forloop.first%}
             <td class="badge badge-warning">Winner</td>
             {%else%}
+            <!--
             <td>{{var.rank}}</td>
+            -->
+            <td>{{forloop.counter}}</td>
             {%endif%}
 
             <td><a  href="/user_info/name={{var.user}}/">{{var.user}}</a></td>

@@ -1,5 +1,6 @@
 '''contest '''
 import datetime
+from django.core.exceptions import ObjectDoesNotExist
 #from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from oj.models import Contest, User, Contest_problem, Solution
@@ -66,7 +67,11 @@ def contest_rank_sc(context, cid):
 
     '''contest rank'''
     contest_solution = Solution.objects.filter(contest_id=cid)
-    contest = Contest.objects.get(contest_id=cid)
+    try:
+        contest = Contest.objects.get(contest_id=cid)
+    except Contest.DoesNotExist:
+        pass
+    oi_mode = contest.oi_mode
 
     user_id_list = contest_solution.values_list('user', flat=True).distinct()
 
@@ -77,9 +82,6 @@ def contest_rank_sc(context, cid):
                                                     'problem_id',
                                                      flat=True
                                                     ).distinct()
-
-
-    oi_mode = Contest.objects.get(contest_id = cid).oi_mode
 
     if oi_mode:
         contest_score = contest_rank_oi(contest_problem_id,
@@ -159,10 +161,12 @@ def contest_rank_acm(contest_problem_id, user_id_list, contest_solution, cid):
 
     contest_score = sorted(contest_score, key=lambda user:
                            (-user['solved'], user['penalty']))
+    '''
     i = 1
     for var in contest_score:
         var['rank'] = i
         i += 1
+    '''
     return contest_score
 
 def contest_rank_oi(contest_problem_id, user_id_list, contest_solution, cid):
@@ -170,7 +174,10 @@ def contest_rank_oi(contest_problem_id, user_id_list, contest_solution, cid):
     '''oi mode'''
     contest_score = []
     for user_id in user_id_list:
-        user = User.objects.get(user_id=user_id).nick
+        try:
+            user = User.objects.get(user_id=user_id).nick
+        except User.DoesNotExist:
+            pass
         user_solution = contest_solution.filter(user_id = user_id)
 
         solved = user_solution.filter(result = 4).count()
@@ -180,12 +187,14 @@ def contest_rank_oi(contest_problem_id, user_id_list, contest_solution, cid):
 
             pb_id_solution = user_solution.filter(
                 problem_id = pb_id).order_by('-solution_id')
+            try:
+                pb_score = Contest_problem.objects.get(
+                    problem_id = pb_id).score
+                problem_name = Contest_problem.objects.filter(
+                    contest_id = cid).get(problem_id = pb_id)
+            except ObjectDoesNotExist:
+                pass
 
-            pb_score = Contest_problem.objects.get(
-                problem_id = pb_id).score
-
-            problem_name = Contest_problem.objects.filter(
-                contest_id = cid).get(problem_id = pb_id)
             if len(pb_id_solution):
                 score = pb_score * pb_id_solution[0].score / 100
                 user_problem.append(
@@ -219,9 +228,11 @@ def contest_rank_oi(contest_problem_id, user_id_list, contest_solution, cid):
                 )
 
     contest_score = sorted(contest_score, key=lambda user: -user['score'])
+    ''' 
     i = 1
     for var in contest_score:
         var['rank'] = i
         i += 1
+    '''
     return contest_score
 
