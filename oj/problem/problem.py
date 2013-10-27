@@ -2,16 +2,17 @@
 #coding=utf-8
 
 """problem"""
-from django.http import HttpResponse, HttpResponseRedirect
+#from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
-from oj.models import *
-from oj.forms import *
-from django.core import serializers
-from string import join, split
-from oj.qduoj_config.qduoj_config import *
-from oj.util.util import *
+from oj.models import User, Problem, Solution, Source_code, Contest, Contest_problem
+from oj.forms import Submit_code
+#from django.core import serializers
+#from string import join, split
+from oj.qduoj_config.qduoj_config import PAGE_PROBLEM_NUM, PAGE_STATUS_NUM
+from oj.util.util import paging, Result_dic, language_ab, contest_end
 
-def problem_sc(req, num, context, cid = -1):
+def problem_sc(num, context, cid = -1):
     """return  problem response"""
     try:
         pid = int(num)
@@ -40,7 +41,7 @@ def problem_sc(req, num, context, cid = -1):
                                         "title":title, "context":context})
 
 
-def problemlist_sc(req, page, context):
+def problemlist_sc(page, context):
     """return problem_list response"""
     try:
         page = int(page) #抛异常
@@ -64,6 +65,9 @@ def problemlist_sc(req, page, context):
 
 def submit_code_sc(req, num, context, cid = -1):
     """sava code from database"""
+
+    if cid <= 0 or contest_end(cid):
+        return render_to_response("error.html")
     if req.method == 'POST':
         form_code = Submit_code(req.POST)
         if form_code.is_valid():
@@ -71,7 +75,8 @@ def submit_code_sc(req, num, context, cid = -1):
             language_code = form_code.cleaned_data['language']
             if 'login' in req.session:
                 if len(submit_code):
-                    user = User.objects.get(nick=req.session['login']['username'])
+                    user = User.objects.get(
+                        nick=req.session['login']['username'])
                     solution = Solution.objects.create(
 
                             contest_id = int(cid),
@@ -109,7 +114,8 @@ def submit_code_sc(req, num, context, cid = -1):
     return render_to_response('submit_code.html',
                     {"num" : num,"form_code":form_code,"context" : context})
 
-def status_sc(req, context, page, cid = -1, problem_id = -1, language = -1, user = '', jresult = -1):
+def status_sc(context, page, cid = -1, problem_id = -1,
+              language = -1, user = '', jresult = -1):
     """return solution status"""
     try:
         page = int(page) #抛异常
@@ -172,7 +178,11 @@ def contest_status_sc(context, solution, list_info, cid):
 
 
     for var in solution:
-        contest_p = contest_problem.get(problem_id = var.problem.problem_id)
+        try:
+            contest_p = contest_problem.get(
+                problem_id = var.problem.problem_id)
+        except contest_problem.DoesNotExits:
+            pass
         var.problem.title = contest_p.title
     return render_to_response('contest_status.html',
                               {

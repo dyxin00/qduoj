@@ -44,7 +44,8 @@ def contest_sc(context, cid):
     problem = Contest_problem.objects.filter(contest_id = cid)
     contest_solution = Solution.objects.filter(contest_id = cid)
     for cpb in problem:
-        p_contest_solution = contest_solution.filter(problem_id=cpb.problem_id)
+        p_contest_solution = contest_solution.filter(
+            problem_id=cpb.problem_id)
         problem_list.append(
                 {
                     "problem_id" : cpb.problem_id,
@@ -102,11 +103,16 @@ def contest_rank_acm(contest_problem_id, user_id_list, contest_solution, cid):
 
     '''acm mode'''
     contest_score = []
-    contest_time = Contest.objects.get(contest_id = cid).start_time
+    try:
+        contest_time = Contest.objects.get(contest_id = cid).start_time
+    except Contest.DoesNotExist:
+        pass
 
     for user_id in user_id_list:
-
-        user = User.objects.get(user_id=user_id).nick
+        try:
+            user = User.objects.get(user_id=user_id).nick
+        except User.DoesNotExist:
+            pass
         user_solution = contest_solution.filter(user_id = user_id)
 
         solved = user_solution.filter(result = 4).count()
@@ -117,8 +123,11 @@ def contest_rank_acm(contest_problem_id, user_id_list, contest_solution, cid):
 
             pb_id_solution = user_solution.filter(problem_id = pb_id)
             count = pb_id_solution.count()
-            problem_name = Contest_problem.objects.filter(
-                contest_id = cid).get(problem_id = pb_id)
+            try:
+                problem_name = Contest_problem.objects.filter(
+                    contest_id = cid).get(problem_id = pb_id)
+            except Contest_problem.DoesNotExits:
+                pass
 
             ac_solution = pb_id_solution.filter(result = 4)
             if len(ac_solution):
@@ -161,12 +170,6 @@ def contest_rank_acm(contest_problem_id, user_id_list, contest_solution, cid):
 
     contest_score = sorted(contest_score, key=lambda user:
                            (-user['solved'], user['penalty']))
-    '''
-    i = 1
-    for var in contest_score:
-        var['rank'] = i
-        i += 1
-    '''
     return contest_score
 
 def contest_rank_oi(contest_problem_id, user_id_list, contest_solution, cid):
@@ -228,11 +231,6 @@ def contest_rank_oi(contest_problem_id, user_id_list, contest_solution, cid):
                 )
 
     contest_score = sorted(contest_score, key=lambda user: -user['score'])
-    ''' 
-    i = 1
-    for var in contest_score:
-        var['rank'] = i
-        i += 1
-    '''
+
     return contest_score
 
