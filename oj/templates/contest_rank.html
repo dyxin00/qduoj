@@ -11,9 +11,9 @@
 </center><br>
 <div align = "center">
     <a class="contest_st" href="/contest/cid={{contest.contest_id}}/">[Problem]</a>
-    <a class="contest_st" href="/contest_status/cid={{contest.contest_id}}">[Status]</a>
+    <a class="contest_st" href="/contest_status/cid={{contest.contest_id}}/">[Status]</a>
 </div>
-<table align="center" id="contest" >
+<table align="center" id="contest" width="90%" >
     <thead>
         <tr align="center" height=30>
             <th width="5%" class="header">Rank</td>
@@ -41,10 +41,13 @@
             {%else%}
             <td>{{forloop.counter}}</td>
             {%endif%}
-
+            {%if context.ojlogin.nick == var.user%}
             <td><a  href="/user_info/name={{var.user}}/">{{var.user}}</a></td>
-            <!-- you wen ti-->
-            <td><a href="status.php?user_id=xin&amp;cid=1006">{{var.solved}}</a></td>
+            <td><a href="/contest_search_status/cid={{contest.contest_id}}/?problem_id=&user_id={{var.user}}&language=-1&jresult=-1">{{var.solved}}</a></td>
+            {%else%}
+            <td>{{var.user}}</td>
+            <td>{{var.solved}}</td>
+            {%endif%}
 
             {%if contest.oi_mode%}
                 <td>{{var.score}}</td>

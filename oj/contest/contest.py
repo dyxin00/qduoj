@@ -1,6 +1,5 @@
 '''contest '''
 import datetime
-from django.core.exceptions import ObjectDoesNotExist
 #from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from oj.models import Contest, User, Contest_problem, Solution
@@ -191,18 +190,17 @@ def contest_rank_oi(contest_problem_id, user_id_list, contest_solution, cid):
             pb_id_solution = user_solution.filter(
                 problem_id = pb_id).order_by('-solution_id')
             try:
-                pb_score = Contest_problem.objects.get(
-                    problem_id = pb_id).score
-                problem_name = Contest_problem.objects.filter(
+                con_problem = Contest_problem.objects.filter(
                     contest_id = cid).get(problem_id = pb_id)
-            except ObjectDoesNotExist:
+                pb_score = con_problem.score
+            except Contest_problem.DoesNotExist:
                 pass
 
             if len(pb_id_solution):
                 score = pb_score * pb_id_solution[0].score / 100
                 user_problem.append(
                     {
-                        'problem_name' : problem_name.title,
+                        'problem_name' : con_problem.title,
                         'problem_score': score,
                         'submit' : 1,
                         'pid' :pb_id
@@ -212,7 +210,7 @@ def contest_rank_oi(contest_problem_id, user_id_list, contest_solution, cid):
             else:
                 user_problem.append(
                     {
-                        'problem_name' : problem_name.title,
+                        'problem_name' :con_problem.title,
                         'problem_score': 0.0,
                         'submit' : 0,
                         'pid' :pb_id

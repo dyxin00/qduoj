@@ -34,7 +34,7 @@ def paging(tuple_info,page_number,page):
         list_info['len'] = page_num
         list_info['page'] = page
 
-    if page <= 0 or page > page_number:
+    if page <= 0 or page > p.num_pages:
         return (None,None)
     else:
         info = p.page(page).object_list
@@ -48,7 +48,7 @@ def contest_end(cid):
         contest_end_time = Contest.objects.get(contest_id = cid).end__time
     except Contest.DoesNotExist:
         return True
-    server_time =  datetime.now()
+    server_time = datetime.now()
     contest_end_time = contest_end_time.replace(
         tzinfo=None) + timedelta(hours=8,minutes=1)
     
