@@ -11,11 +11,7 @@ def permission_asked(permission):
     def wrapper(function):
         @wraps(function)
         def wrapped(req, context, *args, **kwargs):
-            if (not 'ojlogin' in context 
-            or (context['ojlogin'].isManager == False 
-                and context['ojlogin'].has_perm(permission) == False
-               )
-            ):
+            if (not 'ojlogin' in context or context['ojlogin'].has_perm(permission) == False):  
                 return HttpResponseRedirect('/admin/admin_login')
             else:
                 return function(req, context, *args, **kwargs)
@@ -42,7 +38,7 @@ def has_any_perm(function):
     '''
     @wraps(function)
     def wrapper(req, context, *args, **kwargs):
-        if not 'ojlogin' in context or context['ojlogin'].get_all_permission == None:
+        if not 'ojlogin' in context or not context['ojlogin'].get_all_permission:
             return HttpResponseRedirect('/admin/admin_login')
         else:
             return function(req, context, *args, **kwargs)

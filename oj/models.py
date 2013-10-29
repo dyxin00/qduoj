@@ -44,15 +44,15 @@ class User(models.Model):
             return True
         permlist = self.perm.all()
         for perm in permlist:
-            if perm == permissions:
+            if perm.name == permissions:
                 return True
         return False
 
     def add_perm(self, permissions):
         self.perm.add(permissions)
     
-    def remove_perm(self, permissions):
-        self.perm.remove(permissions)
+    def remove_perm(self, permission):
+        self.perm.remove(permission)
     
     @property
     def get_all_permission(self):
@@ -77,6 +77,7 @@ class Problem(models.Model):
     sample_input = models.TextField()
     sample_output = models.TextField()
     source = models.CharField(max_length=50, null=True, blank=True)
+    provider_id = models.IntegerField()
     hint = models.TextField(null=True, blank=True)
     in_date = models.DateTimeField(auto_now_add=True)
     time_limit = models.IntegerField()

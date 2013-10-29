@@ -41,7 +41,7 @@ problem_list
 				<tr>
 					<td>{{problem.problem_id}}</td>
 					<td>{{problem.title}}</td>
-					{%if problem.hint == context.ojlogin.nick or context.ojlogin.isManager or 'minister' in permlist%}
+					{%if problem.hint == context.ojlogin.nick or 'minister' in permlist or context.ojlogin.user_id == problem.provider_id%}
 						{%if problem.visible %}
 							{% if list_info %}
 								<td><a href='/admin/problem_visible/proid={{problem.problem_id}}/page={{list_info.page}}'>True</td>

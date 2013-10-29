@@ -24,11 +24,20 @@ def admin_list_sc(req, context):
             return HttpResponseRedirect('/admin/set_priority/id=%s' % nick)
     else:
         form = AdminSearch()
-    users = User.objects.all()
+    users = User.objects.exclude(perm=None)
     return render_to_response('admin_list.html', {
         'users':users,
         'form':form}
     )
+
+def alter_priority(user, checklist):
+    permlist = user.get_all_permission
+    for (k, v) in permlist.items():
+        user.remove_perm(v)
+    for permission in checklist:
+        perm = Perm.objects.filter(name=permission)
+        if len(perm) != 0:
+            user.add_perm(perm[0])
 
 @is_manager
 def set_priority_sc(req, context, nick):
@@ -40,9 +49,9 @@ def set_priority_sc(req, context, nick):
         )
     if req.method == 'POST':
         checklist = req.REQUEST.getlist('check_box')
-        print checklist
-        return render_to_response('admin_error.html')
-        
+        alter_priority(user[0], checklist)
+        return HttpResponseRedirect('/admin/admin_list')
+  
     else:
         perms = Perm.objects.all()
         permlist = user[0].get_all_permission 

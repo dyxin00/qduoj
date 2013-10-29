@@ -49,8 +49,8 @@ def admin_add_problem_sc(req, context):
     if req.method == 'POST':
         form = ProblemForm(req.POST)
         if form.is_valid():
-            problem = form.save()
-            problem.nick = context['ojlogin'].nick
+            problem = form.save(commit=False)
+            problem.provider_id = context['ojlogin'].user_id # this saves the author of it
             problem.save()
             return HttpResponseRedirect(
                 '/admin/if_add_data/proid=%s'%problem.problem_id
@@ -116,6 +116,7 @@ def problem_shift_mode_sc(req, context, proid, page, fun):
             '/admin/problem_list/page=%s' % page
             )
 
+
 @permission_asked('problem_add')
 def if_add_data_sc(req, context, proid):
     targetDir = os.path.join(TEST_DATA_PATH, proid)
@@ -141,7 +142,6 @@ def problem_testdata_sc(req, context, proid):
         if form.is_valid():
             files = req.FILES['files']
             if files.size <= MAX_UPLOAD_FILE_SIZE * 1000000:
-                print files.size
                 handle_load_files(proid, req.FILES['files']) #error
                 files = os.listdir(targetDir)
                 return render_to_response('problem_filelist.html', {
