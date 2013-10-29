@@ -18,7 +18,7 @@ def problem_sc(num, context, cid = -1):
         pid = int(num)
         problem = Problem.objects.get(problem_id = pid)
 
-        if problem.visible == False:
+        if problem.visible == False and cid == -1:
             page_info = "problem not found!"
             title = "404 not found"
             return render_to_response('error.html',
