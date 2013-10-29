@@ -52,7 +52,7 @@ def user_info_sc(req, nick, context):
                                    'title':title,
                                    'context':context})
 
-    submitions = Solution.objects.filter(user=user[0])
+    submitions = Solution.objects.filter(user=user[0]).order_by('problem')
 
     submitAc_list = submitions.filter(result=4).values_list(
                         'problem_id', flat=True).distinct()
