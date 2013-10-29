@@ -1,16 +1,9 @@
 #coding=utf-8
 
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import  HttpResponseRedirect
 from django.shortcuts import render_to_response
-from admin.forms import *
-from oj.models import *
-
-def is_manager_login(req, context):
-    if not 'ojlogin' in context:
-        return 0
-    if context['ojlogin'].isManager != 0:
-        return 0
-    return 1
+from admin.forms import manager_login 
+from oj.models import User, LoginLog 
 
 def admin_login_sc(req, context):
     error = {}
@@ -21,7 +14,10 @@ def admin_login_sc(req, context):
             password = form.cleaned_data['password']
 
             user = User.objects.filter(nick=username)
-            if len(user) == 0 or user[0].isManager != 0:
+            if (len(user) == 0 or 
+                (user[0].isManager == False and 
+                 user.get_all_permission() == None)
+            ):
                 error_info = "此管理员不存在,请重新输入!"
                 error['error'] = error_info
                 return render_to_response('admin_login.html', {'form':form, 'error':error, 'context':context})

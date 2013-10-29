@@ -1,6 +1,4 @@
 from django.db import models
-import os
-from qduoj import settings
 
 class Contest(models.Model):
     contest_id = models.AutoField(primary_key=True)
@@ -12,6 +10,7 @@ class Contest(models.Model):
     oi_mode = models.BooleanField(default = False)
     def __unicode__(self):
         return str(self.contest_id) + ' - ' + self.title
+
 class Contest_problem(models.Model):
     problem_id = models.IntegerField(default=0)
     contest_id = models.IntegerField(default=0)
@@ -21,31 +20,62 @@ class Contest_problem(models.Model):
     def __unicode__(self):
         return 'contest_id - '+  str(self.contest_id) + ' - ' + self.title
 
-class User(models.Model):   
+class Perm(models.Model):
+    name = models.CharField(max_length=30, unique=True)
+    describe = models.CharField(max_length=100, blank=True, null = True)
+
+    def __unicode__(self):
+        return self.name
+    
+class User(models.Model):  
     user_id = models.AutoField(primary_key=True)
     nick = models.CharField(max_length=50)
     password = models.CharField(max_length=100)
     email = models.EmailField(null=True, blank=True)
-    isManager = models.IntegerField(default=0)
+    perm = models.ManyToManyField(Perm, blank=True, null=True)   
+    isManager = models.BooleanField(default=False)
     website = models.CharField(max_length=50)
     ac = models.IntegerField(default=0)
     submit = models.IntegerField(default=0)
     rank = models.IntegerField(default=0)
+    
+    def has_perm(self, permissions):
+        if self.isManager == True:
+            return True
+        permlist = self.perm.all()
+        for perm in permlist:
+            if perm == permissions:
+                return True
+        return False
 
+    def add_perm(self, permissions):
+        self.perm.add(permissions)
+    
+    def remove_perm(self, permissions):
+        self.perm.remove(permissions)
+    
+    @property
+    def get_all_permission(self):
+        permlist = {}
+        if self.isManager == True:
+           for perm in Perm.objects.all():
+                permlist[perm.name] = perm
+        else:
+            for perm in self.perm.all():
+                permlist[perm.name] = perm
+        return permlist
+    
     def __unicode__(self):
         return self.nick
 
 class Problem(models.Model):
-#   def get_file_upload_to(instance, filename):
-#       print "hehea"
-#       return  str(instance.problem_id)+ "/" + filename
     problem_id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=50)
     description = models.TextField()
     input_data = models.TextField()
     output_data = models.TextField()
     sample_input = models.TextField()
-    sameple_output = models.TextField()
+    sample_output = models.TextField()
     source = models.CharField(max_length=50, null=True, blank=True)
     hint = models.TextField(null=True, blank=True)
     in_date = models.DateTimeField(auto_now_add=True)
@@ -56,11 +86,9 @@ class Problem(models.Model):
     submit = models.IntegerField(default=0)
     visible = models.BooleanField(default=True)
     oi_mode = models.BooleanField(default=False)
-    #content_file = models.FileField(upload_to=get_file_upload_to)
     def __unicode__(self):
         return str(self.problem_id) + ":  " + self.title
 
-#   post_delete.connect(delete_file, sender=Problem)
 class Solution(models.Model):
     solution_id = models.AutoField(primary_key=True)
     problem = models.ForeignKey(Problem)
@@ -100,7 +128,7 @@ class LoginLog(models.Model):
         return self.user.nick
 
 class News(models.Model):
-    title = models.TextField()
+    title = models.CharField(max_length=30)
     content = models.TextField()
     time = models.DateTimeField(auto_now_add=True)
     visible = models.BooleanField(default=True)

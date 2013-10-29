@@ -1,9 +1,9 @@
-from oj.models import *
-from oj.qduoj_config.qduoj_config import *
+from oj.models import User
 from admin.main.main import *
 from admin.news.news import *
 from admin.is_login.is_login import *
 from admin.adminproblem.adminproblem import *
+from admin.administer.administer import *
 
 def base_info(req):
     '''save the base_info of the user'''
@@ -16,7 +16,12 @@ def base_info(req):
 
 def index(req):
     '''the first requst when the admin login'''
+   # name1 = 'minister'
+   # describe1 = 'priority: have priority to edit the contest or the problem ...'
+   # perm1 = Perm.objects.create(name = name1, describe = describe1)
+   # perm1.save()
     context = base_info(req)
+    print type(index_sc)
     return index_sc(req, context)
 
 def menu(req):
@@ -47,12 +52,12 @@ def add_news(req):
 def edit_news(req, msgid):
     '''get the news id via it can edit the news admin want'''
     context = base_info(req)
-    return edit_news_sc(req, msgid, context)
+    return edit_news_sc(req, context, msgid)
 
 def news_visible(req, msgid):
     '''get the news id set the news's visiblity'''
     context = base_info(req)
-    return news_visible_sc(req, msgid, context)
+    return news_visible_sc(req, context, msgid)
 
 def problem_list(req, page='1'):
     '''
@@ -60,7 +65,7 @@ def problem_list(req, page='1'):
     default page is 1
     '''
     context = base_info(req)
-    return admin_problem_list_sc(req, page, context)
+    return admin_problem_list_sc(req, context, page)
 
 def add_problem(req):
     '''
@@ -72,13 +77,13 @@ def add_problem(req):
 def admin_edit_problem(req, proid):
     '''get problem id and edit it'''
     context = base_info(req)
-    return admin_edit_problem_sc(req, proid, context)
+    return admin_edit_problem_sc(req, context, proid)
 
 def problem_visible(req, proid, page):
     '''get problem id, set it's visibility'''
     context = base_info(req)
     fun = 'visible'
-    return problem_shift_mode_sc(req, proid, page, fun, context)
+    return problem_shift_mode_sc(req, context, proid, page, fun)
 
 def problem_oi_mode(req, proid, page):
     '''
@@ -88,7 +93,7 @@ def problem_oi_mode(req, proid, page):
     '''
     context = base_info(req)
     fun = 'oi_mode'
-    return problem_shift_mode_sc(req, proid, page, fun, context)
+    return problem_shift_mode_sc(req, context, proid, page, fun)
 
 def if_add_data(req, proid):
     '''
@@ -96,7 +101,7 @@ def if_add_data(req, proid):
     it
     '''
     context = base_info(req)
-    return if_add_data_sc(req, proid, context)
+    return if_add_data_sc(req, context, proid)
 
 def problem_testdata(req, proid):
     '''
@@ -104,15 +109,23 @@ def problem_testdata(req, proid):
     show the list testdata of the problem
     '''
     context = base_info(req)
-    return problem_testdata_sc(req, proid, context)
+    return problem_testdata_sc(req, context, proid)
 
 def delete_testdata(req, proid, filename):
     context = base_info(req)
-    return delete_testdata_sc(req, proid, filename, context)
+    return delete_testdata_sc(req, context, proid, filename)
 
 def download_testfile(req, proid, filename):
     '''
     via clicking the link on the page, download the testdata
     '''
     context = base_info(req)
-    return download_testfile_sc(req, proid, filename, context)
+    return download_testfile_sc(req, context, proid, filename)
+
+def admin_list(req):
+    context = base_info(req)
+    return admin_list_sc(req, context)
+
+def set_priority(req, nick):
+    context = base_info(req)
+    return set_priority_sc(req, context, nick)

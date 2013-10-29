@@ -1,5 +1,7 @@
 from django.conf.urls import patterns, include, url
-
+from django.contrib.sitemaps import views as sitemap_views
+from django.views.decorators.cache import cache_page
+from oj.sitemap import PostSitemap
 #Uncomment the next two lines to enable the admin:
 #from django.contrib import admin
 #admin.autodiscover()
@@ -16,7 +18,7 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
 	url('^$', 'oj.views.problemlist'),  # the init page is one
 	url('^oj/$', 'oj.views.problemlist'),
-
+    url('^sitemap\.xml$', cache_page(sitemap_views.sitemap, 60 * 60 * 12), {'sitemaps':{'posts':PostSitemap}}),
 	url('problemlist/page=(?P<page>\d+)/$', 'oj.views.problemlist'),#through the num to shift page 
 	url('^problem/num=(?P<num>\d+)/$', 'oj.views.problem'),
 	url('^problem/num=(?P<num>\d+)/cid=(?P<cid>\d+)/$', 'oj.views.contest_problem'),
@@ -89,6 +91,8 @@ urlpatterns += patterns('',
 	url('^admin/problem_testdata/proid=(?P<proid>\d+)/$', 'admin.views.problem_testdata'),
 	url('^admin/if_add_data/proid=(?P<proid>\d+)/$', 'admin.views.if_add_data'),
 	url('^admin/delete_testdata/proid=(?P<proid>\d+)/filename=(?P<filename>[\w.]+)/$', 'admin.views.delete_testdata'),
-    url('^admin/down_files/proid=(?P<proid>\d+)/filename=(?P<filename>[\w.]+)/$', 'admin.views.download_testfile')
+    url('^admin/down_files/proid=(?P<proid>\d+)/filename=(?P<filename>[\w.]+)/$', 'admin.views.download_testfile'),
+    url('^admin/admin_list/$', 'admin.views.admin_list'),
+    url('^admin/set_priority/id=(?P<nick>[\w]+)/$', 'admin.views.set_priority'),
 )
 

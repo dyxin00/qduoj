@@ -7,7 +7,6 @@ from oj.forms import *
 from django.core import serializers
 import sys, os
 
-
 def login_sc(req, context):
     error = {}
     if req.method == 'POST':

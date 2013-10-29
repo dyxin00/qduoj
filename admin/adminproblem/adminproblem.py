@@ -1,29 +1,25 @@
 #coding=utf-8
 
 from django.shortcuts import render_to_response
-from django.core.paginator import Paginator
 import os, os.path
 from oj.models import *
 from admin.is_login.is_login import *
 from oj.qduoj_config.qduoj_config import *
 from admin.uploadfile.uploadfile import *
+from oj.util.util import paging
+from admin.admin_backends import permission_asked
+from admin.forms import ProblemSearch, Admin_UploadFiles
+from admin.forms import ProblemForm
 
-def admin_problem_list_sc(req, page, context):
-    is_ok = is_manager_login(req, context)
-    if is_ok == 0:
-        return HttpResponseRedirect('/admin/admin_login')
-    list_info = {}
-    page_num = []
-    page = int(page) 
-    p = Paginator(Problem.objects.order_by('problem_id'), ADMIN_PAGE_PROBLEM_NUM)
-    
-    for i in range(0, p.num_pages):
-        page_num.append(i+1)
-    list_info['len'] = page_num
-    list_info['page'] = page
+@permission_asked('problem_add')
+def admin_problem_list_sc(req, context, page):
+    page = int(page)
+    problem = Problem.objects.order_by('problem_id')
+    (problemset, list_info) = paging(problem, ADMIN_PAGE_PROBLEM_NUM, page)
+    permlist = context['ojlogin'].get_all_permission
     #if the requst is out of bound, error!
-    if page == 0 or page > p.num_pages:
-        pageInfo = "page not found!"
+    if problemset == None: 
+        pageInfo = "page not found!!"
         title = "404 not found"
         return render_to_response('error.html', {
             "pageInfo": pageInfo, 
@@ -31,107 +27,43 @@ def admin_problem_list_sc(req, page, context):
             "context":context}
         )
     if req.method == 'POST':
-        form = adminsearch(req.POST)
+        form = ProblemSearch(req.POST)
         if form.is_valid():
             proid = form.cleaned_data['search_id']
             problem = Problem.objects.filter(problem_id=proid)
             return render_to_response('admin_problem_list.html', {
-                'problems':problem}
+                'problems':problem, 'permlist':permlist}
             )
     else:
-        form = adminsearch()
-    problemset = p.page(page).object_list
+        form = ProblemSearch()
     return render_to_response('admin_problem_list.html', {
         'problems':problemset,
         'context':context, 
         'list_info':list_info, 
-        'form':form}
+        'form':form,
+        'permlist':permlist,
+        }
     )
-
-#fetch data form form and save if to the database
-def fetch_form_to_data(req, form, fun, proid=''):
-    title = form.cleaned_data['title']
-    time_limit = form.cleaned_data['time_limit']
-    memory_limit = form.cleaned_data['memory_limit']
-    hard = form.cleaned_data['hard']
-    description = form.cleaned_data['description']
-    input_data = form.cleaned_data['input_data']
-    output_data = form.cleaned_data['output_data']
-    sample_input = form.cleaned_data['sample_input']
-    sample_output = form.cleaned_data['sample_output']
-    source = form.cleaned_data['source']
-    hint = form.cleaned_data['hint']
-    if fun == 'submit':
-        problem = Problem(
-                title=title, 
-                time_limit=time_limit, 
-                memory_limit=memory_limit, 
-                description=description, 
-                input_data=input_data, 
-                output_data=output_data, 
-                sample_input=sample_input, 
-                sameple_output=sample_output,
-                source=source, 
-                hint=hint,
-                hard=hard
-                )
-        problem.save()
-        return problem
-    else:
-        problem = Problem.objects.filter(problem_id=proid)
-        problem.update(
-                title=title, 
-                time_limit=time_limit, 
-                memory_limit=memory_limit, 
-                description=description, 
-                input_data=input_data, 
-                output_data=output_data, 
-                sample_input=sample_input, 
-                sameple_output=sample_output, 
-                source=source,
-                hint=hint, 
-                hard=hard
-                )
-
-def fetch_data_to_form(req, problem):
-    problem_info = {}
-    problem_info['title'] = problem.title
-    problem_info['time_limit'] = problem.time_limit
-    problem_info['memory_limit'] = problem.memory_limit
-    problem_info['description'] = problem.description
-    problem_info['input_data'] = problem.input_data
-    problem_info['output_data'] = problem.output_data
-    problem_info['sample_input'] = problem.sample_input
-    problem_info['sample_output'] = problem.sameple_output
-    problem_info['source'] = problem.source
-    problem_info['hint'] = problem.hint
-    problem_info['hard'] = problem.hard
-    return problem_info
-
+@permission_asked('problem_add')
 def admin_add_problem_sc(req, context):
-    is_ok = is_manager_login(req, context)
-    if is_ok == 0:
-        return HttpResponseRedirect('/admin/admin_login')
     if req.method == 'POST':
-        form = admin_problem(req.POST)
+        form = ProblemForm(req.POST)
         if form.is_valid():
-            problem = fetch_form_to_data(req, form, fun='submit')
-            #return HttpResponseRedirect('/admin/problem_list')
+            problem = form.save()
+            problem.nick = context['ojlogin'].nick
+            problem.save()
             return HttpResponseRedirect(
                 '/admin/if_add_data/proid=%s'%problem.problem_id
                 )
     else:
-        form = admin_problem()
+        form = ProblemForm()
     return render_to_response('admin_add_problem.html', {
         'context':context, 
         'form':form}
     )
 
-def admin_edit_problem_sc(req, proid, context):
-    is_ok = is_manager_login(req, context)
-    if is_ok == 0:
-        return HttpResponseRedirect('/admin/admin_login')
-    problem_info = {}
+@permission_asked('problem_add')
+def admin_edit_problem_sc(req, context, proid):
     problem = Problem.objects.filter(problem_id=proid)
     if len(problem) == 0:
         pageInfo = "page not found!"
@@ -140,26 +72,23 @@ def admin_edit_problem_sc(req, proid, context):
             "context":context}
         )
     if req.method == 'POST':
-        form = admin_problem(req.POST)
+        form = ProblemForm(req.POST, instance = problem[0])
         if form.is_valid():
-            fun = 'edit'
-            fetch_form_to_data(req, form, fun, proid)
+            form.save()    
             return HttpResponseRedirect(
                 '/admin/problem_list'
                 )
     else:
-        problem_info = fetch_data_to_form(req, problem[0])
-        form = admin_problem(problem_info)
+        form = ProblemForm(instance=problem[0])
     return render_to_response('admin_edit_problem.html', {
         'form':form, 
         'context':context}
     )
 
-def problem_shift_mode_sc(req, proid, page, fun, context):
-    is_ok = is_manager_login(req, context)
-    if is_ok == 0:
-        return HttpResponseRedirect('/admin/admin_login')
+@permission_asked('problem_add')
+def problem_shift_mode_sc(req, context, proid, page, fun):
     problem = Problem.objects.filter(problem_id=proid)
+    permlist = context['ojlogin'].get_all_permission
     if len(problem) == 0:
         pageInfo = "no this problem"
         return render_to_response('error.html', {
@@ -180,19 +109,15 @@ def problem_shift_mode_sc(req, proid, page, fun, context):
     if page == '0':
         problem = Problem.objects.filter(problem_id=proid)
         return render_to_response('admin_problem_list.html', {
-            'problems': problem}
+            'problems': problem, 'permlist':permlist}
         )
     else:
         return HttpResponseRedirect(
             '/admin/problem_list/page=%s' % page
             )
 
-def if_add_data_sc(req, proid, context):
-    is_ok = is_manager_login(req, context)
-    if is_ok == 0:
-        return HttpResponseRedirect(
-            '/admin/admin_login'
-            )
+@permission_asked('problem_add')
+def if_add_data_sc(req, context, proid):
     targetDir = os.path.join(TEST_DATA_PATH, proid)
     if not os.path.exists(targetDir):
         os.makedirs(targetDir)
@@ -201,13 +126,8 @@ def if_add_data_sc(req, proid, context):
         'problem':problem[0]}
     )
 
-
-def problem_testdata_sc(req, proid, context):
-    is_ok = is_manager_login(req, context)
-    if is_ok == 0:
-        return HttpResponseRedirect(
-            '/admin/admin_login'
-            )
+@permission_asked('problem_add')
+def problem_testdata_sc(req, context, proid):
     targetDir = os.path.join(TEST_DATA_PATH, proid)
     try:
         files = os.listdir(targetDir)
@@ -242,7 +162,8 @@ def problem_testdata_sc(req, proid, context):
         'form':form}
     )
 
-def delete_testdata_sc(req, proid, filename, context):
+@permission_asked('problem_add')
+def delete_testdata_sc(req, context, proid, filename):
     (targetFile, is_file) = is_file_exists(req, proid, filename)
     if is_file == 0:
         pageInfo = 'the file %s not exist' % filename
@@ -257,10 +178,11 @@ def delete_testdata_sc(req, proid, filename, context):
         '/admin/problem_testdata/proid=%s'%proid
         )
 
-def download_testfile_sc(req, proid, filename, context):
+@permission_asked('minister')
+def download_testfile_sc(req, context, proid, filename):
     (targetFile, is_file) = is_file_exists(req, proid, filename)
-    if is_file == 0:
-        pageInfo = 'the file %s not exist'%filename
+    if is_file == 0 or is_file == 1:
+        pageInfo = 'the file %s is a folder or not exist' % filename
         return render_to_response('admin_error.html', {
             'pageInfo':pageInfo}
         )

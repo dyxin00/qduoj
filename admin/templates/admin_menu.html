@@ -12,45 +12,44 @@
 <ul>
 	<li>
 		<a class='btn btn-primary' href="/" target="main"><b>SeeOJ</b></a>
+	{%if context.ojlogin.isManager %}
 	<li>
 		<a class='btn btn-primary' href="/admin/add_news" target="main"><b>AddNews</b></a>
 	<li>
 		<a class='btn btn-primary' href="/admin/news_list" target="main"><b>NewsList</b></a>
-		
+	{%endif%}
+	{%if 'problem_add' in permlist%}
 	<li>
 		<a class='btn btn-primary' href="/admin/add_problem" target="main"><b>AddProblem</b></a>
 	<li>
 		<a class='btn btn-primary' href="/admin/problem_list" target="main"><b>ProblemList</b></a>
-		
-<li>
-	<a class='btn btn-primary' href="contest_add.php" target="main"><b>AddContest</b></a>
-<li>
-	<a class='btn btn-primary' href="contest_list.php" target="main"><b>ContestList</b></a>
-<li>
-	<a class='btn btn-primary' href="team_generate.php" target="main"><b>TeamGenerator</b></a>
-<li>
-	<a class='btn btn-primary' href="setmsg.php" target="main"><b>SetMessage</b></a>
-<li>
-	<a class='btn btn-primary' href="changepass.php" target="main"><b>ChangePassWD</b></a>
-<li>
-	<a class='btn btn-primary' href="rejudge.php" target="main"><b>Rejudge</b></a>
-<li>
-	<a class='btn btn-primary' href="privilege_add.php" target="main"><b>AddPrivilege</b></a>
-<li>
-	<a class='btn btn-primary' href="privilege_list.php" target="main"><b>PrivilegeList</b></a>
-<li>
-	<a class='btn btn-primary' href="source_give.php" target="main"><b>GiveSource</b></a>
-<li>
-	<a class='btn btn-primary' href="problem_export.php" target="main"><b>ExportProblem</b></a>
-<li>
-	<a class='btn btn-primary' href="problem_import.php" target="main"><b>ImportProblem</b></a>
-<li>
-	<a class='btn btn-primary' href="update_db.php" target="main"><b>UpdateDatabase</b></a>
-
-<li>
-	<a class='btn btn-primary' href="http://code.google.com/p/hustoj/" target="_blank"><b>HUSTOJ</b></a>
-<li>
-	<a class='btn btn-primary' href="http://code.google.com/p/freeproblemset/" target="_blank"><b>FreeProblemSet</b></a>
+	{%endif%}
+	
+	{%if 'context_add' in permlist%}
+	<li>
+		<a class='btn btn-primary' href="contest_add.php" target="main"><b>AddContest</b></a>
+	<li>
+		<a class='btn btn-primary' href="contest_list.php" target="main"><b>ContestList</b></a>
+	{%endif%}
+	
+	{%if context.ojlogin.isManager %}
+	<li>
+		<a class='btn btn-primary' href="/admin/admin_list/" target="main"><b>AdminList</b></a>
+	
+	<li>
+		<a class='btn btn-primary' href="privilege_list.php" target="main"><b>PrivilegeList</b></a>
+	{%endif%}
+	
+	<li>
+		<a class='btn btn-primary' href="source_give.php" target="main"><b>GiveSource</b></a>
+	<li>
+		<a class='btn btn-primary' href="problem_export.php" target="main"><b>ExportProblem</b></a>
+	<li>
+		<a class='btn btn-primary' href="problem_import.php" target="main"><b>ImportProblem</b></a>
+	<li>
+		<a class='btn btn-primary' href="http://code.google.com/p/hustoj/" target="_blank"><b>HUSTOJ</b></a>
+	<li>
+		<a class='btn btn-primary' href="http://code.google.com/p/freeproblemset/" target="_blank"><b>FreeProblemSet</b></a>
 
 </ul>
 	<a href="problem_copy.php" target="main" title="Create your own data"><font color="eeeeee">CopyProblem</font></a> <br>

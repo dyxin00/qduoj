@@ -2,12 +2,10 @@
 #coding=utf-8
 
 """problem"""
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from oj.models import *
 from oj.forms import *
-from django.core import serializers
-from string import join, split
 from oj.qduoj_config.qduoj_config import *
 from oj.util.util import *
 
@@ -191,5 +189,5 @@ def problem_handle(problem):
     pab['input_data'] = '<br>'.join( problem.input_data.split('\r\n'))
     pab['output_data'] = '<br>'.join( problem.output_data.split('\r\n'))
     pab['sample_input'] = '<br>'.join( problem.sample_input.split('\r\n'))
-    pab['sameple_output'] = '<br>'.join( problem.sameple_output.split('\r\n'))
+    pab['sameple_output'] = '<br>'.join( problem.sample_output.split('\r\n'))
     return pab

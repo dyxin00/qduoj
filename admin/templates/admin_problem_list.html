@@ -27,7 +27,7 @@ problem_list
 	<table width=90% style = "border-collapse:collapse" border=1px>
 		<thead>
 			<tr>
-			<th width=5%></th>
+			<th width=5%>ID</th>
 			<th width=10%>title</th>
 			<th width=5%>visible</th>
 			<th width=5%>score_mode</th>
@@ -40,40 +40,41 @@ problem_list
 			{%for problem in problems %}
 				<tr>
 					<td>{{problem.problem_id}}</td>
-					<td><a href="/admin/edit_problem/proid={{problem.problem_id}}">{{problem.title}}</a></td>
-					{%if problem.visible %}
-						{% if list_info %}
-							<td><a href='/admin/problem_visible/proid={{problem.problem_id}}/page={{list_info.page}}'>True</td>
-						{% else %}
-							<td><a href='/admin/problem_visible/proid={{problem.problem_id}}/page=0'>True</td>
-						{%endif%}
-					{%else%}
-						{% if list_info %}
-							<td><a href='/admin/problem_visible/proid={{problem.problem_id}}/page={{list_info.page}}'>False</a></td>
-						{% else %}
-							<td><a href='/admin/problem_visible/proid={{problem.problem_id}}/page=0'>False</a></td>
-						{%endif%}
-						
-					{%endif%}
-					
-					{%if problem.oi_mode %}
-						{% if list_info %}
-							<td><a href='/admin/problem_oi_mode/proid={{problem.problem_id}}/page={{list_info.page}}'>Open</td>
-						{% else %}
-							<td><a href='/admin/problem_oi_mode/proid={{problem.problem_id}}/page=0'>Open</td>
-						{%endif%}
-					{%else%}
-						{% if list_info %}
-							<td><a href='/admin/problem_oi_mode/proid={{problem.problem_id}}/page={{list_info.page}}'>Close</a></td>
-						{% else %}
-							<td><a href='/admin/problem_oi_mode/proid={{problem.problem_id}}/page=0'>Close</a></td>
+					<td>{{problem.title}}</td>
+					{%if problem.hint == context.ojlogin.nick or context.ojlogin.isManager or 'minister' in permlist%}
+						{%if problem.visible %}
+							{% if list_info %}
+								<td><a href='/admin/problem_visible/proid={{problem.problem_id}}/page={{list_info.page}}'>True</td>
+							{% else %}
+								<td><a href='/admin/problem_visible/proid={{problem.problem_id}}/page=0'>True</td>
+							{%endif%}
+						{%else%}
+							{% if list_info %}
+								<td><a href='/admin/problem_visible/proid={{problem.problem_id}}/page={{list_info.page}}'>False</a></td>
+							{% else %}
+								<td><a href='/admin/problem_visible/proid={{problem.problem_id}}/page=0'>False</a></td>
+							{%endif%}
+							
 						{%endif%}
 						
-					{%endif%}
-					
+						{%if problem.oi_mode %}
+							{% if list_info %}
+								<td><a href='/admin/problem_oi_mode/proid={{problem.problem_id}}/page={{list_info.page}}'>Open</td>
+							{% else %}
+								<td><a href='/admin/problem_oi_mode/proid={{problem.problem_id}}/page=0'>Open</td>
+							{%endif%}
+						{%else%}
+							{% if list_info %}
+								<td><a href='/admin/problem_oi_mode/proid={{problem.problem_id}}/page={{list_info.page}}'>Close</a></td>
+							{% else %}
+								<td><a href='/admin/problem_oi_mode/proid={{problem.problem_id}}/page=0'>Close</a></td>
+							{%endif%}
+							
+						{%endif%}
 					<td><a href='/admin/edit_problem/proid={{problem.problem_id}}'>edit</a></td>
 					<td><a href='/admin/problem_testdata/proid={{problem.problem_id}}'>testData</a></td>
 					<td>{{problem.in_date}}</td>
+					{%endif%}
 				</tr>	
 			{%endfor%}
 		</tbody>

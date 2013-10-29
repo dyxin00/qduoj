@@ -1,28 +1,27 @@
 from django.shortcuts import render_to_response
 from admin.is_login.is_login import *
-
-#index page
+from admin.admin_backends import has_any_perm
+    
+@has_any_perm
 def index_sc(req, context):
-    is_ok = is_manager_login(req, context)
-    if is_ok == 0:
-        return HttpResponseRedirect('/admin/admin_login/')
-    return render_to_response('admin_index.html')
+    return render_to_response('admin_index.html', {
+        'context':context}
+    )
 
+@has_any_perm
 def oj_sc(req, context):
-    is_ok = is_manager_login(req, context)
-    if is_ok == 0:
-        return HttpResponseRedirect('/admin/admin_login/')
     return HttpResponseRedirect('/')
-#left menu
-def menu_sc(req, context):
-    is_ok = is_manager_login(req, context)
-    if is_ok == 0:
-        return HttpResponseRedirect('/admin/admin_login/')
-    return render_to_response('admin_menu.html')
 
-# welcome page
+@has_any_perm
+def menu_sc(req, context):
+    permlist = context['ojlogin'].get_all_permission
+    return render_to_response('admin_menu.html', {
+        'context':context,
+        'permlist':permlist}
+    )
+
+@has_any_perm
 def welcome_sc(req, context):
-    is_ok = is_manager_login(req, context)
-    if is_ok == 0:
-        return HttpResponseRedirect('/admin/admin_login/')
-    return render_to_response('welcome.html')
+    return render_to_response('welcome.html', {
+        'context':context}
+    )

@@ -1,0 +1,31 @@
+{%extends "admin_base.html"%}
+
+{%block title%}
+set_priority
+{%endblock%}
+
+{%block content%}	
+	<center>
+		<h1>the {{user.nick}} user!</h1>
+		name: {{user.nick}}<br>
+		ac: {{user.ac}}<br>
+		email: {{user.email}}<br>
+		<br>
+		<h3>set priority:</h3>
+		<form method = 'POST'>
+			<table>
+			{%for perm in perms%}
+				<tr>
+				{%if perm.name in permlist%}
+					<td><input type="checkbox" value={{perm.name}} name="check_box" checked="checked"/></td><td>{{perm.name}} <br></td>
+				{%else%}
+					<td><input type="checkbox" value={{perm.name}} name="check_box"/></td><td>{{perm.name}}</td>
+				{%endif%}
+				</tr>
+			{%endfor%}
+			<input type = 'submit' value = 'Set priority'/>
+		</table>
+		</form>
+		
+	</center>
+{%endblock%}

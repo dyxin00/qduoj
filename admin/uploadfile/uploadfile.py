@@ -1,9 +1,9 @@
 #coding=utf-8
 
+from django.http import HttpResponse
 import os, os.path
-from oj.models import *
 from admin.is_login.is_login import *
-from oj.qduoj_config.qduoj_config import *
+from oj.qduoj_config.qduoj_config import TEST_DATA_PATH
 from admin.uploadfile.uploadfile import *
 
 def unzipfiles(proid, files):

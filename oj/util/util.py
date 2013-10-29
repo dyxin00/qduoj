@@ -22,12 +22,12 @@ language_ab = {
         }
 #page_number 多少一页
 #page 第几页
-def paging(tuple_info,page_number,page):
-
+def paging(tuple_info, page_number, page):
+    
     page_num = []
     list_info = {}
     p = Paginator(tuple_info, page_number);
-
+    
     for i in range(0, p.num_pages):
         page_num.append(i + 1)
         list_info['len'] = page_num
@@ -37,6 +37,7 @@ def paging(tuple_info,page_number,page):
         return (None,None)
     else:
         info = p.page(page).object_list
+        print info
         return (info,list_info)
      
 
