@@ -6,85 +6,91 @@
 
 {%block content%}
 <div id="main">
-	<h3 align='center'>
-		     {%for pagenum in list_info.len%}
-		         {%if pagenum  == list_info.page%}
-		             <span class=red>{{pagenum}}</span>
-		         {% else %}
-		             <a href="/contest_list/page={{pagenum}}">{{pagenum}} </a>
-		         {%endif%}
-		     {%endfor%}
-	</h3>
-	<center>
-		<h2>Contest List</h2>
-		ServerTime:<span id="nowdate">2013-10-19 18:56:26</span>
-		<table width="90%",align ="center">
-			<thead>
-				<tr class="" id = "rankset" align="center">
-					<th width="10%">ID</td>
-					<th width="50%">Name</td>
-					<th width="30%">Status</td>
-					<th width="10%">Private</td>
-				</tr>
+    <h3 align='center'>
+             {%for pagenum in list_info.len%}
+                 {%if pagenum  == list_info.page%}
+                     <span class=red>{{pagenum}}</span>
+                 {% else %}
+                     <a href="/contest_list/page={{pagenum}}">{{pagenum}} </a>
+                 {%endif%}
+             {%endfor%}
+    </h3>
+    <center>
+        <h2>Contest List</h2>
+        ServerTime:<span id="nowdate">2013-10-19 18:56:26</span>
+        <table width="90%",align ="center" id = "contest">
+            <thead height=30>
+                <tr class="" id = "rankset" align="center" height =30>
+                    <th width="10%">ID</td>
+                    <th width="40%">Name</td>
+                    <th width="10%">Mode</td>
+                    <th width="30%">Status</td>
+                    <th width="10%">Private</td>
+                </tr>
 
-			</thead>
-			<tbody>
-				{% for contest_ in contest%}
-				<tr class ="{%cycle "evenrow" "oddrow" %}" align="center">
-					<td >	{{contest_.contest_id}}</td>
-					<td >	<a href="/contest/cid={{contest_.contest_id}}">{{contest_.title}}</a></td>
-					<td >	<span class="red"> End_time&nbsp;<span class="green"> {{contest_.end__time}}</span></span></td>
-					{% if contest_.private == 0%}
-					<td >	<span class="blue">Public</span></td>
-					{% else %}
-					<td >	<span class="red">Private</span></td>
-					{%endif%}
-				</tr>
-				{% endfor %}
-			</tbody>		
+            </thead>
+            <tbody>
+                {% for contest_ in contest%}
+                <tr class ="{%cycle "evenrow" "oddrow" %}" align="center">
+                    <td >   {{contest_.contest_id}}</td>
+                    <td >   <a href="/contest/cid={{contest_.contest_id}}">{{contest_.title}}</a></td>
+                    {%if contest_.oi_mode == True%}
+                    <td >  OI </td>
+                    {%else%}
+                    <td >  ACM </td>
+                    {%endif%}
+                    <td >   <span class="red"> End_time&nbsp;<span class="green"> {{contest_.end__time}}</span></span></td>
+                    {% if contest_.private == 0%}
+                    <td >   <span class="blue">Public</span></td>
+                    {% else %}
+                    <td >   <span class="red">Private</span></td>
+                    {%endif%}
+                </tr>
+                {% endfor %}
+            </tbody>        
 
-	</table>
+    </table>
 </center>
 <script runat="server">
-	var xmlHttp = false;
-	//获取服务器时间
-	try {
-		xmlHttp = new ActiveXObject("Msxml2.XMLHTTP");
-		} catch (e) {
-		try {
-			xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
-			} catch (e2) {
-			xmlHttp = false;
-		}
-	}
+    var xmlHttp = false;
+    //获取服务器时间
+    try {
+        xmlHttp = new ActiveXObject("Msxml2.XMLHTTP");
+        } catch (e) {
+        try {
+            xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+            } catch (e2) {
+            xmlHttp = false;
+        }
+    }
 
-	if (!xmlHttp && typeof XMLHttpRequest != 'undefined') {
-		xmlHttp = new XMLHttpRequest();
-	}
+    if (!xmlHttp && typeof XMLHttpRequest != 'undefined') {
+        xmlHttp = new XMLHttpRequest();
+    }
 
-	xmlHttp.open("GET", "", false);
-	xmlHttp.setRequestHeader("Range", "bytes=-1");
-	xmlHttp.send(null);
+    xmlHttp.open("GET", "", false);
+    xmlHttp.setRequestHeader("Range", "bytes=-1");
+    xmlHttp.send(null);
 
-	var diff=new Date(xmlHttp.getResponseHeader("Date")).getTime()-new Date().getTime();
-	function clock()
-	{
-		var x,h,m,s,n,xingqi,y,mon,d;
-		var x = new Date(new Date().getTime()+diff);
-		y = x.getYear()+1900;
-		if (y>3000) y-=1900;
-		mon = x.getMonth()+1;
-		d = x.getDate();
-		xingqi = x.getDay();
-		h=x.getHours();
-		m=x.getMinutes();
-		s=x.getSeconds();
+    var diff=new Date(xmlHttp.getResponseHeader("Date")).getTime()-new Date().getTime();
+    function clock()
+    {
+        var x,h,m,s,n,xingqi,y,mon,d;
+        var x = new Date(new Date().getTime()+diff);
+        y = x.getYear()+1900;
+        if (y>3000) y-=1900;
+        mon = x.getMonth()+1;
+        d = x.getDate();
+        xingqi = x.getDay();
+        h=x.getHours();
+        m=x.getMinutes();
+        s=x.getSeconds();
 
-		n=y+"-"+mon+"-"+d+" "+(h>=10?h:"0"+h)+":"+(m>=10?m:"0"+m)+":"+(s>=10?s:"0"+s);
-		//alert(n);
-		document.getElementById('nowdate').innerHTML=n;
-		setTimeout("clock()",1000);
-	} 
-	clock();
+        n=y+"-"+mon+"-"+d+" "+(h>=10?h:"0"+h)+":"+(m>=10?m:"0"+m)+":"+(s>=10?s:"0"+s);
+        //alert(n);
+        document.getElementById('nowdate').innerHTML=n;
+        setTimeout("clock()",1000);
+    } 
+    clock();
 </script>
-	{%endblock%}
+    {%endblock%}

@@ -37,7 +37,9 @@
 		{%if cid == -1%}
 		[<a href= "/submit_code/num={{problem.problem_id}}">Submit</a>] [<a href = "/Search_status?problem_id={{problem.problem_id}}&user_id&language=-1&jresult=-1">Status</a>] [<a href="">Discuss</a>]
 		{%else%}
-		[<a href= "/submit_code/num={{problem.problem_id}}/cid={{cid}}">Submit</a>] [<a href = "/Search_status?problem_id={{problem.problem_id}}&user_id&language=-1&jresult=-1">Status</a>] [<a href="">Discuss</a>]
+        [<a href= "/submit_code/num={{problem.problem_id}}/cid={{cid}}">Submit</a>]
+        [<a href= "/contest_search_status/cid={{cid}}/?problem_id={{problem.problem_id}}&user_id&language=-1&jresult=-1">Status</a>] 
+        [<a href="">Discuss</a>]
 		{%endif%}
 	</center>
 {%endblock%} 

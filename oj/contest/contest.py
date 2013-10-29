@@ -1,13 +1,14 @@
+'''contest '''
 import datetime
-from django.http import HttpResponse, HttpResponseRedirect
+#from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
-from oj.models import *
-from oj.forms import *
-from oj.qduoj_config.qduoj_config import *
-from oj.util.util import *
+from oj.models import Contest, User, Contest_problem, Solution
+from oj.qduoj_config.qduoj_config import PAGE_CONTEST_NUM
+from oj.util.util import paging
 
-def contest_list_sc(req, context, page):
+def contest_list_sc(context, page):
 
+    '''return contest list '''
     try:
         page = int(page)
     except ValueError:
@@ -28,7 +29,8 @@ def contest_list_sc(req, context, page):
                      "list_info": list_info
                     })
 
-def contest_sc(req, context, cid):
+def contest_sc(context, cid):
+    '''contest detailed information'''
     problem_list = []
 
     try:
@@ -40,15 +42,17 @@ def contest_sc(req, context, cid):
     contest = Contest.objects.filter(contest_id = cid)
     problem = Contest_problem.objects.filter(contest_id = cid)
     contest_solution = Solution.objects.filter(contest_id = cid)
-    for cp in problem:
-        p_contest_solution = contest_solution.filter(problem_id = cp.problem_id)
+    for cpb in problem:
+        p_contest_solution = contest_solution.filter(
+            problem_id=cpb.problem_id)
         problem_list.append(
                 {
-                    "problem_id" : cp.problem_id,
-                    "num":cp.num,
-                    "title" : cp.title,
+                    "problem_id" : cpb.problem_id,
+                    "num":cpb.num,
+                    "title" : cpb.title,
                     "submit" : p_contest_solution.count(),
-                    "Ac" : p_contest_solution.filter(result = 4).count()
+                    "Ac" : p_contest_solution.filter(result = 4).count(),
+                    "score":cpb.score
                     }
                 )
 
@@ -59,9 +63,15 @@ def contest_sc(req, context, cid):
                              )
 
 
-def contest_rank_sc(req, context, cid):
+def contest_rank_sc(context, cid):
 
+    '''contest rank'''
     contest_solution = Solution.objects.filter(contest_id=cid)
+    try:
+        contest = Contest.objects.get(contest_id=cid)
+    except Contest.DoesNotExist:
+        pass
+    oi_mode = contest.oi_mode
 
     user_id_list = contest_solution.values_list('user', flat=True).distinct()
 
@@ -73,60 +83,152 @@ def contest_rank_sc(req, context, cid):
                                                      flat=True
                                                     ).distinct()
 
-    print contest_problem_id
-
-    contest_score = contest_rank_acm(contest_problem_id,
+    if oi_mode:
+        contest_score = contest_rank_oi(contest_problem_id,
                                      user_id_list,
                                      contest_solution,
                                      cid)
-    return render_to_response("contest_rank.html", {"contest_scor":contest_score})
+    else:
+        contest_score = contest_rank_acm(contest_problem_id,
+                                     user_id_list,
+                                     contest_solution,
+                                     cid)
+    return render_to_response("contest_rank.html",
+                              {"contest_score":contest_score,
+                               "contest":contest,
+                               "context":context})
 
-def contest_rank_acm(contest_problem_id, user_id_list, contest_solution,cid):
+def contest_rank_acm(contest_problem_id, user_id_list, contest_solution, cid):
 
+    '''acm mode'''
     contest_score = []
-    contest_time = Contest.objects.get(contest_id = cid).start_time
+    try:
+        contest_time = Contest.objects.get(contest_id = cid).start_time
+    except Contest.DoesNotExist:
+        pass
 
     for user_id in user_id_list:
-
-        user = User.objects.get(user_id=user_id).nick
+        try:
+            user = User.objects.get(user_id=user_id).nick
+        except User.DoesNotExist:
+            pass
         user_solution = contest_solution.filter(user_id = user_id)
 
         solved = user_solution.filter(result = 4).count()
-        #user_problem[]
+
+        user_problem = []
+        total_time = datetime.timedelta()
         for pb_id in contest_problem_id:
 
             pb_id_solution = user_solution.filter(problem_id = pb_id)
             count = pb_id_solution.count()
-            count_ac = pb_id_solution.count()
+            try:
+                problem_name = Contest_problem.objects.filter(
+                    contest_id = cid).get(problem_id = pb_id)
+            except Contest_problem.DoesNotExits:
+                pass
 
             ac_solution = pb_id_solution.filter(result = 4)
             if len(ac_solution):
 
                 ac_time = ac_solution[0].judgetime
                 ac_user_time = ac_time - contest_time
-                time_penalty = datetime.timedelta(minutes=21*count-count_ac)
+                penalty = count - len(ac_solution)
+                time_penalty = datetime.timedelta(minutes=20*penalty)
+                user_problem.append(
+                    {
+                        'problem_name' : problem_name.title,
+                        'submit': 1,
+                        'ac_user_time':ac_user_time,
+                        'penalty': penalty,
+                        'pid' :pb_id
+                    })
 
-                print time_penalty 
-                print ac_user_time
-                print time_penalty + ac_user_time
-                print ac_time, contest_time, pb_id, ac_solution[0].solution_id 
+                total_time = total_time + ac_user_time + time_penalty
 
-            if count != 0:
-                print count,pb_id
-
-        print user
-        print user_solution
-        print
+            else:
+                user_problem.append(
+                    {
+                        'problem_name':problem_name.title,
+                        'submit': 0,
+                        'ac_user_time':ac_user_time,
+                        'penalty':penalty,
+                        'pid' :pb_id
+                    }
+                    )
         contest_score.append(
                 {
                     'rank': 0,
-                    'user_id' : user,
+                    'user' : user,
+                    'user_id' : user_id,
                     'solved' : solved,
-                    'penalty':0,
-                    'problem' :0,
+                    'penalty':total_time,
+                    'problem' :user_problem,
                     }
                 )
 
+    contest_score = sorted(contest_score, key=lambda user:
+                           (-user['solved'], user['penalty']))
+    return contest_score
 
+def contest_rank_oi(contest_problem_id, user_id_list, contest_solution, cid):
 
+    '''oi mode'''
+    contest_score = []
+    for user_id in user_id_list:
+        try:
+            user = User.objects.get(user_id=user_id).nick
+        except User.DoesNotExist:
+            pass
+        user_solution = contest_solution.filter(user_id = user_id)
+
+        solved = user_solution.filter(result = 4).count()
+        user_problem = []
+        total_score = 0.0
+        for pb_id in contest_problem_id:
+
+            pb_id_solution = user_solution.filter(
+                problem_id = pb_id).order_by('-solution_id')
+            try:
+                con_problem = Contest_problem.objects.filter(
+                    contest_id = cid).get(problem_id = pb_id)
+                pb_score = con_problem.score
+            except Contest_problem.DoesNotExist:
+                pass
+
+            if len(pb_id_solution):
+                score = pb_score * pb_id_solution[0].score / 100
+                user_problem.append(
+                    {
+                        'problem_name' : con_problem.title,
+                        'problem_score': score,
+                        'submit' : 1,
+                        'pid' :pb_id
+                    }
+                    )
+                total_score = total_score + score
+            else:
+                user_problem.append(
+                    {
+                        'problem_name' :con_problem.title,
+                        'problem_score': 0.0,
+                        'submit' : 0,
+                        'pid' :pb_id
+                    }
+                    )
+
+        contest_score.append(
+                {
+                    'rank': 0,
+                    'user' : user,
+                    'user_id' : user_id,
+                    'solved' : solved,
+                    'score':total_score,
+                    'problem' :user_problem
+                    }
+                )
+
+    contest_score = sorted(contest_score, key=lambda user: -user['score'])
+
+    return contest_score
 

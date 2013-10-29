@@ -9,7 +9,7 @@ from oj.forms import *
 from oj.qduoj_config.qduoj_config import *
 from oj.util.util import *
 
-def problem_sc(req, num, context, cid = -1):
+def problem_sc(num, context, cid = -1):
     """return  problem response"""
     try:
         pid = int(num)
@@ -38,7 +38,7 @@ def problem_sc(req, num, context, cid = -1):
                                         "title":title, "context":context})
 
 
-def problemlist_sc(req, page, context):
+def problemlist_sc(page, context):
     """return problem_list response"""
     try:
         page = int(page) #抛异常
@@ -62,6 +62,9 @@ def problemlist_sc(req, page, context):
 
 def submit_code_sc(req, num, context, cid = -1):
     """sava code from database"""
+
+    if cid > 0 and contest_end(cid):
+        return render_to_response("error.html")
     if req.method == 'POST':
         form_code = Submit_code(req.POST)
         if form_code.is_valid():
@@ -69,7 +72,8 @@ def submit_code_sc(req, num, context, cid = -1):
             language_code = form_code.cleaned_data['language']
             if 'login' in req.session:
                 if len(submit_code):
-                    user = User.objects.get(nick=req.session['login']['username'])
+                    user = User.objects.get(
+                        nick=req.session['login']['username'])
                     solution = Solution.objects.create(
 
                             contest_id = int(cid),
@@ -101,86 +105,12 @@ def submit_code_sc(req, num, context, cid = -1):
                                       {"form_code":form_code,
                                        "context":context,
                                        "error":error,
-                                        "num":num})#submit_code  未添加
+                                       "num":num})#submit_code  未添加
     else:
         form_code = Submit_code()
     return render_to_response('submit_code.html',
                     {"num" : num,"form_code":form_code,"context" : context})
 
-def status_sc(req, context, page, cid = -1, problem_id = -1, language = -1, user = '', jresult = -1):
-    """return solution status"""
-    try:
-        page = int(page) #抛异常
-    except ValueError:
-        page_info = "page not found!"
-        title = "404 not found!"
-        return render_to_response('error.html',
-                    {'pageInfo':page_info, 'title':title, 'context':context})
-
-    solution = Solution.objects.filter(contest_id=cid).order_by('-solution_id')
-
-    try:
-        if problem_id != -1:
-            solution = solution.filter(problem_id = Problem.objects.get(
-                problem_id = problem_id))
-        if len(user):
-            User.objects.get(nick = user)
-            solution = solution.filter(user = User.objects.get(nick = user))
-        if language != -1:
-            solution = solution.filter(language = language)
-        if jresult != -1:
-            solution = solution.filter(result = jresult)
-    except User.DoesNotExist:
-        return render_to_response('status.html', {"context" : context})
-
-    (solution, list_info) = paging(solution, PAGE_STATUS_NUM, page)
-
-    if solution == None:
-        page_info = "page not found!"
-        title = "404 not found"
-        return render_to_response('error.html',
-                        {"pageInfo": page_info,
-                         "title":title,
-                         "context":context
-                        })
-
-
-    if cid == -1:
-        return problem_status(context, solution, list_info)
-    else:
-        return contest_status_sc(context, solution, list_info, cid)
-
-def problem_status(context, solution, list_info):
-    """return problem status"""
-    return render_to_response('status.html',
-                              {"context" : context,
-                               'Result' : Result_dic,
-                               'language_ab' : language_ab,
-                               'solution' : solution,
-                               'list_info':list_info
-                              })
-
-def contest_status_sc(context, solution, list_info, cid):
-    """return contest status"""
-    contest_problem = Contest_problem.objects.filter(contest_id = cid)
-    try:
-        contest = Contest.objects.get(contest_id = cid)
-    except Contest.DoesNotExist:
-        pass
-
-
-    for var in solution:
-        contest_p = contest_problem.get(problem_id = var.problem.problem_id)
-        var.problem.title = contest_p.title
-    return render_to_response('contest_status.html',
-                              {
-                                  "context" : context,
-                                  'Result' : Result_dic,
-                                  'language_ab' : language_ab,
-                                  'solution' : solution,
-                                  'list_info':list_info,
-                                  'contest':contest
-                              })
 
 def problem_handle(problem):
     """Handle problem"""

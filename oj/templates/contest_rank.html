@@ -5,8 +5,90 @@
 {% endblock %}
 {%block content%}
 
-<p align = "center"><img src = "/static/image/404.jpg"/></p>
-<h1 align = "center">{{pageInfo}}</h1>
+<center>
+    <h3>Contest RankList -- {{contest.title}}</h3>
+    <a href="contestrank.xls.php?cid=1006">Download</a>
+</center><br>
+<div align = "center">
+    <a class="contest_st" href="/contest/cid={{contest.contest_id}}/">[Problem]</a>
+    <a class="contest_st" href="/contest_status/cid={{contest.contest_id}}/">[Status]</a>
+</div>
+<table align="center" id="contest" width="90%" >
+    <thead>
+        <tr align="center" height=30>
+            <th width="5%" class="header">Rank</td>
+            <th width="5%" class="header">User</th>
+            <th width="5%" class="header">Solved</th>
+            {%if contest.oi_mode%}
+            <th width="10%" class="header">Score</th>
+            {%else%}
+            <th width="10%" class="header">Penalty</th>
+            {%endif%}
+            {%for var in contest_score %}
+            {%if  forloop.first %}
+            {%for v in var.problem%}
+            <th ><a href="/problem/num={{v.pid}}/cid={{contest.contest_id}}/">{{v.problem_name}}</a></th>
+            {%endfor%}
+            {%endif%}
+            {%endfor%}
+            </tr>
+            </thead>
+    <tbody>
+        {%for var in contest_score%}
+        <tr class="{%cycle "evenrow" "oddrow"%}" align="center" >
+            {%if forloop.first%}
+            <td class="badge badge-warning">Winner</td>
+            {%else%}
+            <td>{{forloop.counter}}</td>
+            {%endif%}
+            {%if context.ojlogin.nick == var.user%}
+            <td><a  href="/user_info/name={{var.user}}/">{{var.user}}</a></td>
+            <td><a href="/contest_search_status/cid={{contest.contest_id}}/?problem_id=&user_id={{var.user}}&language=-1&jresult=-1">{{var.solved}}</a></td>
+            {%else%}
+            <td>{{var.user}}</td>
+            <td>{{var.solved}}</td>
+            {%endif%}
+
+            {%if contest.oi_mode%}
+                <td>{{var.score}}</td>
+            {%else%}
+                <td>{{var.penalty}}</td>
+            {%endif%}
+            {%for v in var.problem%}
+                {%if v.submit == 1%}
+                    {%if contest.oi_mode%}
+                        {%if v.problem_score != 0%}
+                        <td class="well" style="background-color:aaaaff">{{v.problem_score}}</td>
+                        {%else%}
+                        <td  class = "well"style="background-color:ffa0a0">{{v.problem_score}}</td>
+                        {%endif%}
+
+                    {%else%}
+                    <td class="well" style="background-color:aaaaff">
+                        {{v.ac_user_time}}
+                        {%if v.penalty != 0%}
+                        (-{{v.penalty}})
+                        {%endif%}
+                        </td>
+                    {%endif%}
+                {%else%}
+                    {%if contest.oi_mode == 1%}
+                        <td ></td>
+                    {%else%}
+                        {%if v.penalty == 0%}
+                        <td  ></td>
+                        {%else%}
+                        <td  class = "well"style="background-color:ffa0a0">(-{{v.penalty}})</td>
+                        {%endif%}
+                    {%endif%}
+                {%endif%}
+            
+            {%endfor%}
+            </tr>
+        {%endfor%}
+
+		</tbody>
+	</table>
 {%endblock%}
 
 

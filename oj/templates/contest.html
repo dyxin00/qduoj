@@ -6,92 +6,98 @@
 
 {%block content%}
 <center>
-	<div>
-		<h3>Contest&nbsp{{contest.contest_id}} - test</h3>
+    <div>
+        <h3>Contest&nbsp{{contest.contest_id}} - test</h3>
 
-		<p>Start Time: <span class="contest_time">{{contest.start_time}}</span>
-		End Time: <span class="contest_time">{{contest.end__time}}</span></p>
+        <p>Start Time: <span class="contest_time">{{contest.start_time}}</span>
+        End Time: <span class="contest_time">{{contest.end__time}}</span></p>
 
-		<p>Current Time:<span id="nowdate" class="contest_time">2013-10-20 15:44:05</span>
-		Status:<span class="red">Running</span>&nbsp;&nbsp;
-		{%if contest.private == 0%}
-		<span class="blue">Public</span>
-		{%else%}
-		<span class="red">Private</span>
-		{%endif%}
-		</p>
-		<br>
-		<span>
-			<a class ="contest_st"href="/contest_status/cid={{contest.contest_id}}">[Status]</a>
-			<a class ="contest_st" href="/contest_rank/cid={{contest.contest_id}}">[Rank]</a>
-		</span>
-	</div>
-	<br>
-	<table  width="90%">
-		<thead>
-			<tr align="center" class = "" id="rankset">
-				<th width="5%"></td>
-				<th width="10%">Problem ID</td>
-				<th width="60%">Title</td>
-				<th width="10%">AC</td>
-				<th width="10%">Submit</td>
-			</tr>
-		</thead>
-		<tbody>
-			{%for p in problem_list%}
-			<tr align="center"class="{% cycle "evenrow" "oddrow" %}">
-				<td>	</td>
-				<td> {{p.num}}</td>
-				<td>	<a href="/problem/num={{p.problem_id}}/cid={{contest.contest_id}}">{{p.title}}</a>	</td>
-				<td>	{{p.Ac}}</td>
-				<td>	{{p.submit}}</td>
-			</tr>
-			{%endfor%}
-		</tbody>
-	</table>
+        <p>Current Time:<span id="nowdate" class="contest_time">2013-10-20 15:44:05</span>
+        Status:<span class="red">Running</span>&nbsp;&nbsp;
+        {%if contest.private == 0%}
+        <span class="blue">Public</span>
+        {%else%}
+        <span class="red">Private</span>
+        {%endif%}
+        </p>
+        <br>
+        <span>
+            <a class ="contest_st"href="/contest_status/cid={{contest.contest_id}}">[Status]</a>
+            <a class ="contest_st" href="/contest_rank/cid={{contest.contest_id}}">[Rank]</a>
+        </span>
+    </div>
+    <br>
+    <table  width="90%" id = "contest">
+        <thead>
+            <tr align="center" class = "" height=30>
+                <th width="5%"></td>
+                <th width="10%">Problem ID</td>
+                <th width="50%">Title</td>
+                <th width="10%">Score</td>
+                <th width="10%">AC</td>
+                <th width="10%">Submit</td>
+            </tr>
+        </thead>
+        <tbody>
+            {%for p in problem_list%}
+            <tr align="center"class="{% cycle "evenrow" "oddrow" %}">
+                <td>    </td>
+                <td> {{p.num}}</td>
+                <td>    <a href="/problem/num={{p.problem_id}}/cid={{contest.contest_id}}">{{p.title}}</a>  </td>
+                {% if contest.oi_mode == True%}
+                <td> {{p.score}}</td>
+                {%else%}
+                <td> ----</td>
+                {%endif%}
+                <td>    {{p.Ac}}</td>
+                <td>    {{p.submit}}</td>
+            </tr>
+            {%endfor%}
+        </tbody>
+    </table>
 <script runat="server">
-		var xmlHttp = false;
-		//获取服务器时间
-		try {
-			xmlHttp = new ActiveXObject("Msxml2.XMLHTTP");
-		} catch (e) {
-			try {
-				xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
-			} catch (e2) {
-			    xmlHttp = false;
-			}
-		}
+        var xmlHttp = false;
+        //获取服务器时间
+        try {
+            xmlHttp = new ActiveXObject("Msxml2.XMLHTTP");
+        } catch (e) {
+            try {
+                xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+            } catch (e2) {
+                xmlHttp = false;
+            }
+        }
 
-	if (!xmlHttp && typeof XMLHttpRequest != 'undefined') {
-		xmlHttp = new XMLHttpRequest();
-	}
+    if (!xmlHttp && typeof XMLHttpRequest != 'undefined') {
+        xmlHttp = new XMLHttpRequest();
+    }
 
-	xmlHttp.open("GET","", false);
-	//xmlHttp.open("GET", false);
-	xmlHttp.setRequestHeader("Range", "bytes=-1");
-	xmlHttp.send(null);
+    xmlHttp.open("GET","", false);
+    //xmlHttp.open("GET", false);
+    xmlHttp.setRequestHeader("Range", "bytes=-1");
+    xmlHttp.send(null);
 
-		var diff=new Date(xmlHttp.getResponseHeader("Date")).getTime()-new Date().getTime();
-		function clock()
-		{
-			var x,h,m,s,n,xingqi,y,mon,d;
-			var x = new Date(new Date().getTime()+diff);
-			y = x.getYear()+1900;
-			if (y>3000) y-=1900;
-			mon = x.getMonth()+1;
-			d = x.getDate();
-			xingqi = x.getDay();
-			h=x.getHours();
-			m=x.getMinutes();
-			s=x.getSeconds();
+        var diff=new Date(xmlHttp.getResponseHeader("Date")).getTime()-new Date().getTime();
+        function clock()
+        {
+            var x,h,m,s,n,xingqi,y,mon,d;
+            var x = new Date(new Date().getTime()+diff);
+            y = x.getYear()+1900;
+            if (y>3000) y-=1900;
+            mon = x.getMonth()+1;
+            d = x.getDate();
+            xingqi = x.getDay();
+            h=x.getHours();
+            m=x.getMinutes();
+            s=x.getSeconds();
 
-			n=y+"-"+mon+"-"+d+" "+(h>=10?h:"0"+h)+":"+(m>=10?m:"0"+m)+":"+(s>=10?s:"0"+s);
-			//alert(n);
-			document.getElementById('nowdate').innerHTML=n;
-			setTimeout("clock()",1000);
-		} 
-		clock();
-	</script>
+            n=y+"-"+mon+"-"+d+" "+(h>=10?h:"0"+h)+":"+(m>=10?m:"0"+m)+":"+(s>=10?s:"0"+s);
+            //alert(n);
+            document.getElementById('nowdate').innerHTML=n;
+            setTimeout("clock()",1000);
+        } 
+        clock();
+    </script>
 </center>
 
 {%endblock%}

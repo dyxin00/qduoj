@@ -12,6 +12,8 @@ from oj.change_info.change_info import *
 from oj.usermail.usermail import *
 from oj.qduoj_config.qduoj_config import *
 from oj.contest.contest import *
+from oj.util.util import contest_end
+from oj.status_problem.status_problem import status_sc, __search__
 
 def base_info(req):    #the news and the session!
     context = {}
@@ -32,11 +34,11 @@ def base_info(req):    #the news and the session!
 
 def problemlist(req, page = "1"):
     context = base_info(req)
-    return problemlist_sc(req, page, context)
+    return problemlist_sc(page, context)
 
 def problem(req, num):
     context = base_info(req)
-    return problem_sc(req, num, context)
+    return problem_sc(num, context)
 
 def login(req):
     context = base_info(req)
@@ -53,15 +55,15 @@ def logout(req):
 def problemid(req):
     pid = req.GET['id']
     context = base_info(req)
-    return problem_sc(req, pid, context)
-
+    return problem_sc(pid, context)
+#  修改
 def problem_search(req):
     search = req.GET['search']
     context = base_info(req)
     problem_s = Problem.objects.filter(title = str(search))
     if len(problem_s):
         pid = problem_s[0].problem_id
-        return problem_sc(req, pid, context)
+        return problem_sc(pid, context)
     else:
         page_info = "problem not found!"
         title = "404 not found"
@@ -86,31 +88,12 @@ def user_info(req, nick):
 
 def status(req, page='1'):
     context = base_info(req)
-    return status_sc(req, context, page, -1)
+    return status_sc(context, page, -1)
 
-def status_search(req, page='1'):
+def status_search(req, page= '1'):
     context = base_info(req)
     if req.method == 'GET':
-        problem_id = -1
-        try:
-            problem_id_s = req.GET['problem_id']
-            if len(problem_id_s):
-                problem_id = int(problem_id_s)
-            else:
-                problem_id = -1
-            user_id = req.GET['user_id']
-
-            language = int(req.GET['language'])
-            jresult = int(req.GET['jresult'])
-
-        except ValueError:
-            page_info = "problem not found!"
-            title = "404 not found"
-            return render_to_response('error.html',
-                {"pageInfo":page_info, "title":title, "context":context})
-
-        return status_sc(req, context, page, -1,
-                         problem_id, language, user_id, jresult)
+        return __search__(req,context, page, -1)
 
 def source_code(req, runid):
     context = base_info(req)
@@ -142,27 +125,33 @@ def readmail(req, fun, msgid):
 def contest_list(req, page = '1'):
 
     context = base_info(req)
-    return contest_list_sc(req, context, page)
+    return contest_list_sc(context, page)
 def contest(req, cid):
 
     context = base_info(req)
-    return contest_sc(req, context, cid)
+    return contest_sc(context, cid)
 
 def contest_problem(req, num, cid):
     context = base_info(req)
-    return problem_sc(req, num, context, cid)
+    return problem_sc(num, context, cid)
 
 def contest_submit_code(req, num, cid):
-    context = base_info(req)
-    return submit_code_sc(req, num, context, cid)
+
+    if not contest_end(cid):
+        context = base_info(req)
+        return submit_code_sc(req, num, context, cid)
+    else:
+        return render_to_response("error.html")
 
 def contest_status(req, cid, page = '1'):
     context = base_info(req)
-    return status_sc(req, context, page, cid)
+    return status_sc(context, page, cid)
 def contest_rank(req, cid):
     context = base_info(req)
-    return contest_rank_sc(req, context, cid)
-
+    return contest_rank_sc(context, cid)
+def contest_status_search(req, cid, page = 1):
+    context = base_info(req)
+    return __search__(req, context, page, cid)
 
 def compile_error(req, num):
 
@@ -173,7 +162,7 @@ def compile_error(req, num):
         error = Compileinfo.objects.get(solution_id = num)
     except Compileinfo.DoesNotExist:
 
-        page_info = 'you must login first!'
+        page_info = ''
         title = '404 not found'
         return render_to_response('error.html',
                 {'pageInfo':page_info, 'title':title, 'context':context})
@@ -186,7 +175,7 @@ def runtime_error(req, num):
     try:
         error = Runtimeinfo.objects.get(solution_id=num)
     except Runtimeinfo.DoesNotExist:
-        page_info = 'you must login first!'
+        page_info = ''
         title = '404 not found'
         return render_to_response('error.html',
                 {'pageInfo':page_info, 'title':title, 'context':context})

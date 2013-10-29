@@ -1,5 +1,6 @@
 #coding=utf-8
-
+from datetime import datetime, timedelta
+from oj.models import Contest
 from django.core.paginator import Paginator
 
 Result_dic = {
@@ -33,7 +34,7 @@ def paging(tuple_info, page_number, page):
         list_info['len'] = page_num
         list_info['page'] = page
 
-    if page <= 0 or page > page_number:
+    if page <= 0 or page > p.num_pages:
         return (None,None)
     else:
         info = p.page(page).object_list
@@ -42,3 +43,17 @@ def paging(tuple_info, page_number, page):
      
 
     
+def contest_end(cid):
+
+    try:
+        contest_end_time = Contest.objects.get(contest_id = cid).end__time
+    except Contest.DoesNotExist:
+        return True
+    server_time = datetime.now()
+    contest_end_time = contest_end_time.replace(
+        tzinfo=None) + timedelta(hours=8,minutes=1)
+    
+    if server_time < contest_end_time:
+        return False
+    else:
+        return True

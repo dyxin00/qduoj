@@ -5,7 +5,11 @@
 {% block content %}
 	
 <div id="center" class="input-append">
+    {%if cid == -1%}
 	<form id="Search" action="/Search_status" method="GET">
+    {%else%}
+    <form id="Search" action="/contest_search_status/cid={{cid}}/" method="GET">
+    {%endif%}
 		Problem ID:<input class="input-mini" style="height:24px" type="text" size="4" name="problem_id" value="">
 		User:<input class="input-mini" style="height:24px" type="text" size="4" name="user_id" value="">
 		Language:<select class="input-small" size="1" name="language">
