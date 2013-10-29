@@ -4,10 +4,10 @@
 """problem"""
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
-from oj.models import *
-from oj.forms import *
-from oj.qduoj_config.qduoj_config import *
-from oj.util.util import *
+from oj.models import Problem, User, Solution, Source_code
+from oj.forms import Submit_code
+from oj.qduoj_config.qduoj_config import PAGE_PROBLEM_NUM
+from oj.util.util import paging, contest_end
 
 def problem_sc(num, context, cid = -1):
     """return  problem response"""
@@ -15,7 +15,7 @@ def problem_sc(num, context, cid = -1):
         pid = int(num)
         problem = Problem.objects.get(problem_id = pid)
 
-        if problem.visible == False:
+        if problem.visible == False and cid == -1:
             page_info = "problem not found!"
             title = "404 not found"
             return render_to_response('error.html',
@@ -40,16 +40,19 @@ def problem_sc(num, context, cid = -1):
 
 def problemlist_sc(page, context):
     """return problem_list response"""
-    try:
-        page = int(page) #抛异常
-    except ValueError:
-        page_info = "page not found!"
-        title = "404 not found!"
-        return render_to_response('error.html', {'pageInfo':page_info,
-                                    'title':title, 'context':context})
 
+    page = int(page)
+    ac_list = []
     (problemset, list_info) = paging(Problem.objects.order_by('problem_id'),
                                     PAGE_PROBLEM_NUM,page)
+    if 'ojlogin' in context:
+        user = context['ojlogin'].nick
+        solution_ac = Solution.objects.filter(result=4)
+
+        solution_ac = solution_ac.filter(user_id = User.objects.get(nick = user))
+        ac_list = solution_ac.values_list('problem_id', flat=True).distinct()
+        print solution_ac
+        print ac_list
 
     if problemset == None:
         page_info = "page not found!"
@@ -57,14 +60,18 @@ def problemlist_sc(page, context):
         return render_to_response('error.html', {"pageInfo": page_info,
                                     "title":title, "context":context})
 
-    return render_to_response('problemlist.html', {"problemset":problemset,
-                                 "context":context, 'list_info':list_info})
+    return render_to_response('problemlist.html',
+                              {"problemset":problemset,
+                               "context":context,
+                               "ac_list" : ac_list,
+                               'list_info':list_info})
 
 def submit_code_sc(req, num, context, cid = -1):
     """sava code from database"""
 
     if cid > 0 and contest_end(cid):
         return render_to_response("error.html")
+
     if req.method == 'POST':
         form_code = Submit_code(req.POST)
         if form_code.is_valid():

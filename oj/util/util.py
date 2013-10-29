@@ -38,7 +38,6 @@ def paging(tuple_info, page_number, page):
         return (None,None)
     else:
         info = p.page(page).object_list
-        print info
         return (info,list_info)
      
 

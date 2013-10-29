@@ -352,3 +352,10 @@ div.content {
 	font-size : 20px;
 }
 
+.user_submit{
+    font-size: 20px
+}
+.pass{
+    background: url("../image/1.png") center;
+    background-repeat: no-repeat;
+}
