@@ -31,19 +31,36 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal(u'oj', ['Contest_problem'])
 
+        # Adding model 'Perm'
+        db.create_table(u'oj_perm', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('name', self.gf('django.db.models.fields.CharField')(unique=True, max_length=30)),
+            ('describe', self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True)),
+        ))
+        db.send_create_signal(u'oj', ['Perm'])
+
         # Adding model 'User'
         db.create_table(u'oj_user', (
             ('user_id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('nick', self.gf('django.db.models.fields.CharField')(max_length=50)),
             ('password', self.gf('django.db.models.fields.CharField')(max_length=100)),
             ('email', self.gf('django.db.models.fields.EmailField')(max_length=75, null=True, blank=True)),
-            ('isManager', self.gf('django.db.models.fields.IntegerField')(default=0)),
+            ('isManager', self.gf('django.db.models.fields.BooleanField')(default=False)),
             ('website', self.gf('django.db.models.fields.CharField')(max_length=50)),
             ('ac', self.gf('django.db.models.fields.IntegerField')(default=0)),
             ('submit', self.gf('django.db.models.fields.IntegerField')(default=0)),
             ('rank', self.gf('django.db.models.fields.IntegerField')(default=0)),
         ))
         db.send_create_signal(u'oj', ['User'])
+
+        # Adding M2M table for field perm on 'User'
+        m2m_table_name = db.shorten_name(u'oj_user_perm')
+        db.create_table(m2m_table_name, (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('user', models.ForeignKey(orm[u'oj.user'], null=False)),
+            ('perm', models.ForeignKey(orm[u'oj.perm'], null=False))
+        ))
+        db.create_unique(m2m_table_name, ['user_id', 'perm_id'])
 
         # Adding model 'Problem'
         db.create_table(u'oj_problem', (
@@ -53,7 +70,7 @@ class Migration(SchemaMigration):
             ('input_data', self.gf('django.db.models.fields.TextField')()),
             ('output_data', self.gf('django.db.models.fields.TextField')()),
             ('sample_input', self.gf('django.db.models.fields.TextField')()),
-            ('sameple_output', self.gf('django.db.models.fields.TextField')()),
+            ('sample_output', self.gf('django.db.models.fields.TextField')()),
             ('source', self.gf('django.db.models.fields.CharField')(max_length=50, null=True, blank=True)),
             ('hint', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
             ('in_date', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
@@ -110,7 +127,7 @@ class Migration(SchemaMigration):
         # Adding model 'News'
         db.create_table(u'oj_news', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('title', self.gf('django.db.models.fields.TextField')()),
+            ('title', self.gf('django.db.models.fields.CharField')(max_length=30)),
             ('content', self.gf('django.db.models.fields.TextField')()),
             ('time', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
             ('visible', self.gf('django.db.models.fields.BooleanField')(default=True)),
@@ -157,8 +174,14 @@ class Migration(SchemaMigration):
         # Deleting model 'Contest_problem'
         db.delete_table(u'oj_contest_problem')
 
+        # Deleting model 'Perm'
+        db.delete_table(u'oj_perm')
+
         # Deleting model 'User'
         db.delete_table(u'oj_user')
+
+        # Removing M2M table for field perm on 'User'
+        db.delete_table(db.shorten_name(u'oj_user_perm'))
 
         # Deleting model 'Problem'
         db.delete_table(u'oj_problem')
@@ -246,8 +269,14 @@ class Migration(SchemaMigration):
             'content': ('django.db.models.fields.TextField', [], {}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'time': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
-            'title': ('django.db.models.fields.TextField', [], {}),
+            'title': ('django.db.models.fields.CharField', [], {'max_length': '30'}),
             'visible': ('django.db.models.fields.BooleanField', [], {'default': 'True'})
+        },
+        u'oj.perm': {
+            'Meta': {'object_name': 'Perm'},
+            'describe': ('django.db.models.fields.CharField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '30'})
         },
         u'oj.problem': {
             'Meta': {'object_name': 'Problem'},
@@ -261,8 +290,8 @@ class Migration(SchemaMigration):
             'oi_mode': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'output_data': ('django.db.models.fields.TextField', [], {}),
             'problem_id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'sameple_output': ('django.db.models.fields.TextField', [], {}),
             'sample_input': ('django.db.models.fields.TextField', [], {}),
+            'sample_output': ('django.db.models.fields.TextField', [], {}),
             'source': ('django.db.models.fields.CharField', [], {'max_length': '50', 'null': 'True', 'blank': 'True'}),
             'submit': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
             'time_limit': ('django.db.models.fields.IntegerField', [], {}),
@@ -298,9 +327,10 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'User'},
             'ac': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
             'email': ('django.db.models.fields.EmailField', [], {'max_length': '75', 'null': 'True', 'blank': 'True'}),
-            'isManager': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
+            'isManager': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'nick': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
             'password': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            'perm': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'to': u"orm['oj.Perm']", 'null': 'True', 'blank': 'True'}),
             'rank': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
             'submit': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
             'user_id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),

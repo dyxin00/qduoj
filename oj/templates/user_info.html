@@ -16,21 +16,24 @@
 	<hr/>
 	<h3><span class = "green">AC: </span>{{user.ac}}
 	<span class = "green">Submit: </span>{{user.submit}}</h3>
+<div width = "70%">
 	<hr/>
-	<h3>list of solved problems</h3>
-	<p clsss = "user_submit">
-	{%for submit in submitions%}
-		<a href = "problem/num={{submit.problem.problem_id}}"/>{{submit.problem.problem_id}}
-		
-	{%endfor%}
-	<a href = "/source_code/runid=1"> 1023 </a>
-	a a a a a a a a a a a  a a a a a a a a a a a a a a a a a a a a a a a  a a a a a a a a a a a a a a a a a a a a 
-		a a a a a a a a a a a a a a a a a   a a a a a a a a a a a a a a a a a a  a a a a a  a a a a a a a  a a a a a a  a  a
-		a  a a a a a a a a a a a a a a a a  a a a a a a a a a a a a a a a a a a a a a a a  a a a a a a a a a a a a a a a a a a a a 
-		a a a a a a a a a a a a a a a a a   a a a a a a a a a a a a a a a a a a  a a a a a  a a a a a a a  a a a a a a  a  a
-		a  a a a a a 
+    <h2>Solved problems</h3><br>
+	<p>
+    {%for pid in submitAc_list%}
+    <a class = "user_submit" href = "/problem/num={{pid}}">{{pid}}&nbsp </a>
+    {%endfor%}
 	</p>
+    <hr/>
+    <h2>Not Solved problems</h2><br>
+    <p> 
+    {%for pid in not_solved%}
+    <a class = "user_submit" href="/problem/num={{pid}}">{{pid}}&nbsp</a>
+    {%endfor%}
+    </p>
+    <hr/>
 	
+</div>
 </center>
 {%endblock%}
 

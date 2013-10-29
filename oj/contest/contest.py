@@ -9,12 +9,7 @@ from oj.util.util import paging
 def contest_list_sc(context, page):
 
     '''return contest list '''
-    try:
-        page = int(page)
-    except ValueError:
-        return render_to_response("error.html",
-                    {'pageinfo':'page not found!', 'title':'404 not found!'})
-
+    page = int(page)
     (contest, list_info) = paging(
         Contest.objects.order_by("-contest_id"), PAGE_CONTEST_NUM, page
         )
@@ -33,12 +28,7 @@ def contest_sc(context, cid):
     '''contest detailed information'''
     problem_list = []
 
-    try:
-        cid = int(cid)
-    except ValueError:
-        return render_to_response("error.html",
-                    {'pageinfo':'page not found!', 'title':'404 not found!'})
-
+    cid = int(cid)
     contest = Contest.objects.filter(contest_id = cid)
     problem = Contest_problem.objects.filter(contest_id = cid)
     contest_solution = Solution.objects.filter(contest_id = cid)
