@@ -273,36 +273,39 @@ def contest_rank_xls_sc(cid):
 
 
 def contest_rank_xls_oi(contest_score, cid, title):
-    wbk = xlwt.Workbook()
+    wbk = xlwt.Workbook(encoding='utf-8')
     sheet = wbk.add_sheet("contest-score-%s"%title)
 
     sheet.write(0,0,"-------Contest-score-%s-------"%title)
     n = 1
-    sheet.write(n,0,"Rank")
-    sheet.write(n,1,"Name")
-    sheet.write(n,2,"Solved")
-    sheet.write(n,3,"Score")
+    sheet.write(n,0,u"Rank")
+    sheet.write(n,1,u"Name")
+    sheet.write(n,2,u"Solved")
+    sheet.write(n,3,u"Score")
     i = 4
     problem = contest_score[0]
 
     for var in problem['problem']:
-        sheet.write(n,i,"%s"%var['problem_name'])
+        sheet.write(n,i,u"%s"%var['problem_name'])
         i += 1
     i = n + 1
     for var in contest_score:
 
-        sheet.write(i,0,'%s'%str(i - n))
-        sheet.write(i,1,'%s'%var['user'])
-        sheet.write(i,2,'%s'%var['solved'])
-        sheet.write(i,3,'%s'%var['score'])
+        sheet.write(i,0,u'%s'%str(i - n))
+        sheet.write(i,1,u'%s'%var['user'])
+        sheet.write(i,2,u'%s'%var['solved'])
+        sheet.write(i,3,u'%s'%var['score'])
         j = 4
         for score in var['problem']:
             if score['submit'] != 0:
-                sheet.write(i,j,'%s'%score['problem_score'])
+                sheet.write(i,j,u'%s'%score['problem_score'])
             j += 1
         i += 1
 
-    response = HttpResponse(wbk.get_biff_data(), mimetype='application/ontet-stream')
+    ios = StringIO.StringIO()
+    wbk.save(ios)
+    response = HttpResponse(ios.getvalue(), mimetype='application/ontet-stream')
+    #response = HttpResponse(wbk.get_biff_data(), mimetype='application/ontet-stream')
     response['Content-Disposition'] = 'attachment; filename=contest-%s.xls'%cid
     return response
 
@@ -313,7 +316,7 @@ def contest_rank_xls_acm(contest_score, cid, title):
     wbk = xlwt.Workbook(encoding='utf-8')
     sheet = wbk.add_sheet("contest-score-%s"%title)
 
-    #sheet.write(0,0,u"-------Contest-score-%s-------"%title)
+    sheet.write(0,0,u"-------Contest-score-%s-------"%title)
     n = 1
     sheet.write(n,0,u"Rank")
     sheet.write(n,1,u"Name")
@@ -323,7 +326,7 @@ def contest_rank_xls_acm(contest_score, cid, title):
     problem = contest_score[0]
 
     for var in problem['problem']:
-        sheet.write(n,i,"%s"%var['problem_name'])
+        sheet.write(n,i,u"%s"%var['problem_name'])
         i += 1
     i = n + 1
     for var in contest_score:
