@@ -16,7 +16,7 @@ def admin_login_sc(req, context):
             user = User.objects.filter(nick=username)
             if (len(user) == 0 or 
                 (user[0].isManager == False and 
-                 user.get_all_permission() == None)
+                 not user[0].get_all_permission)
             ):
                 error_info = "此管理员不存在,请重新输入!"
                 error['error'] = error_info
