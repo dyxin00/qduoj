@@ -2,6 +2,7 @@
 import datetime
 from django.http import HttpResponse
 import xlwt
+import StringIO
 from django.shortcuts import render_to_response
 from oj.models import Contest, User, Contest_problem, Solution
 from oj.qduoj_config.qduoj_config import PAGE_CONTEST_NUM
@@ -110,6 +111,7 @@ def contest_rank_acm(contest_problem_id, user_id_list, contest_solution, cid):
         pass
 
     for user_id in user_id_list:
+
         try:
             user = User.objects.get(user_id=user_id).nick
         except User.DoesNotExist:
@@ -131,11 +133,13 @@ def contest_rank_acm(contest_problem_id, user_id_list, contest_solution, cid):
                 pass
 
             ac_solution = pb_id_solution.filter(result = 4)
+
+            penalty = count - len(ac_solution)
+
             if len(ac_solution):
 
                 ac_time = ac_solution[0].judgetime
                 ac_user_time = ac_time - contest_time
-                penalty = count - len(ac_solution)
                 time_penalty = datetime.timedelta(minutes=20*penalty)
                 user_problem.append(
                     {
@@ -293,7 +297,8 @@ def contest_rank_xls_oi(contest_score, cid, title):
         sheet.write(i,3,'%s'%var['score'])
         j = 4
         for score in var['problem']:
-            sheet.write(i,j,'%s'%score['problem_score'])
+            if score['submit'] != 0:
+                sheet.write(i,j,'%s'%score['problem_score'])
             j += 1
         i += 1
 
@@ -305,15 +310,15 @@ def contest_rank_xls_oi(contest_score, cid, title):
 
 def contest_rank_xls_acm(contest_score, cid, title):
 
-    wbk = xlwt.Workbook()
+    wbk = xlwt.Workbook(encoding='utf-8')
     sheet = wbk.add_sheet("contest-score-%s"%title)
 
-    sheet.write(0,0,"-------Contest-score-%s-------"%title)
+    #sheet.write(0,0,u"-------Contest-score-%s-------"%title)
     n = 1
-    sheet.write(n,0,"Rank")
-    sheet.write(n,1,"Name")
-    sheet.write(n,2,"Solved")
-    sheet.write(n,3,"penalty")
+    sheet.write(n,0,u"Rank")
+    sheet.write(n,1,u"Name")
+    sheet.write(n,2,u"Solved")
+    sheet.write(n,3,u"penalty")
     i = 4
     problem = contest_score[0]
 
@@ -323,16 +328,27 @@ def contest_rank_xls_acm(contest_score, cid, title):
     i = n + 1
     for var in contest_score:
 
-        sheet.write(i,0,'%s'%str(i - n))
-        sheet.write(i,1,'%s'%var['user'])
-        sheet.write(i,2,'%s'%var['solved'])
-        sheet.write(i,3,'%s'%var['score'])
+        sheet.write(i,0,u'%s'%str(i - n))
+        sheet.write(i,1,u'%s'%var['user'])
+        sheet.write(i,2,u'%s'%var['solved'])
+        sheet.write(i,3,u'%s'%var['penalty'])
         j = 4
         for score in var['problem']:
-            sheet.write(i,j,'%s'%score['problem_score'])
+            if score['submit'] != 0:
+                if score['penalty'] == 0:
+                     sheet.write(i,j,u'%s'%score['ac_user_time'])
+                else:
+                     sheet.write(i,j,u'%s(%s)'%(score['ac_user_time'],str(-score['penalty'])))
+            else:
+                if score['penalty']:
+                     sheet.write(i,j,u'(%s)'%-score['penalty'])
+
             j += 1
         i += 1
 
-    response = HttpResponse(wbk.get_biff_data(), mimetype='application/ontet-stream')
+    ios = StringIO.StringIO()
+    wbk.save(ios)
+    #response = HttpResponse(wbk.get_biff_data(), mimetype='application/ontet-stream')
+    response = HttpResponse(ios.getvalue(), mimetype='application/ontet-stream')
     response['Content-Disposition'] = 'attachment; filename=contest-%s.xls'%cid
     return response
