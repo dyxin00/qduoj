@@ -5,11 +5,10 @@ set_priority
 {%endblock%}
 
 {%block content%}	
-	<center>
 		<h1>the {{user.nick}} user!</h1>
-		name: {{user.nick}}<br>
-		ac: {{user.ac}}<br>
-		email: {{user.email}}<br>
+		<h3>name: {{user.nick}}</h3>
+		<h3>ac: {{user.ac}}</h3>
+		<h3>email: {{user.email}}</h3>
 		<br>
 		<h3>set priority:</h3>
 		<form method = 'POST'>
@@ -26,6 +25,5 @@ set_priority
 			<input type = 'submit' value = 'Set priority'/>
 		</table>
 		</form>
-		
-	</center>
+
 {%endblock%}
