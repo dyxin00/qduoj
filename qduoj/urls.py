@@ -72,6 +72,7 @@ urlpatterns = patterns('',
 #	url('^bbs/pid=(?P<pid>\d+)\$', 'oj.views.bbs'),
 #	url('^bbs/pid=(?P<pid>\d+)/page=(?<page>\d+)\$', 'oj.views.bbs'),
 )
+
 '''
 urlpatterns += patterns('',
 	url('^admin/$', 'admin.views.index'),
@@ -97,5 +98,8 @@ urlpatterns += patterns('',
     url('^admin/admin_list/$', 'admin.views.admin_list'),
     url('^admin/set_priority/id=(?P<nick>[\w]+)/$', 'admin.views.set_priority'),
 )
+<<<<<<< HEAD
 
+=======
+>>>>>>> 16fdfa93fe75dc851dab4359b94ba569bdb183d8
 '''

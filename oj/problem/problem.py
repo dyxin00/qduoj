@@ -49,9 +49,9 @@ def problemlist_sc(page, context):
         user = context['ojlogin'].nick
         solution_ac = Solution.objects.filter(result=4)
 
-        solution_ac = solution_ac.filter(user_id = User.objects.get(nick = user))
+        solution_ac = solution_ac.filter(
+            user_id = User.objects.get(nick = user))
         ac_list = solution_ac.values_list('problem_id', flat=True).distinct()
-
     if problemset == None:
         page_info = "page not found!"
         title = "404 not found"

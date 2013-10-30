@@ -30,18 +30,22 @@
     <table  width="90%" id = "contest">
         <thead>
             <tr align="center" class = "" height=30>
-                <th width="5%"></td>
-                <th width="10%">Problem ID</td>
-                <th width="50%">Title</td>
-                <th width="10%">Score</td>
-                <th width="10%">AC</td>
-                <th width="10%">Submit</td>
+                <th width="5%">Pass</th>
+                <th width="10%">Problem ID</th>
+                <th width="50%">Title</th>
+                <th width="10%">Score</th>
+                <th width="10%">AC</th>
+                <th width="10%">Submit</th>
             </tr>
         </thead>
         <tbody>
             {%for p in problem_list%}
             <tr align="center"class="{% cycle "evenrow" "oddrow" %}">
-                <td>    </td>
+                {%if p.problem_id in ac_list%}
+                <td class="pass"> </td>
+                {%else%}
+                <td > </td>
+                {%endif%}
                 <td> {{p.num}}</td>
                 <td>    <a href="/problem/num={{p.problem_id}}/cid={{contest.contest_id}}">{{p.title}}</a>  </td>
                 {% if contest.oi_mode == True%}

@@ -32,6 +32,15 @@ def contest_sc(context, cid):
     contest = Contest.objects.filter(contest_id = cid)
     problem = Contest_problem.objects.filter(contest_id = cid)
     contest_solution = Solution.objects.filter(contest_id = cid)
+    ac_list = []
+    if 'ojlogin' in context:
+        user = context['ojlogin'].nick
+        solution_ac = contest_solution.filter(result=4)
+
+        solution_ac = solution_ac.filter(
+            user_id=User.objects.get(nick=user))
+        ac_list = solution_ac.values_list('problem_id', flat=True).distinct()
+
     for cpb in problem:
         p_contest_solution = contest_solution.filter(
             problem_id=cpb.problem_id)
@@ -49,7 +58,9 @@ def contest_sc(context, cid):
     return render_to_response("contest.html",
                               {"context":context,
                                "contest":contest[0],
-                               "problem_list" : problem_list}
+                               "problem_list" : problem_list,
+                               "ac_list":ac_list
+                              },
                              )
 
 
