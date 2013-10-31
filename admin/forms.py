@@ -16,17 +16,14 @@ class ProblemSearch(forms.Form):
 
 class Admin_UploadFiles(forms.Form):
     '''
-    after the adding problems this can load files
-    for problem
+    after the adding problems this can load files for problem
     '''
     files = forms.FileField(widget=forms.FileInput) 
 
 class NewsForm(ModelForm):
     '''
-    news form fun:
-    edit News
-    add news 
-     '''
+    news form fun: edit News add news 
+    '''
     class Meta:
         model = News
         fields = (
@@ -36,9 +33,7 @@ class NewsForm(ModelForm):
 
 class ProblemForm(ModelForm):
     '''
-    problem form fun:
-    edit problem 
-    add problem
+    problem form fun:edit problem add problem
     '''
     class Meta:
         model = Problem

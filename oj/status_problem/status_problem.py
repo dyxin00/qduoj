@@ -5,6 +5,7 @@ from django.shortcuts import render_to_response
 from oj.models import Contest, Solution,Problem,User, Contest_problem
 from oj.util.util import paging, Result_dic, language_ab
 from oj.qduoj_config.qduoj_config import PAGE_STATUS_NUM
+from oj.tools import error
 
 
 def status_sc(context, page, cid = -1):
@@ -15,13 +16,7 @@ def status_sc(context, page, cid = -1):
     (solution, list_info) = paging(solution, PAGE_STATUS_NUM, page)
 
     if solution == None:
-        page_info = "page not found!!"
-        title = "404 not found"
-        return render_to_response('error.html',
-                        {"pageInfo": page_info,
-                         "title":title,
-                         "context":context
-                        })
+        return error('4o4', 'page ', context)
     if cid == -1:
         return problem_status(context, solution, list_info)
     else:
@@ -43,11 +38,7 @@ def __search__(req,context, page, cid = -1):
             jresult = int(req.GET['jresult'])
 
         except ValueError:
-            page_info = "problem not found!"
-            title = "404 not found"
-            return render_to_response('error.html',
-                                  {"pageInfo":page_info, "title":title, "context":context})
-
+            return error('4o4', 'problem ', context)
     solution = Solution.objects.filter(contest_id=cid).order_by('-solution_id')
 
     try:
@@ -67,13 +58,7 @@ def __search__(req,context, page, cid = -1):
     (solution, list_info) = paging(solution, PAGE_STATUS_NUM, page)
 
     if solution == None:
-        page_info = "page not found!"
-        title = "404 not found"
-        return render_to_response('error.html',
-                        {"pageInfo": page_info,
-                         "title":title,
-                         "context":context
-                        })
+        return error('4o4', 'page ', context)
     if cid == -1:
         return problem_status(context, solution, list_info)
     else:
@@ -97,8 +82,6 @@ def contest_status_sc(context, solution, list_info, cid):
         contest = Contest.objects.get(contest_id = cid)
     except Contest.DoesNotExist:
         pass
-
-
     for var in solution:
         try:
             contest_p = contest_problem.get(
