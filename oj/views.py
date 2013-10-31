@@ -148,6 +148,9 @@ def contest_status_search(req, cid, page = 1):
     context = base_info(req)
     return __search__(req, context, page, cid)
 
+def contest_rank_xls(req,cid):
+    return contest_rank_xls_sc(cid)
+
 def compile_error(req, num):
 
     num = int(num)

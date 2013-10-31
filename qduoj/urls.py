@@ -62,6 +62,7 @@ urlpatterns = patterns('',
 	url('^contest_rank/cid=(?P<cid>\d+)/$', 'oj.views.contest_rank'),
 	url('^contest_search_status/cid=(?P<cid>\d+)/$','oj.views.contest_status_search'),
 	url('^contest_search_status/cid=(?P<cid>\d+)/page=(?P<page>\d+)/$','oj.views.contest_status_search'),
+	url('^contest_rank_xls/cid=(?P<cid>\d+)/$','oj.views.contest_rank_xls'),
 
 
 
@@ -98,4 +99,3 @@ urlpatterns += patterns('',
     url('^admin/admin_list/$', 'admin.views.admin_list'),
     url('^admin/set_priority/id=(?P<nick>[\w]+)/$', 'admin.views.set_priority'),
 )
-
