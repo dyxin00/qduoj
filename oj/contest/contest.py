@@ -276,7 +276,7 @@ def contest_rank_xls_oi(contest_score, cid, title):
     wbk = xlwt.Workbook(encoding='utf-8')
     sheet = wbk.add_sheet("contest-score-%s"%title)
 
-    sheet.write(0,0,"-------Contest-score-%s-------"%title)
+    sheet.write(0,0,u"-------Contest-score-%s-------"%title)
     n = 1
     sheet.write(n,0,u"Rank")
     sheet.write(n,1,u"Name")
@@ -314,7 +314,7 @@ def contest_rank_xls_oi(contest_score, cid, title):
 def contest_rank_xls_acm(contest_score, cid, title):
 
     wbk = xlwt.Workbook(encoding='utf-8')
-    sheet = wbk.add_sheet("contest-score-%s"%title)
+    sheet = wbk.add_sheet(u"contest-score-%s"%title)
 
     sheet.write(0,0,u"-------Contest-score-%s-------"%title)
     n = 1
