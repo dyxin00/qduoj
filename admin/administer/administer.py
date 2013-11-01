@@ -1,5 +1,7 @@
 # coding=utf-8
 
+'''the superuser alter the user's priority of other usesr'''
+
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from oj.models import User, Perm
