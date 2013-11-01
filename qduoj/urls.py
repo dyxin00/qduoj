@@ -3,8 +3,8 @@ from django.contrib.sitemaps import views as sitemap_views
 from django.views.decorators.cache import cache_page
 from oj.sitemap import PostSitemap
 #Uncomment the next two lines to enable the admin:
-from django.contrib import admin
-admin.autodiscover()
+#from django.contrib import admin
+#admin.autodiscover()
 
 
 urlpatterns = patterns('',
@@ -27,7 +27,7 @@ urlpatterns = patterns('',
 	url('^oj/userregister/$', 'oj.views.register'),				   #register
 	url('^oj/userlogout/$', 'oj.views.logout'),                    #logout
 
-	url(r'^admin/', include(admin.site.urls)),
+	#url(r'^admin/', include(admin.site.urls)),
 
 	url('^problemid/$','oj.views.problemid'),
 	url('^problem_search/$','oj.views.problem_search'),
@@ -62,6 +62,7 @@ urlpatterns = patterns('',
 	url('^contest_rank/cid=(?P<cid>\d+)/$', 'oj.views.contest_rank'),
 	url('^contest_search_status/cid=(?P<cid>\d+)/$','oj.views.contest_status_search'),
 	url('^contest_search_status/cid=(?P<cid>\d+)/page=(?P<page>\d+)/$','oj.views.contest_status_search'),
+	url('^contest_rank_xls/cid=(?P<cid>\d+)/$','oj.views.contest_rank_xls'),
 
 
 
@@ -73,7 +74,7 @@ urlpatterns = patterns('',
 #	url('^bbs/pid=(?P<pid>\d+)/page=(?<page>\d+)\$', 'oj.views.bbs'),
 )
 
-'''
+
 urlpatterns += patterns('',
 	url('^admin/$', 'admin.views.index'),
 	#url('^admin/oj$', 'admin.views.oj'),
@@ -98,4 +99,3 @@ urlpatterns += patterns('',
     url('^admin/admin_list/$', 'admin.views.admin_list'),
     url('^admin/set_priority/id=(?P<nick>[\w]+)/$', 'admin.views.set_priority'),
 )
-'''

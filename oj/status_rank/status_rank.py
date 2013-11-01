@@ -2,38 +2,24 @@
 # function: rank, usr_info
 
 from django.shortcuts import render_to_response
-from oj.models import *
-from oj.forms import *
-from oj.qduoj_config.qduoj_config import *
-from oj.util.util import *
-
+from oj.models import User, Solution, Source_code
+from oj.qduoj_config.qduoj_config import PAGE_RANK_NUM
+from oj.util.util import paging, login_asked
+from oj.tools import error
 
 def rank_sc(req, page, context):
-
-    try:
-        page = int(page)
-    except ValueError:
-        pageInfo = "page not found"
-        title = '404 not found'
-        return render_to_response('error.html',
-                                  {'context':context,
-                                   'pageInfo':pageInfo,
-                                   'title':title})
-
+    '''the rank of the user'''
+    page = int(page)
     (users, list_info) = paging(User.objects.order_by('-ac', 'submit'),
-                                                    PAGE_RANK_NUM,page)
-
+                                PAGE_RANK_NUM, page)
     if users == None:
-        pageInfo = 'page not found maybe you are far behind!'
-        title = '404 not found'
-        return render_to_response('error.html',
-                                  {'pageInfo':pageInfo,
-                                   'title':title, 'context':context})    
+        return error('4o4', 'far behind, you ', context)
 
     k = 1
     for user in users:
         User.objects.filter(nick=user.nick).update(
-            rank=(page - 1)*PAGE_RANK_NUM + k)
+            rank=(page - 1)*PAGE_RANK_NUM + k
+            )
         k = k + 1
     return render_to_response('user_rank.html',
                               {'users':users,
@@ -42,16 +28,10 @@ def rank_sc(req, page, context):
 
 
 def user_info_sc(req, nick, context):
-
+    '''the base info of the user'''
     user = User.objects.filter(nick=nick)
     if len(user) == 0:
-        pageInfo = "there is no this user!"
-        title = '404 not found!'
-        return render_to_response('error.html',
-                                  {'pageInfo':pageInfo,
-                                   'title':title,
-                                   'context':context})
-
+        return error('4o4', 'user ', context)
     submitions = Solution.objects.filter(user=user[0]).order_by('problem')
 
     submitAc_list = submitions.filter(result=4).values_list(
@@ -67,15 +47,12 @@ def user_info_sc(req, nick, context):
                                                 })
 
 
+@login_asked
 def source_code_sc(req, runid, context):
+    '''fetch the source code '''
     submit = Solution.objects.filter(solution_id=runid)
-    if not 'ojlogin' in context or len(submit) == 0:
-        pageInfo = "user not login or cant found the submit"
-        title = "404 not found"
-        return render_to_response('error.html',
-                                  {'context':context,
-                                   'pageInfo':pageInfo,
-                                   'title':title})
+    if len(submit) == 0:
+        return error('4o4', 'code  ', context)
     user = context['ojlogin'].nick
     if user != submit[0].user.nick:
         pageInfo = "the code is not yours!"
@@ -90,4 +67,3 @@ def source_code_sc(req, runid, context):
                                'source':source[0],
                                'submit':submit[0]})
 
-        

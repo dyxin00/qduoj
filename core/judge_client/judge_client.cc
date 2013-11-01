@@ -732,18 +732,18 @@ void _update_user_mysql(char * user_id,int ACflg) {
 	if(ACflg ==4){
 		sprintf(
 			sql,
-			//"UPDATE `users` SET `solved`=(SELECT count(DISTINCT `problem_id`) FROM `solution` WHERE `user_id`=\'%s\' AND `result`=\'4\') WHERE `user_id`=\'%s\'",
-			//user_id, user_id
-			"UPDATE oj_user SET ac = ac + 1 WHERE user_id=%d",atoi(user_id)
+			"UPDATE `oj_user` SET `ac`=(SELECT count(DISTINCT `problem_id`) FROM `oj_solution` WHERE `user_id`=\'%d\' AND `result`=\'4\') WHERE `user_id`=\'%d\'",
+			atoi(user_id), atoi(user_id)
+			//"UPDATE oj_user SET ac = ac + 1 WHERE user_id=%d",atoi(user_id)
 			);
 		if (mysql_real_query(conn, sql, strlen(sql)))
 			write_log(mysql_error(conn));
 	}
 	sprintf(
 		sql,
-		//"UPDATE `users` SET `submit`=(SELECT count(*) FROM `solution` WHERE `user_id`=\'%s\') WHERE `user_id`=\'%s\'",
-		//user_id, user_id
-		"UPDATE oj_user SET submit = submit + 1 WHERE user_id=%d",atoi(user_id)
+		"UPDATE `oj_user` SET `submit`=(SELECT count(*) FROM `oj_solution` WHERE `user_id`=\'%d\') WHERE `user_id`=\'%d\'",
+		atoi(user_id), atoi(user_id)
+		//"UPDATE oj_user SET submit = submit + 1 WHERE user_id=%d",atoi(user_id)
 		);
 	if(DEBUG)
 		printf("user_id..%s..\n",user_id);
@@ -778,18 +778,18 @@ void _update_problem_mysql(int p_id,int ACflg) {
 	if(ACflg == 4){
 		sprintf(
 			sql,
-			//"UPDATE `oj_problem` SET `accepted`=(SELECT count(*) FROM `solution` WHERE `problem_id`=\'%d\' AND `result`=\'4\') WHERE `problem_id`=\'%d\'",
-			//p_id, p_id
-			  "UPDATE oj_problem SET accepted= accepted + 1 WHERE problem_id=%d",p_id
+			"UPDATE `oj_problem` SET `accepted`=(SELECT count(*) FROM `oj_solution` WHERE `problem_id`=\'%d\' AND `result`=\'4\') WHERE `problem_id`=\'%d\'",
+			p_id, p_id
+			//  "UPDATE oj_problem SET accepted= accepted + 1 WHERE problem_id=%d",p_id
 			);
 		if (mysql_real_query(conn, sql, strlen(sql)))
 			write_log(mysql_error(conn));
 	}
 	sprintf(
 		sql,
-		//"UPDATE `oj_problem` SET `submit`=(SELECT count(*) FROM `solution` WHERE `problem_id`=\'%d\') WHERE `problem_id`=\'%d\'",
-		//p_id, p_id
-		"UPDATE oj_problem SET submit = submit + 1 WHERE problem_id=%d",p_id
+		"UPDATE `oj_problem` SET `submit`=(SELECT count(*) FROM `oj_solution` WHERE `problem_id`=\'%d\') WHERE `problem_id`=\'%d\'",
+		p_id, p_id
+		//"UPDATE oj_problem SET submit = submit + 1 WHERE problem_id=%d",p_id
 		);
 	if (mysql_real_query(conn, sql, strlen(sql)))
 		write_log(mysql_error(conn));

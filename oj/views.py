@@ -12,7 +12,7 @@ from oj.change_info.change_info import *
 from oj.usermail.usermail import *
 from oj.qduoj_config.qduoj_config import *
 from oj.contest.contest import *
-from oj.util.util import contest_end
+from oj.util.util import if_contest_end
 from oj.status_problem.status_problem import status_sc, __search__
 
 def base_info(req):    #the news and the session!
@@ -74,9 +74,7 @@ def problem_search(req):
 #submit code
 def submit_code(req, num='1'):
     context = base_info(req)
-    return submit_code_sc(req, num, context)
-
-
+    return submit_code_sc(req, context, -1, num)
 
 def rank(req, page='1'):
     context = base_info(req)
@@ -120,7 +118,7 @@ def mail(req, fun='1'):   #fun=1 all the mail  2 the new mail 3 sent mail
 
 def readmail(req, fun, msgid):
     context = base_info(req)
-    return readmail_sc(req, fun, msgid, context)
+    return readmail_sc(req, context, fun, msgid)
 
 def contest_list(req, page = '1'):
 
@@ -136,22 +134,22 @@ def contest_problem(req, num, cid):
     return problem_sc(num, context, cid)
 
 def contest_submit_code(req, num, cid):
-
-    if not contest_end(cid):
-        context = base_info(req)
-        return submit_code_sc(req, num, context, cid)
-    else:
-        return render_to_response("error.html")
+    context = base_info(req)
+    return submit_code_sc(req, context, cid, num)
 
 def contest_status(req, cid, page = '1'):
     context = base_info(req)
     return status_sc(context, page, cid)
+
 def contest_rank(req, cid):
     context = base_info(req)
     return contest_rank_sc(context, cid)
 def contest_status_search(req, cid, page = 1):
     context = base_info(req)
     return __search__(req, context, page, cid)
+
+def contest_rank_xls(req,cid):
+    return contest_rank_xls_sc(cid)
 
 def compile_error(req, num):
 

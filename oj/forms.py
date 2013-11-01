@@ -1,16 +1,18 @@
 #coding=utf8
-from  django import forms
+from django import forms
+from django.forms import ModelForm
+from oj.models import User
 
 class Login(forms.Form):
     name = forms.CharField(label='用户')
     password = forms.CharField(label='密码', widget=forms.PasswordInput)
 
-class Register(forms.Form):
-    name = forms.CharField(label='用户名')
-    password = forms.CharField(label='输入密码', widget=forms.PasswordInput)
-    ensure_pw = forms.CharField(label='确认密码', widget=forms.PasswordInput)
-    email = forms.EmailField(label='Email')
-    website = forms.URLField(label='website', required=False)
+class Register(ModelForm):
+    '''use User model create the register model'''
+    password = forms.CharField(widget=forms.PasswordInput)
+    class Meta:
+        model = User
+        fields = ('nick', 'password', 'email', 'website')
 
 class Submit_code(forms.Form):
     language = forms.ChoiceField(choices = [('0','c'),('1','c++')])
