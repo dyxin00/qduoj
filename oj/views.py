@@ -95,7 +95,7 @@ def status_search(req, page= '1'):
 
 def source_code(req, runid):
     context = base_info(req)
-    return source_code_sc(req, runid, context)
+    return source_code_sc(req, context, runid)
 
 def changepw(req):
     context = base_info(req)
