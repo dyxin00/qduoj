@@ -34,7 +34,7 @@
 #include <sys/stat.h>
 #include <signal.h>
 #include <sys/resource.h>
-static int DEBUG=1;
+static int DEBUG=0;
 #define BUFFER_SIZE 1024
 #define LOCKFILE "/var/run/judged.pid"
 #define LOCKMODE (S_IRUSR|S_IWUSR|S_IRGRP|S_IROTH)
@@ -521,8 +521,8 @@ int main(int argc, char** argv){
 	if (!DEBUG)
 	   	daemon_init();
 
-	if (strcmp(oj_home,"/home/judge")==0&&already_running() == 0){  //....
-//	if ( strcmp(oj_home,"/home/judge")==0&&already_running()){
+//	if (strcmp(oj_home,"/home/judge")==0&&already_running() == 0){  //....
+	if ( strcmp(oj_home,"/home/judge")==0&&already_running()){
 		syslog(LOG_ERR|LOG_DAEMON, "This daemon program is already running!\n");  //系统日志
 
 		printf("..runing fsdk..\n "); //cs
