@@ -282,7 +282,7 @@ def contest_rank_xls_oi(contest_score, cid, title):
     '''oi mode excel'''
 
     wbk = Workbook(encoding='utf-8')
-    sheet = wbk.add_sheet("contest-score-%s"%title)
+    sheet = wbk.add_sheet(u"contest-score-%s"%title)
 
     sheet.write(0, 0, u"-------Contest-score-%s-------"%title)
     n = 1
