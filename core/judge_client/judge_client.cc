@@ -269,13 +269,13 @@ void init_mysql_conf() {
 			read_int(buf , "OJ_PORT_NUMBER", &port_number);
 			read_int(buf, "OJ_JAVA_TIME_BONUS", &java_time_bonus);
 			read_int(buf, "OJ_JAVA_MEMORY_BONUS", &java_memory_bonus);
-			read_int(buf , "OJ_SIM_ENABLE", &sim_enable);
+			//read_int(buf , "OJ_SIM_ENABLE", &sim_enable);
 			read_buf(buf,"OJ_JAVA_XMS",java_xms);
 			read_buf(buf,"OJ_JAVA_XMX",java_xmx);
-			read_int(buf,"OJ_HTTP_JUDGE",&http_judge);
-			read_buf(buf,"OJ_HTTP_BASEURL",http_baseurl);
-			read_buf(buf,"OJ_HTTP_USERNAME",http_username);
-			read_buf(buf,"OJ_HTTP_PASSWORD",http_password);
+			//read_int(buf,"OJ_HTTP_JUDGE",&http_judge);
+			//read_buf(buf,"OJ_HTTP_BASEURL",http_baseurl);
+			//read_buf(buf,"OJ_HTTP_USERNAME",http_username);
+			//read_buf(buf,"OJ_HTTP_PASSWORD",http_password);
 			read_int(buf , "OJ_OI_MODE", &oi_mode);
 			read_int(buf , "OJ_SHM_RUN", &shm_run);
 			read_int(buf , "OJ_USE_MAX_TIME", &use_max_time);
