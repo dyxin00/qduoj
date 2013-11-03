@@ -44,7 +44,11 @@
     </div>
 	{%if problem.hint%}
 		<h2>Hint</h2>
-        <div class="content">{{problem.hint}}</div>
+        <div class="content">
+        {%for var in problem_ab.hint%}
+        <p>{{var}}</p>
+        {%endfor%}
+        </div>
 	{%endif%}
 	
 	{%if problem.source%}
