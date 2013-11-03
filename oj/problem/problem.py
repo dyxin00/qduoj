@@ -113,4 +113,6 @@ def problem_handle(problem):
     pab['output_data'] = problem.output_data.split('\r\n')
     pab['sample_input'] =  problem.sample_input.split('\r\n')
     pab['sample_output'] = problem.sample_output.split('\r\n')
+    pab['source'] = problem.source.split('\r\n')
+    pab['hint'] = problem.hint.split('\r\n')
     return pab
