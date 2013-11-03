@@ -7,7 +7,7 @@
 {%block content%}
 <center class = "user_info">
 	<h1>{{user.nick}}</h1><br/>
-	<p class = "user_site">Email:<a href="mailto:{{user.email}}">{{user.email}}</a>  Website:<a href="{{user.website}}"/>{{user.website}}</p>
+    <p class = "user_site">Email:<a href="{{user.email}}">{{user.email}}</a>Website:<a href="{{user.website}}">{{user.website}}</a></p>
 	{%if context.ojlogin%}
 		{%if user.nick == context.ojlogin.nick%}
 			Change: <a href="/changepw">Password</a> <a href="/changeinfo">UserInfo</a>
