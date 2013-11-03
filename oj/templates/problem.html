@@ -13,15 +13,35 @@
 	<br>
 
 	<h2>Description</h2>
-	<div class="content">{{problem_ab.description|safe}}</div>
+    <div class="content">
+        {%for var in problem_ab.description%}
+        <p>{{var}}</p>
+        {%endfor%}
+    </div>
 	<h2>Input</h2>
-	<div class="content">{{problem_ab.input_data|safe}}</div>
+    <div class="content">
+        {%for var in problem_ab.input_data%}
+        <p>{{var}}</p>
+        {%endfor%}
+    </div>
 	<h2>Output</h2>
-	<div class="content">{{problem_ab.output_data|safe}}</div>
+    <div class="content">
+        {%for var in problem_ab.output_data%}
+        <p>{{var}}</p>
+        {%endfor%}
+    </div>
 	<h2>Sample Input</h2>
-	<div class="content">{{problem_ab.sample_input|safe}}</div>
+    <div class="content">
+        {%for var in problem_ab.sample_input%}
+        <p>{{var}}</p>
+        {%endfor%}
+    </div>
 	<h2>Sample Output</h2>
-	<div class="content">{{problem_ab.sameple_output|safe}}</div>
+    <div class="content">
+        {%for var in problem_ab.sample_output%}
+        <p>{{var}}</p>
+        {%endfor%}
+    </div>
 	{%if problem.hint%}
 		<h2>Hint</h2>
         <div class="content">{{problem.hint}}</div>
@@ -29,7 +49,11 @@
 	
 	{%if problem.source%}
 		<h2>Source</h2>
-		<div class="content">{{problem.source}}</div>
+        <div class="content">
+        {%for var in problem_ab.source%}
+        <p>{{var}}</p>
+        {%endfor%}
+        </div>
 	{%endif%}
 
 	<br><br>
