@@ -1,6 +1,5 @@
 #coding=utf-8
 
-from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from oj.models import *
 from oj.forms import *
@@ -12,8 +11,8 @@ from oj.change_info.change_info import *
 from oj.usermail.usermail import *
 from oj.qduoj_config.qduoj_config import *
 from oj.contest.contest import *
-from oj.util.util import if_contest_end
 from oj.status_problem.status_problem import status_sc, __search__
+from oj.tools import error
 
 def base_info(req):    #the news and the session!
     context = {}
@@ -65,10 +64,7 @@ def problem_search(req):
         pid = problem_s[0].problem_id
         return problem_sc(pid, context)
     else:
-        page_info = "problem not found!"
-        title = "404 not found"
-        return render_to_response('error.html', {"pageInfo":page_info,
-                                           "title":title, "context":context})
+        return error('search','problem',context)
 
 
 #submit code
@@ -149,34 +145,27 @@ def contest_status_search(req, cid, page = 1):
     return __search__(req, context, page, cid)
 
 def contest_rank_xls(req,cid):
-    return contest_rank_xls_sc(cid)
+    context = base_info(req)
+    return contest_rank_xls_sc(context,cid)
 
 def compile_error(req, num):
-
     num = int(num)
-
     context = base_info(req)
     try:
-        error = Compileinfo.objects.get(solution_id = num)
+        c_error = Compileinfo.objects.get(solution_id = num)
     except Compileinfo.DoesNotExist:
-
-        page_info = ''
-        title = '404 not found'
-        return render_to_response('error.html',
-                {'pageInfo':page_info, 'title':title, 'context':context})
+        return error('Compile','Compile Error',context)
+    
     return render_to_response("compile_run_error.html",
-                              {'context':context,"error":error})
+                              {'context':context,"error":c_error})
 
 def runtime_error(req, num):
     num = int(num)
     context = base_info(req)
     try:
-        error = Runtimeinfo.objects.get(solution_id=num)
+        r_error = Runtimeinfo.objects.get(solution_id=num)
     except Runtimeinfo.DoesNotExist:
-        page_info = ''
-        title = '404 not found'
-        return render_to_response('error.html',
-                {'pageInfo':page_info, 'title':title, 'context':context})
+        return error('Runtimeinfo','Runtimeinfo',context)
     return render_to_response("compile_run_error.html",
-                              {'context':context,'error':error})
+                              {'context':context,'error':r_error})
 
