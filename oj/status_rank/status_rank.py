@@ -48,7 +48,7 @@ def user_info_sc(req, nick, context):
 
 
 @login_asked
-def source_code_sc(req, runid, context):
+def source_code_sc(req, context, runid):
     '''fetch the source code '''
     submit = Solution.objects.filter(solution_id=runid)
     if len(submit) == 0:

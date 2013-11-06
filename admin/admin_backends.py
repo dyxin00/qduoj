@@ -39,7 +39,9 @@ def has_any_perm(function):
     '''
     @wraps(function)
     def wrapper(req, context, *args, **kwargs):
-        if not 'ojlogin' in context or not context['ojlogin'].get_all_permission:
+        if (not 'ojlogin' in context or 
+            (not context['ojlogin'].get_all_permission 
+             and context['ojlogin'].isManager == False)):
             return HttpResponseRedirect('/admin/admin_login')
         else:
             return function(req, context, *args, **kwargs)

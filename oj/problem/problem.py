@@ -94,13 +94,14 @@ def submit_code_sc(req, context, cid, num):
     return render_to_response('submit_code.html',
                     {"num" : num,"form_code":form_code,"context" : context})
 
-
 def problem_handle(problem):
     """Handle problem"""
     pab = {}
-    pab['description'] = '<br>'.join( problem.description.split('\r\n'))
-    pab['input_data'] = '<br>'.join( problem.input_data.split('\r\n'))
-    pab['output_data'] = '<br>'.join( problem.output_data.split('\r\n'))
-    pab['sample_input'] = '<br>'.join( problem.sample_input.split('\r\n'))
-    pab['sameple_output'] = '<br>'.join( problem.sample_output.split('\r\n'))
+    pab['description'] = problem.description.split('\r\n')
+    pab['input_data'] = problem.input_data.split('\r\n')
+    pab['output_data'] = problem.output_data.split('\r\n')
+    pab['sample_input'] =  problem.sample_input.split('\r\n')
+    pab['sample_output'] = problem.sample_output.split('\r\n')
+    pab['source'] = problem.source.split('\r\n')
+    pab['hint'] = problem.hint.split('\r\n')
     return pab
