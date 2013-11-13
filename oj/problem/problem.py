@@ -10,17 +10,19 @@ from oj.qduoj_config.qduoj_config import PAGE_PROBLEM_NUM
 from oj.util.util import paging, login_asked, if_contest_end
 from oj.tools import error
 
-def problem_sc(num, context, cid = -1):
+def problem_sc(context, num, cid = -1):
     """return  problem response"""
     try:
         pid = int(num)
         problem = Problem.objects.get(problem_id = pid)
 
-        if problem.visible == False and cid == -1:
-            return error('404', 'problem ', context)
-        problem_ab = problem_handle(problem)
-        return render_to_response('problem.html', {"problem":problem,
+        if problem.visible == True or cid != -1 or (
+        'ojlogin' in context and context['ojlogin'].user_id == problem.provider_id):
+            problem_ab = problem_handle(problem)
+            return render_to_response('problem.html', {"problem":problem,
                         "context":context,"problem_ab" : problem_ab,"cid":cid})
+        else:
+            return error('404', 'problem ', context)
     except Problem.DoesNotExist:
         return error('404', 'problem ', context)
     except ValueError:
