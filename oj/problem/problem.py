@@ -17,7 +17,7 @@ def problem_sc(context, num, cid = -1):
         problem = Problem.objects.get(problem_id = pid)
 
         if problem.visible == True or cid != -1 or (
-        'ojlogin' in context and context['ojlogin'].user_id == problem.provider_id):
+        'ojlogin' in context and (context['ojlogin'].user_id == problem.provider_id or context['ojlogin'].isManager)):
             problem_ab = problem_handle(problem)
             return render_to_response('problem.html', {"problem":problem,
                         "context":context,"problem_ab" : problem_ab,"cid":cid})
