@@ -50,14 +50,14 @@ def if_contest_end(function):
             try:
                 contest_end_time = Contest.objects.get(contest_id = cid).end__time
             except Contest.DoesNotExist:
-                return error('4o4', 'contest', context)           
+                return error('404', 'contest', context)           
             server_time = datetime.now()
             contest_end_time = contest_end_time.replace(
                 tzinfo=None) + timedelta(hours=8,minutes=1)
             if server_time < contest_end_time:
                 return function(req, context, cid, *args, **kwargs)
             else:
-                return error('4o4', 'contest', context)
+                return error('404', 'contest', context)
         else:
                 return function(req, context, cid, *args, **kwargs)
     return wrapper
