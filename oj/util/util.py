@@ -31,10 +31,25 @@ def paging(tuple_info, page_number, page):
     page_num = []
     list_info = {}
     p = Paginator(tuple_info, page_number);
-    for i in range(0, p.num_pages):
+
+    if p.num_pages < 10:
+        start = 0
+        end = p.num_pages
+    elif page <= 5:
+        start = 0
+        end = 10
+    elif page >= p.num_pages - 5:
+        start = p.num_pages - 10
+        end = p.num_pages
+    else:
+        start = page - 5
+        end = page + 5
+        
+
+    for i in range(start, end):
         page_num.append(i + 1)
-        list_info['len'] = page_num
-        list_info['page'] = page
+    list_info['len'] = page_num
+    list_info['page'] = page
 
     if page <= 0 or page > p.num_pages:
         return (None,None)

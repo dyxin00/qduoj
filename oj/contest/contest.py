@@ -1,6 +1,6 @@
 '''contest '''
 import datetime
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse#, HttpResponseRedirect
 from xlwt import Workbook
 from StringIO import StringIO
 from django.shortcuts import render_to_response
@@ -19,10 +19,13 @@ def contest_list_sc(context, page):
     if contest == None:
         return error('contest-error','contest',context)
 
+#    print datetime.datetime.now()
+#    print contest[0].end__time
     return render_to_response("contest_list.html",
                     { "context" : context,
                      "contest":contest,
-                     "list_info": list_info
+                     "list_info": list_info,
+                     'servertime':datetime.datetime.now()
                     })
 
 @if_contest_start
