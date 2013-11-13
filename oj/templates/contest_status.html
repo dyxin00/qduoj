@@ -17,7 +17,7 @@
 </div><br>
 {%for solu in solution %}	
 	<tr class="{% cycle "evenrow" "oddrow" %}">
-		{%if context.ojlogin.nick == solu.user.nick%}
+		{%if context.ojlogin.nick == solu.user.nick or context.ojlogin.isManager%}
 		<td><a href = "/source_code/runid={{solu.solution_id}}" >{{solu.solution_id}}</a></td>
 		{% else %}
 		<td>{{solu.solution_id}}</td>

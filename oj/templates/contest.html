@@ -41,7 +41,7 @@
         <tbody>
             {%for p in problem_list%}
             <tr align="center"class="{% cycle "evenrow" "oddrow" %}">
-                {%if p.problem_id in ac_list%}
+                {%if p.problem_id in ac_list and not contest.private%}
                 <td class="pass"> </td>
                 {%else%}
                 <td > </td>
@@ -53,8 +53,13 @@
                 {%else%}
                 <td> ----</td>
                 {%endif%}
+                {%if not contest.private or context.ojlogin.isManager%}
                 <td>    {{p.Ac}}</td>
                 <td>    {{p.submit}}</td>
+                {%else%}
+                <td></td>
+                <td></td>
+                {%endif%}
             </tr>
             {%endfor%}
         </tbody>

@@ -16,7 +16,7 @@ def status_sc(context, page, cid = -1):
     (solution, list_info) = paging(solution, PAGE_STATUS_NUM, page)
 
     if solution == None:
-        return error('4o4', 'page ', context)
+        return error('404', 'page ', context)
     if cid == -1:
         return problem_status(context, solution, list_info)
     else:
@@ -81,13 +81,17 @@ def contest_status_sc(context, solution, list_info, cid):
     try:
         contest = Contest.objects.get(contest_id = cid)
     except Contest.DoesNotExist:
-        pass
+        return error('contest','404',context)
+
+    if contest.private and not ('ojlogin' in context and context['ojlogin'].isManager):
+        return error('status','404',context)
+
     for var in solution:
         try:
             contest_p = contest_problem.get(
                 problem_id = var.problem.problem_id)
         except Contest_problem.DoesNotExist:
-            pass
+            return error('problem','404',context)
         var.problem.title = contest_p.title
     return render_to_response('contest_status.html',
                               {
