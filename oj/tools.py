@@ -15,7 +15,7 @@ def verify_user(fun, nick, password):
     if len(user) == 0:
         status = 0
         run_info['error'] = 'the user name or the password is wrong'
-    elif not user.get_all_permission:
+    elif not user[0].get_all_permission:
         status = 2
         run_info['error'] = 'the admin is not exists'
     else:
