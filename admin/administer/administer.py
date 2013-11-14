@@ -13,6 +13,7 @@ from admin.forms import AdminSearch
 
 @is_manager
 def admin_list_sc(req, context):
+    '''list all the admin'''
     if req.method == 'POST':
         form = AdminSearch(req.POST)
         if form.is_valid():
@@ -33,6 +34,9 @@ def admin_list_sc(req, context):
     )
 
 def alter_priority(user, checklist):
+    '''only the superuser can alter the admin's priority add or delete
+       it is used in the function set_priority_sc
+    '''
     permlist = user.get_all_permission
     for (k, v) in permlist.items():
         user.remove_perm(v)

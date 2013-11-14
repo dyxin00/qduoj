@@ -32,7 +32,7 @@ def admin_problem_list_sc(req, context, page):
             proid = form.cleaned_data['search_id']
             problem = Problem.objects.filter(problem_id=proid)
             return render_to_response('admin_problem_list.html', {
-                'problems':problem, 'permlist':permlist}
+                'problems':problem, 'permlist':permlist, 'context':context}
             )
     else:
         form = ProblemSearch()
