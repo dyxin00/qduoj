@@ -39,7 +39,7 @@
                 <th width="5%",align="center">Pass</th>
                 <th width="10" class="header"><a>Problem ID</a></th>
                 <th class="header">Title</th>
-                <th width="10%" class="header">Source</th>
+                <th width="20%" class="header">Source</th>
                 <th style="cursor:hand" width="60" class="header">AC</th>
                 <th style="cursor:hand" width="60" class="header">Submit</th>
             </tr>
@@ -56,7 +56,11 @@
                 <td>{{problem.problem_id}}</td>
                 <td><a 
                         href="/problem/num={{problem.problem_id}}">{{problem.title}}</a></td>
+                {%if problem.source%}
+                <td>{{problem.source}}</td>
+                {%else%}
                 <td></td>
+                {%endif%}
                 <td>{{problem.accepted}}</td>
                 <td>{{problem.submit}}</td>
             <tr>                        
