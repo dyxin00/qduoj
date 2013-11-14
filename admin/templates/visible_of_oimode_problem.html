@@ -1,0 +1,29 @@
+
+{%if problem.visible %}
+	{% if list_info %}
+		<td><a href='/admin/problem_visible/proid={{problem.problem_id}}/page={{list_info.page}}'>True</td>
+	{% else %}
+		<td><a href='/admin/problem_visible/proid={{problem.problem_id}}/page=0'>True</td>
+	{%endif%}
+{%else%}
+	{% if list_info %}
+		<td><a href='/admin/problem_visible/proid={{problem.problem_id}}/page={{list_info.page}}'>False</a></td>
+	{% else %}
+		<td><a href='/admin/problem_visible/proid={{problem.problem_id}}/page=0'>False</a></td>
+	{%endif%}
+	
+{%endif%}
+
+{%if problem.oi_mode %}
+	{% if list_info %}
+		<td><a href='/admin/problem_oi_mode/proid={{problem.problem_id}}/page={{list_info.page}}'>Open</td>
+	{% else %}
+		<td><a href='/admin/problem_oi_mode/proid={{problem.problem_id}}/page=0'>Open</td>
+	{%endif%}
+{%else%}
+	{% if list_info %}
+		<td><a href='/admin/problem_oi_mode/proid={{problem.problem_id}}/page={{list_info.page}}'>Close</a></td>
+	{% else %}
+		<td><a href='/admin/problem_oi_mode/proid={{problem.problem_id}}/page=0'>Close</a></td>
+	{%endif%}
+{%endif%}
