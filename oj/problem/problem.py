@@ -4,7 +4,7 @@
 """problem"""
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
-from oj.models import Problem, User, Solution, Source_code
+from oj.models import Problem, User, Solution, Source_code, Contest
 from oj.forms import Submit_code
 from oj.qduoj_config.qduoj_config import PAGE_PROBLEM_NUM
 from oj.util.util import paging, login_asked, if_contest_end
@@ -81,8 +81,12 @@ def submit_code_sc(req, context, cid, num):
                if cid == -1:
                    return HttpResponseRedirect('/status')
                else:
-                   return HttpResponseRedirect(
-                       '/contest_status/cid=%s'%cid)
+                   if Contest.objects.get(contest_id=cid).oi_mode:
+                       return HttpResponseRedirect(
+                           '/contest/cid=%s/'%(cid))
+                   else:
+                       return HttpResponseRedirect(
+                           '/contest_status/cid=%s'%cid)
             else:
                 error = 'Code too short!'
                 return render_to_response('submit_code.html',{

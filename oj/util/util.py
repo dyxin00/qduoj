@@ -67,7 +67,7 @@ def if_contest_end(function):
                 return error('404', 'contest', context)           
             server_time = datetime.now()
             contest_end_time = contest_end_time.replace(
-                tzinfo=None) + timedelta(hours=8,minutes=1)
+                tzinfo=None) + timedelta(hours=8)
             if server_time < contest_end_time or(
                 'ojlogin' in context and context['ojlogin'].isManager):
                 return function(req, context, cid, *args, **kwargs)
