@@ -5,7 +5,11 @@
 {%if pagenum  == list_info.page%}
 	<span class=red>{{pagenum}}</span>
 {% else %}
+{%if get%}
+<a href="/Search_status/page={{pagenum}}/?problem_id={{get.problem_id}}&user_id={{get.user_id}}&language={{get.language}}&jresult={{get.jresult}}">{{pagenum}}</a>
+{%else%}
 	<a href="/status/page={{pagenum}}">{{pagenum}}</a>
+{%endif%}
 {%endif%}
 {%endfor%}
 {%endblock%}
