@@ -1,10 +1,10 @@
 #coding=utf-8
 
+'''this contains the user login and register!'''
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
-from oj.models import *
-from oj.forms import *
-from oj.tools import *
+from oj.forms import Login, Register
+from oj.tools import verify_user, jump_page
 
 def login_sc(req, context):
     error = {}

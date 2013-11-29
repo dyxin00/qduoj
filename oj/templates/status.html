@@ -5,7 +5,11 @@
 {%if pagenum  == list_info.page%}
 	<span class=red>{{pagenum}}</span>
 {% else %}
+{%if get%}
+<a href="/Search_status/page={{pagenum}}/?problem_id={{get.problem_id}}&user_id={{get.user_id}}&language={{get.language}}&jresult={{get.jresult}}">{{pagenum}}</a>
+{%else%}
 	<a href="/status/page={{pagenum}}">{{pagenum}}</a>
+{%endif%}
 {%endif%}
 {%endfor%}
 {%endblock%}
@@ -13,8 +17,9 @@
 {% block status_base%}
 
 {%for solu in solution %}	
+{%if solu.problem.visible or context.ojlogin.isManager or solu.problem.provider_id == context.ojlogin.user_id%}
 	<tr class="{% cycle "evenrow" "oddrow" %}">
-		{%if context.ojlogin.nick == solu.user.nick%}
+		{%if context.ojlogin.nick == solu.user.nick or context.ojlogin.isManager%}
 		<td><a href = "/source_code/runid={{solu.solution_id}}" >{{solu.solution_id}}</a></td>
 		{% else %}
 		<td>{{solu.solution_id}}</td>
@@ -66,6 +71,7 @@
 		<td>	{{solu.code_length}}B</td>
 		<td>	{{solu.in_date}}</td>
 	</tr>
+    {%endif%}
 {% endfor %}
 
 {% endblock %}

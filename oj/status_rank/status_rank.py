@@ -54,7 +54,7 @@ def source_code_sc(req, context, runid):
     if len(submit) == 0:
         return error('4o4', 'code  ', context)
     user = context['ojlogin'].nick
-    if user != submit[0].user.nick:
+    if user != submit[0].user.nick and not context['ojlogin'].isManager:
         pageInfo = "the code is not yours!"
         title = '404 not found'
         return render_to_response('error.html',

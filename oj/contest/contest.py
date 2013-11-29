@@ -1,12 +1,12 @@
 '''contest '''
 import datetime
-from django.http import HttpResponse
+from django.http import HttpResponse#, HttpResponseRedirect
 from xlwt import Workbook
 from StringIO import StringIO
 from django.shortcuts import render_to_response
 from oj.models import Contest, User, Contest_problem, Solution
 from oj.qduoj_config.qduoj_config import PAGE_CONTEST_NUM
-from oj.util.util import paging
+from oj.util.util import paging, if_contest_start
 from oj.tools import error
 
 def contest_list_sc(context, page):
@@ -19,12 +19,16 @@ def contest_list_sc(context, page):
     if contest == None:
         return error('contest-error','contest',context)
 
+#    print datetime.datetime.now()
+#    print contest[0].end__time
     return render_to_response("contest_list.html",
                     { "context" : context,
                      "contest":contest,
-                     "list_info": list_info
+                     "list_info": list_info,
+                     'servertime':datetime.datetime.now()
                     })
 
+@if_contest_start
 def contest_sc(context, cid):
 
     '''contest detailed information'''
@@ -69,13 +73,17 @@ def contest_sc(context, cid):
 def contest_rank_sc(context, cid):
 
     '''contest rank'''
-    contest_solution = Solution.objects.filter(contest_id=cid)
     try:
         contest = Contest.objects.get(contest_id=cid)
     except Contest.DoesNotExist:
         return error('contest-error','contest',context)
-    oi_mode = contest.oi_mode
 
+    if contest.private and not (
+        'ojlogin' in context and context['ojlogin'].isManager):
+        return error('contest-score','404',context)
+
+    oi_mode = contest.oi_mode
+    contest_solution = Solution.objects.filter(contest_id=cid)
     user_id_list = contest_solution.values_list('user', flat=True).distinct()
 
     contest_problem = Contest_problem.objects.filter (contest_id=cid)
@@ -183,6 +191,7 @@ def contest_rank_oi(context,contest_problem_id, user_id_list, contest_solution, 
 
     '''oi mode'''
     contest_score = []
+
     for user_id in user_id_list:
         try:
             user = User.objects.get(user_id=user_id).nick
@@ -246,14 +255,18 @@ def contest_rank_xls_sc(context,cid):
     Generate competition excel spreadsheet,
     sent to the user
     '''
-    contest_solution = Solution.objects.filter(contest_id=cid)
 
     try:
         contest = Contest.objects.get(contest_id=cid)
     except Contest.DoesNotExist:
         return error('contest-error','contest',context)
-    oi_mode = contest.oi_mode
 
+    if contest.private and not (
+        'ojlogin' in context and context['ojlogin'].isManager):
+        return error('contest-score','404',context)
+
+    oi_mode = contest.oi_mode
+    contest_solution = Solution.objects.filter(contest_id=cid)
     user_id_list = contest_solution.values_list('user', flat=True).distinct()
 
     contest_problem = Contest_problem.objects.filter (contest_id=cid)
@@ -264,13 +277,16 @@ def contest_rank_xls_sc(context,cid):
                                                      flat=True
                                                     ).distinct()
     if oi_mode:
-        contest_score = contest_rank_oi(contest_problem_id,
+        contest_score = contest_rank_oi(context,
+                                    contest_problem_id,
                                      user_id_list,
                                      contest_solution,
                                      cid)
         return contest_rank_xls_oi(contest_score, cid, contest.title)
     else:
-        contest_score = contest_rank_acm(contest_problem_id,
+        contest_score = contest_rank_acm(
+                                     context,
+                                     contest_problem_id,
                                      user_id_list,
                                      contest_solution,
                                      cid)
