@@ -13,7 +13,7 @@ def rank_sc(req, page, context):
     (users, list_info) = paging(User.objects.order_by('-ac', 'submit'),
                                 PAGE_RANK_NUM, page)
     if users == None:
-        return error('4o4', 'far behind, you ', context)
+        return error('4o4', 'far behind, you ', context, 'error.html')
 
     k = 1
     for user in users:
@@ -31,7 +31,7 @@ def user_info_sc(req, nick, context):
     '''the base info of the user'''
     user = User.objects.filter(nick=nick)
     if len(user) == 0:
-        return error('4o4', 'user ', context)
+        return error('4o4', 'user ', context, 'error.html')
     submitions = Solution.objects.filter(user=user[0]).order_by('problem')
 
     submitAc_list = submitions.filter(result=4).values_list(
@@ -52,15 +52,10 @@ def source_code_sc(req, context, runid):
     '''fetch the source code '''
     submit = Solution.objects.filter(solution_id=runid)
     if len(submit) == 0:
-        return error('4o4', 'code  ', context)
+        return error('4o4', 'code  ', context, 'error.html')
     user = context['ojlogin'].nick
     if user != submit[0].user.nick and not context['ojlogin'].isManager:
-        pageInfo = "the code is not yours!"
-        title = '404 not found'
-        return render_to_response('error.html',
-                                  {'context':context,
-                                   'pageInfo':pageInfo,
-                                   'title':title})
+        return error('404', 'the code is not yours', context, 'error.html')
     source = Source_code.objects.filter(solution_id=runid)
     return render_to_response('source.html',
                               {'context':context,

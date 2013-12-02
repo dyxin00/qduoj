@@ -15,7 +15,7 @@ def mail_sc(req, fun, context):
     elif fun == '3': #sended mail
         mails = Mail.objects.filter(mail_from=username)
     else:
-        return error('4o4', 'page ', context)
+        return error('4o4', 'page ', context, 'error.html')
     
     if len(mails) > 50:
         mails = mails[0:50]
@@ -59,13 +59,13 @@ def readmail_sc(req, context, fun, msgid):
     '''read the mail from others'''
     mail = Mail.objects.filter(mail_id=msgid)
     if len(mail) == 0:
-        return error('4o4', 'mail ', context)
+        return error('4o4', 'mail ', context, 'error.html')
     
     username = context['ojlogin'].nick
     mail_from = mail[0].mail_from
     mail_to = mail[0].mail_to
     if mail_from != username and mail_to != username:
-        return error('4o4', 'mails', context)
+        return error('4o4', 'mails', context, 'error.html')
     
     mail.update(is_new=False)
     return render_to_response('readmail.html', {
