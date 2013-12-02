@@ -25,11 +25,11 @@
 		<a class='btn btn-primary' href="/admin/problem_list" target="main"><b>ProblemList</b></a>
 	{%endif%}
 	
-	{%if 'context_add' in permlist%}
+	{%if 'contest_add' in permlist%}
 	<li>
-		<a class='btn btn-primary' href="contest_add.php" target="main"><b>AddContest</b></a>
+		<a class='btn btn-primary' href="/admin/add_contest" target="main"><b>AddContest</b></a>
 	<li>
-		<a class='btn btn-primary' href="contest_list.php" target="main"><b>ContestList</b></a>
+		<a class='btn btn-primary' href="/admin/contest_list" target="main"><b>ContestList</b></a>
 	{%endif%}
 	
 	{%if context.ojlogin.isManager %}
@@ -37,15 +37,15 @@
 		<a class='btn btn-primary' href="/admin/admin_list/" target="main"><b>AdminList</b></a>
 	
 	<li>
-		<a class='btn btn-primary' href="privilege_list.php" target="main"><b>PrivilegeList</b></a>
+		<a class='btn btn-primary' href="privilege_list" target="main"><b>PrivilegeList</b></a>
 	{%endif%}
 	
 	<li>
-		<a class='btn btn-primary' href="source_give.php" target="main"><b>GiveSource</b></a>
+		<a class='btn btn-primary' href="source_give" target="main"><b>GiveSource</b></a>
 	<li>
-		<a class='btn btn-primary' href="problem_export.php" target="main"><b>ExportProblem</b></a>
+		<a class='btn btn-primary' href="problem_export" target="main"><b>ExportProblem</b></a>
 	<li>
-		<a class='btn btn-primary' href="problem_import.php" target="main"><b>ImportProblem</b></a>
+		<a class='btn btn-primary' href="problem_import" target="main"><b>ImportProblem</b></a>
 	<li>
 		<a class='btn btn-primary' href="http://code.google.com/p/hustoj/" target="_blank"><b>HUSTOJ</b></a>
 	<li>

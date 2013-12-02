@@ -64,7 +64,7 @@ def if_contest_end(function):
             try:
                 contest_end_time = Contest.objects.get(contest_id = cid).end__time
             except Contest.DoesNotExist:
-                return error('404', 'contest', context)           
+                return error('404', 'contest', context, 'error.html')           
             server_time = datetime.now()
             contest_end_time = contest_end_time.replace(
                 tzinfo=None) + timedelta(hours=8)
@@ -72,7 +72,7 @@ def if_contest_end(function):
                 'ojlogin' in context and context['ojlogin'].isManager):
                 return function(req, context, cid, *args, **kwargs)
             else:
-                return error('404', 'contest', context)
+                return error('404', 'contest', context, 'error.html')
         else:
                 return function(req, context, cid, *args, **kwargs)
     return wrapper
@@ -104,7 +104,7 @@ def if_contest_start(function):
         try:
             contest_start_time = Contest.objects.get(contest_id = cid).start_time
         except:
-            return error('404', 'contest', context)           
+            return error('404', 'contest', context, 'error.html')           
         server_time = datetime.now()
         contest_start_time = contest_start_time.replace(
                 tzinfo=None) + timedelta(hours=8)
@@ -112,7 +112,7 @@ def if_contest_start(function):
             'ojlogin' in context and context['ojlogin'].isManager):
             return function(context, cid, *args, **kwargs)
         else:
-            return error('404', 'contest', context)           
+            return error('404', 'contest', context, 'error.html')           
     return wrapper
 def problem_permission(function):
     @wraps(function)

@@ -17,11 +17,10 @@ def problem_sc(context, num, cid = -1):
     try:
         pid = int(num)
         problem = Problem.objects.get(problem_id = pid)
-
     except Problem.DoesNotExist:
-        return error('404', 'problem ', context)
+        return error('404', 'problem ', context, 'error.html')
     except ValueError:
-        return error('404', 'problem ', context)
+        return error('404', 'problem ', context, 'error.html')
     if cid != -1:
         problem_ab = problem_handle(problem)
         cpid = Contest_problem.objects.filter(contest_id=cid).get(problem_id=num).num
@@ -37,7 +36,7 @@ def problem_sc(context, num, cid = -1):
         return render_to_response('problem.html', {"problem":problem,
                     "context":context,"problem_ab" : problem_ab,"cid":cid})
     else:
-        return error('404', 'problem ', context)
+        return error('404', 'problem ', context, 'error.html')
 
 
 def problemlist_sc(page, context):
@@ -54,7 +53,7 @@ def problemlist_sc(page, context):
             user_id = User.objects.get(nick = user))
         ac_list = solution_ac.values_list('problem_id', flat=True).distinct()
     if problemset == None:
-        return error('404', 'page ', context)
+        return error('404', 'page ', context, 'error.html')
     return render_to_response('problemlist.html',
                               {"problemset":problemset,
                                "context":context,

@@ -19,7 +19,7 @@ def contest_list_sc(context, page):
         contest = Contest.objects.filter(defunct=1).order_by("-contest_id")
     (contest, list_info) = paging(contest, PAGE_CONTEST_NUM, page)
     if contest == None:
-        return error('contest-error','contest',context)
+        return error('contest-error','contest', context, 'error.html')
 
 #    print datetime.datetime.now()
 #    print contest[0].end__time
@@ -78,11 +78,11 @@ def contest_rank_sc(context, cid):
     try:
         contest = Contest.objects.get(contest_id=cid)
     except Contest.DoesNotExist:
-        return error('contest-error','contest',context)
+        return error('contest-error','contest', context, 'error.html')
 
     if contest.private and not (
         'ojlogin' in context and context['ojlogin'].isManager):
-        return error('contest-score','404',context)
+        return error('contest-score','404',context, 'error.html')
 
     oi_mode = contest.oi_mode
     contest_solution = Solution.objects.filter(contest_id=cid)
@@ -120,14 +120,14 @@ def contest_rank_acm(context,contest_problem_id, user_id_list, contest_solution,
     try:
         contest_time = Contest.objects.get(contest_id = cid).start_time
     except Contest.DoesNotExist:
-        return error('contest-error','contest',context)
+        return error('contest-error','contest',context, 'error.html')
 
     for user_id in user_id_list:
 
         try:
             user = User.objects.get(user_id=user_id).nick
         except User.DoesNotExist:
-            return error('contest-error','user',context)
+            return error('contest-error','user',context, 'error.html')
         user_solution = contest_solution.filter(user_id = user_id)
 
         solved = user_solution.filter(result = 4).count()
@@ -142,7 +142,7 @@ def contest_rank_acm(context,contest_problem_id, user_id_list, contest_solution,
                 problem_name = Contest_problem.objects.filter(
                     contest_id = cid).get(problem_id = pb_id)
             except Contest_problem.DoesNotExits:
-                return error('contest-error','problem',context)
+                return error('contest-error','problem',context, 'error.html')
 
             ac_solution = pb_id_solution.filter(result = 4)
 
@@ -197,7 +197,7 @@ def contest_rank_oi(context,contest_problem_id, user_id_list, contest_solution, 
         try:
             user = User.objects.get(user_id=user_id).nick
         except User.DoesNotExist:
-            return error('contest-error','user',context)
+            return error('contest-error','user',context, 'error.html')
         user_solution = contest_solution.filter(user_id = user_id)
 
         solved = user_solution.filter(result = 4).count()
@@ -212,7 +212,7 @@ def contest_rank_oi(context,contest_problem_id, user_id_list, contest_solution, 
                     contest_id = cid).get(problem_id = pb_id)
                 pb_score = con_problem.score
             except Contest_problem.DoesNotExist:
-                return error('contest-error','problem',context)
+                return error('contest-error','problem',context, 'error.html')
 
             if len(pb_id_solution):
                 score = pb_score * pb_id_solution[0].score / 100
@@ -260,11 +260,11 @@ def contest_rank_xls_sc(context,cid):
     try:
         contest = Contest.objects.get(contest_id=cid)
     except Contest.DoesNotExist:
-        return error('contest-error','contest',context)
+        return error('contest-error','contest',context, 'error.html')
 
     if contest.private and not (
         'ojlogin' in context and context['ojlogin'].isManager):
-        return error('contest-score','404',context)
+        return error('contest-score','404',context, 'error.html')
 
     oi_mode = contest.oi_mode
     contest_solution = Solution.objects.filter(contest_id=cid)
