@@ -23,9 +23,9 @@ def verify_user(fun, nick, password):
         run_info['error'] = 'the user already exists'
     return (status, run_info)
 
-def error(title, page_info, context):
+def error(title, page_info, context, html_page):
     '''when requst wrong, return to this page'''
-    return render_to_response('error.html', {
+    return render_to_response(html_page, {
         'pageInfo':page_info,
         'title':title, 'context':context}
     )
