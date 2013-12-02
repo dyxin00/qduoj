@@ -16,8 +16,8 @@ Result_dic = {
         9 : 'Output Limit Exceeded',
         10: 'Runtime Error',
         11: 'Compile Error',
-        3 : 'RJ',
-        2 : 'CI',
+        3 : 'Running Judge',
+        2 : 'Running Compile',
         1 : 'Pending'
         }
 language_ab = {
