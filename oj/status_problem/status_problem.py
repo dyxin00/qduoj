@@ -96,7 +96,7 @@ def contest_status_sc(req, context, solution, list_info, cid):
             contest_p = contest_problem.get(
                 problem_id = var.problem.problem_id)
         except Contest_problem.DoesNotExist:
-            return error('problem','404',context)
+            return error('contest----problem','404',context)
         var.problem.title = contest_p.num
     return render_to_response('contest_status.html',
                               {

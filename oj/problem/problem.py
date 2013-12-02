@@ -7,9 +7,10 @@ from django.shortcuts import render_to_response
 from oj.models import Problem, User, Solution, Source_code, Contest
 from oj.forms import Submit_code
 from oj.qduoj_config.qduoj_config import PAGE_PROBLEM_NUM
-from oj.util.util import paging, login_asked, if_contest_end
+from oj.util.util import paging, login_asked, if_contest_end, if_contest_start
 from oj.tools import error
 
+@if_contest_start
 def problem_sc(context, num, cid = -1):
     """return  problem response"""
     try:
@@ -81,7 +82,8 @@ def submit_code_sc(req, context, cid, num):
                if cid == -1:
                    return HttpResponseRedirect('/status')
                else:
-                   if Contest.objects.get(contest_id=cid).oi_mode:
+                   copen = Contest.objects.get(contest_id=cid)
+                   if copen.oi_mode and copen.private:
                        return HttpResponseRedirect(
                            '/contest/cid=%s/'%(cid))
                    else:
