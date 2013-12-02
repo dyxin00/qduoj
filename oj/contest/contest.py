@@ -167,7 +167,7 @@ def contest_rank_acm(context,contest_problem_id, user_id_list, contest_solution,
                     {
                         'problem_name':problem_name.title,
                         'submit': 0,
-                        'ac_user_time':ac_user_time,
+                        'ac_user_time':0,
                         'penalty':penalty,
                         'pid' :pb_id
                     }
