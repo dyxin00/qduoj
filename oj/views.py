@@ -37,7 +37,7 @@ def problemlist(req, page = "1"):
 
 def problem(req, num):
     context = base_info(req)
-    return problem_sc(context, num)
+    return problem_sc(context=context, num=num, cid=-1)
 
 def login(req):
     context = base_info(req)
@@ -54,7 +54,7 @@ def logout(req):
 def problemid(req):
     pid = req.GET['id']
     context = base_info(req)
-    return problem_sc(context, pid)
+    return problem_sc(context=context, num=pid, cid=-1)
 #  修改
 def problem_search(req):
     search = req.GET['search']
@@ -62,7 +62,7 @@ def problem_search(req):
     problem_s = Problem.objects.filter(title = str(search))
     if len(problem_s):
         pid = problem_s[0].problem_id
-        return problem_sc(context, pid)
+        return problem_sc(context=context, num=pid, cid=-1)
     else:
         return error('search','problem',context)
 
@@ -123,11 +123,11 @@ def contest_list(req, page = '1'):
 def contest(req, cid):
 
     context = base_info(req)
-    return contest_sc(context, cid)
+    return contest_sc(context=context, cid=cid)
 
 def contest_problem(req, num, cid):
     context = base_info(req)
-    return problem_sc(context, num, cid)
+    return problem_sc(context=context, num=num, cid=cid)
 
 def contest_submit_code(req, num, cid):
     context = base_info(req)
