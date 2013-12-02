@@ -58,7 +58,7 @@
             {% endif %}
 
         {% endfor %}
-        {%if context.ojlogin.nick == solu.user.nick or context.ojlogin.isManager%}
+        {%if context.ojlogin.nick == solu.user.nick or context.ojlogin.isManager or not contest.oi_mode%}
             {%if contest.oi_mode%}
                 <td class="red">{{solu.score}}</td>
             {%else %}

@@ -27,7 +27,7 @@ urlpatterns = patterns('',
 	url('^oj/userregister/$', 'oj.views.register'),				   #register
 	url('^oj/userlogout/$', 'oj.views.logout'),                    #logout
 
-	#url(r'^admin/', include(admin.site.urls)),
+#	url(r'^admin/', include(admin.site.urls)),
 
 	url('^problemid/$','oj.views.problemid'),
 	url('^problem_search/$','oj.views.problem_search'),
@@ -42,7 +42,7 @@ urlpatterns = patterns('',
 	url('^status/$','oj.views.status'),
 	url('^status/page=(?P<page>\d+)/$', 'oj.views.status'),
 	url('^Search_status/$','oj.views.status_search'),
-	url('^Search_status/page=(?P<page>\d+>)/$', 'oj.views.status_search'),
+	url('^Search_status/page=(?P<page>\d+)/$', 'oj.views.status_search'),
 	
 	url('^source_code/runid=(?P<runid>\d+)/$', 'oj.views.source_code'),
 
@@ -99,3 +99,4 @@ urlpatterns += patterns('',
     url('^admin/admin_list/$', 'admin.views.admin_list'),
     url('^admin/set_priority/id=(?P<nick>[\w]+)/$', 'admin.views.set_priority'),
 )
+

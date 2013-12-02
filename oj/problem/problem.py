@@ -4,7 +4,8 @@
 """problem"""
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
-from oj.models import Problem, User, Solution, Source_code, Contest
+from oj.models import Problem, User,\
+        Solution, Source_code, Contest, Contest_problem
 from oj.forms import Submit_code
 from oj.qduoj_config.qduoj_config import PAGE_PROBLEM_NUM
 from oj.util.util import paging, login_asked, if_contest_end, if_contest_start
@@ -17,16 +18,25 @@ def problem_sc(context, num, cid = -1):
         pid = int(num)
         problem = Problem.objects.get(problem_id = pid)
 
-        if problem.visible == True or cid != -1 or (
-        'ojlogin' in context and (context['ojlogin'].user_id == problem.provider_id or context['ojlogin'].isManager)):
-            problem_ab = problem_handle(problem)
-            return render_to_response('problem.html', {"problem":problem,
-                        "context":context,"problem_ab" : problem_ab,"cid":cid})
-        else:
-            return error('404', 'problem ', context)
     except Problem.DoesNotExist:
         return error('404', 'problem ', context)
     except ValueError:
+        return error('404', 'problem ', context)
+    if cid != -1:
+        problem_ab = problem_handle(problem)
+        cpid = Contest_problem.objects.filter(contest_id=cid).get(problem_id=num).num
+        return render_to_response('problem.html', {"problem":problem,
+                                                   "context":context,
+                                                   "problem_ab" : problem_ab,
+                                                   "cid":cid,
+                                                   "cpid" : cpid})
+        return error('404', 'problem ', context)
+    elif problem.visible == True or ('ojlogin' in context and (context['ojlogin'].user_id == problem.\
+                              provider_id or context['ojlogin'].isManager)):
+        problem_ab = problem_handle(problem)
+        return render_to_response('problem.html', {"problem":problem,
+                    "context":context,"problem_ab" : problem_ab,"cid":cid})
+    else:
         return error('404', 'problem ', context)
 
 

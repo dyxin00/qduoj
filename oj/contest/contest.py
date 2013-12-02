@@ -13,9 +13,11 @@ def contest_list_sc(context, page):
 
     '''return contest list '''
     page = int(page)
-    (contest, list_info) = paging(
-        Contest.objects.order_by("-contest_id"), PAGE_CONTEST_NUM, page
-        )
+    if 'ojlogin' in context and context['ojlogin'].isManager:
+        contest = Contest.objects.order_by("-contest_id")
+    else:
+        contest = Contest.objects.filter(defunct=1).order_by("-contest_id")
+    (contest, list_info) = paging(contest, PAGE_CONTEST_NUM, page)
     if contest == None:
         return error('contest-error','contest',context)
 
@@ -148,8 +150,8 @@ def contest_rank_acm(context,contest_problem_id, user_id_list, contest_solution,
 
             if len(ac_solution):
 
-                ac_time = ac_solution[0].judgetime
-                ac_user_time = ac_time - contest_time
+                ac_time = ac_solution[0].in_date
+                ac_user_time = ac_time - contest_time 
                 time_penalty = datetime.timedelta(minutes=20*penalty)
                 user_problem.append(
                     {
@@ -167,7 +169,6 @@ def contest_rank_acm(context,contest_problem_id, user_id_list, contest_solution,
                     {
                         'problem_name':problem_name.title,
                         'submit': 0,
-                        'ac_user_time':0,
                         'penalty':penalty,
                         'pid' :pb_id
                     }
