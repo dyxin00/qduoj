@@ -36,6 +36,20 @@ problem_list
 			<th width=10%>create time</th>
 			</tr>
 		</thead>
+		
+		<tbody>
+			{% for problem in problems %}
+				<tr>
+					<td>{{problem.problem_id}}</td>
+					<td>{{problem.title}}</td>
+					{%include "visible_of_oimode_problem.html"%}
+					<td><a href='/admin/edit_problem/proid={{problem.problem_id}}'>edit</a></td>
+					<td><a href='/admin/problem_testdata/proid={{problem.problem_id}}'>testData</a></td>
+					<td>{{problem.in_date}}</td>
+				</tr>	
+			{% endfor %}
+		</tbody>
+		<!--
 		<tbody>
 			{%for problem in problems %}
 				<tr>
@@ -54,6 +68,7 @@ problem_list
 				</tr>	
 			{%endfor%}
 		</tbody>
+		-->
 	</table>
 </center>
 {%endblock%}
