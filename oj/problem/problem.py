@@ -4,29 +4,39 @@
 """problem"""
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
-from oj.models import Problem, User, Solution, Source_code
+from oj.models import Problem, User,\
+        Solution, Source_code, Contest, Contest_problem
 from oj.forms import Submit_code
 from oj.qduoj_config.qduoj_config import PAGE_PROBLEM_NUM
-from oj.util.util import paging, login_asked, if_contest_end
+from oj.util.util import paging, login_asked, if_contest_end, if_contest_start
 from oj.tools import error
 
+@if_contest_start
 def problem_sc(context, num, cid = -1):
     """return  problem response"""
     try:
         pid = int(num)
         problem = Problem.objects.get(problem_id = pid)
-
-        if problem.visible == True or cid != -1 or (
-        'ojlogin' in context and (context['ojlogin'].user_id == problem.provider_id or context['ojlogin'].isManager)):
-            problem_ab = problem_handle(problem)
-            return render_to_response('problem.html', {"problem":problem,
-                        "context":context,"problem_ab" : problem_ab,"cid":cid})
-        else:
-            return error('404', 'problem ', context)
     except Problem.DoesNotExist:
-        return error('404', 'problem ', context)
+        return error('404', 'problem ', context, 'error.html')
     except ValueError:
+        return error('404', 'problem ', context, 'error.html')
+    if cid != -1:
+        problem_ab = problem_handle(problem)
+        cpid = Contest_problem.objects.filter(contest_id=cid).get(problem_id=num).num
+        return render_to_response('problem.html', {"problem":problem,
+                                                   "context":context,
+                                                   "problem_ab" : problem_ab,
+                                                   "cid":cid,
+                                                   "cpid" : cpid})
         return error('404', 'problem ', context)
+    elif problem.visible == True or ('ojlogin' in context and (context['ojlogin'].user_id == problem.\
+                              provider_id or context['ojlogin'].isManager)):
+        problem_ab = problem_handle(problem)
+        return render_to_response('problem.html', {"problem":problem,
+                    "context":context,"problem_ab" : problem_ab,"cid":cid})
+    else:
+        return error('404', 'problem ', context, 'error.html')
 
 
 def problemlist_sc(page, context):
@@ -43,7 +53,7 @@ def problemlist_sc(page, context):
             user_id = User.objects.get(nick = user))
         ac_list = solution_ac.values_list('problem_id', flat=True).distinct()
     if problemset == None:
-        return error('404', 'page ', context)
+        return error('404', 'page ', context, 'error.html')
     return render_to_response('problemlist.html',
                               {"problemset":problemset,
                                "context":context,
@@ -81,8 +91,13 @@ def submit_code_sc(req, context, cid, num):
                if cid == -1:
                    return HttpResponseRedirect('/status')
                else:
-                   return HttpResponseRedirect(
-                       '/contest_status/cid=%s'%cid)
+                   copen = Contest.objects.get(contest_id=cid)
+                   if copen.oi_mode and copen.private:
+                       return HttpResponseRedirect(
+                           '/contest/cid=%s/'%(cid))
+                   else:
+                       return HttpResponseRedirect(
+                           '/contest_status/cid=%s'%cid)
             else:
                 error = 'Code too short!'
                 return render_to_response('submit_code.html',{

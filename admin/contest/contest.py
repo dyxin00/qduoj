@@ -2,47 +2,27 @@
 
 from django.shortcuts import render_to_response
 import os, os.path
-from oj.models import Problem 
-from oj.qduoj_config.qduoj_config import ADMIN_PAGE_PROBLEM_NUM
-from oj.util.util import paging
+from oj.models import *
+from admin.is_login.is_login import *
+from oj.qduoj_config.qduoj_config import *
 from admin.uploadfile.uploadfile import *
-from admin.admin_backends import permission_asked
-from admin.forms import ProblemSearch, Admin_UploadFiles
-from admin.forms import ProblemForm
+from oj.util.util import paging
 from oj.tools import error
+from admin.admin_backends import permission_asked
+from admin.forms import ProblemForm
 
-@permission_asked('problem_add')
-def admin_problem_list_sc(req, context, page):
+@permission_asked('contest_add')
+def admin_contest_list_sc(req, context, page):
     page = int(page)
-    if ('minisiter' in context['ojlogin'].get_all_permission
-        or context['ojlogin'].isManager == True):
-        problem =  Problem.objects.order_by('problem_id')
-    else:    
-        problem = Problem.objects.filter(provider_id=context['ojlogin'].user_id).order_by('problem_id')
-    (problemset, list_info) = paging(problem, ADMIN_PAGE_PROBLEM_NUM, page)
-    permlist = context['ojlogin'].get_all_permission
-    #if the requst is out of bound, error!
-    if problemset == None: 
-        return error('404', 'page not found', context, 'admin_error.html');
-    if req.method == 'POST':
-        form = ProblemSearch(req.POST)
-        if form.is_valid():
-            proid = form.cleaned_data['search_id']
-            problem = Problem.objects.filter(problem_id=proid)
-            problem = problem.filter(provider_id=context['ojlogin'].user_id)
-            return render_to_response('admin_problem_list.html', {
-                'problems':problem, 'permlist':permlist, 'context':context}
-            )
-    else:
-        form = ProblemSearch()
-    return render_to_response('admin_problem_list.html', {
-        'problems':problemset,
-        'context':context, 
-        'list_info':list_info, 
-        'form':form,
-        'permlist':permlist,
-        }
+    contest = Contest.objects.order_by("-start_time");
+    (contest_set, list_info) = paging(contest, ADMIN_PAGE_CONTEST_NUM, page)
+    if contest_set == None:
+        return error('404', 'page not found', context, 'admin_error.html')
+    return render_to_response('admin_contest_list.html', {
+        'contests':contest_set, 
+        'context':context}
     )
+'''
 @permission_asked('problem_add')
 def admin_add_problem_sc(req, context):
     if req.method == 'POST':
@@ -65,7 +45,11 @@ def admin_add_problem_sc(req, context):
 def admin_edit_problem_sc(req, context, proid):
     problem = Problem.objects.filter(problem_id=proid)
     if len(problem) == 0:
-        return error('404', 'page not found', context, 'admin_error.html')
+        pageInfo = "page not found!"
+        return render_to_response('error.html', {
+            "pageInfo": pageInfo, 
+            "context":context}
+        )
     if req.method == 'POST':
         form = ProblemForm(req.POST, instance = problem[0])
         if form.is_valid():
@@ -85,7 +69,12 @@ def problem_shift_mode_sc(req, context, proid, page, fun):
     problem = Problem.objects.filter(problem_id=proid)
     permlist = context['ojlogin'].get_all_permission
     if len(problem) == 0:
-        return error('404', 'no this problem', context, 'admin_error.html')
+        pageInfo = "no this problem"
+        return render_to_response('error.html', {
+            'context':context,
+            'pageInfo':pageInfo}
+        )
+        
     if fun == 'visible':
         if problem[0].visible == True:
             problem.update(visible=False)
@@ -177,4 +166,5 @@ def download_testfile_sc(req, context, proid, filename):
             'pageInfo':pageInfo}
         )
     return downfile_via_url(req, targetFile, filename)
+'''
     

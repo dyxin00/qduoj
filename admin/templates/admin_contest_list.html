@@ -1,11 +1,11 @@
 {%extends "admin_base.html"%}
 
 {%block title%}
-problem_list
+contest_list
 {%endblock%}
 
 {%block content%}
-<center><h1>the problem list</h1></center>
+<center><h1>the contest list</h1></center>
 <h3 align='center'>
 	{%for pagenum in list_info.len%}
 		{%if pagenum  == list_info.page%}
@@ -18,46 +18,27 @@ problem_list
 </h3><center>
 	
 <center>
-	{%if form%}
-		<form method="POST">
-			ID:{{form.search_id}}
-			<input type="submit" name = "search" value = 'search'/>
-		</form>
-	{%endif%}
+
 	<table width=90% style = "border-collapse:collapse" border=1px>
 		<thead>
 			<tr>
 			<th width=5%>ID</th>
 			<th width=10%>title</th>
-			<th width=5%>visible</th>
+			<th width=5%>private</th>
 			<th width=5%>score_mode</th>
 			<th width=5%>edit</th>
-			<th width=5%>testData</th>
-			<th width=10%>create time</th>
+			<th width=5%>start time</th>
+			<th width=10%>end time</th>
 			</tr>
 		</thead>
-		
 		<tbody>
-			{% for problem in problems %}
+			{%for contest in contests %}
 				<tr>
-					<td>{{problem.problem_id}}</td>
-					<td>{{problem.title}}</td>
-					{%include "visible_of_oimode_problem.html"%}
-					<td><a href='/admin/edit_problem/proid={{problem.problem_id}}'>edit</a></td>
-					<td><a href='/admin/problem_testdata/proid={{problem.problem_id}}'>testData</a></td>
-					<td>{{problem.in_date}}</td>
-				</tr>	
-			{% endfor %}
-		</tbody>
-		<!--
-		<tbody>
-			{%for problem in problems %}
-				<tr>
-					<td>{{problem.problem_id}}</td>
+					<td>{{contest.contest_id}}</td>
 					{%if not 'minister' in permlist and context.ojlogin.user_id != problem.provider_id and problem.visible == False%}
 						<td></td>
 					{%else%}
-						<td>{{problem.title}}</td>
+						<td>{{contest.title}}</td>
 					{%endif%}
 					{%if 'minister' in permlist or context.ojlogin.user_id == problem.provider_id%}
 						{%include "visible_of_oimode_problem.html"%}
@@ -68,7 +49,6 @@ problem_list
 				</tr>	
 			{%endfor%}
 		</tbody>
-		-->
 	</table>
 </center>
 {%endblock%}

@@ -6,7 +6,8 @@ PAGE_RANK_NUM = 50
 PAGE_CONTEST_NUM = 40
 TEST_DATA_PATH = ""      #the test data for the problem
 
-ADMIN_PAGE_PROBLEM_NUM = 3 #the problem num of admin_page_problem_num
+ADMIN_PAGE_PROBLEM_NUM = 20 #the problem num of admin_page_problem_num
+ADMIN_PAGE_CONTEST_NUM = 20
 
 TEST_DATA_PATH = "/home/judge/data"      #the test data for the problem
 MAX_UPLOAD_FILE_SIZE = 5   #the max upload file size 5M

@@ -11,6 +11,12 @@
 		<span class="green">Difficulty:</span>{{problem.hard}}<br>		
 	</center>
 	<br>
+{%if cid != -1%}
+    <div align ="center">
+    <a class ="contest_st" href ="/contest/cid={{cid}}/">[Problem]</a>
+    <a class = "contest_st" href = "/contest_rank/cid={{cid}}">[Rank]</a>
+    </div><br>
+{%endif%}
 
 <div>
 	<h2>Description</h2>
@@ -68,7 +74,7 @@
 		[<a href= "/submit_code/num={{problem.problem_id}}">Submit</a>] [<a href = "/Search_status?problem_id={{problem.problem_id}}&user_id&language=-1&jresult=-1">Status</a>] [<a href="">Discuss</a>]
 		{%else%}
         [<a href= "/submit_code/num={{problem.problem_id}}/cid={{cid}}">Submit</a>]
-        [<a href= "/contest_search_status/cid={{cid}}/?problem_id={{problem.problem_id}}&user_id&language=-1&jresult=-1">Status</a>] 
+        [<a href= "/contest_search_status/cid={{cid}}/?problem_id={{cpid}}&user_id&language=-1&jresult=-1">Status</a>] 
         [<a href="">Discuss</a>]
 		{%endif%}
 	</center>

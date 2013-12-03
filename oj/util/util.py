@@ -16,8 +16,8 @@ Result_dic = {
         9 : 'Output Limit Exceeded',
         10: 'Runtime Error',
         11: 'Compile Error',
-        3 : 'RJ',
-        2 : 'CI',
+        3 : 'Running Judge',
+        2 : 'Running Compile',
         1 : 'Pending'
         }
 language_ab = {
@@ -64,18 +64,39 @@ def if_contest_end(function):
             try:
                 contest_end_time = Contest.objects.get(contest_id = cid).end__time
             except Contest.DoesNotExist:
-                return error('404', 'contest', context)           
+                return error('404', 'contest', context, 'error.html')           
             server_time = datetime.now()
             contest_end_time = contest_end_time.replace(
-                tzinfo=None) + timedelta(hours=8,minutes=1)
+                tzinfo=None) + timedelta(hours=8)
             if server_time < contest_end_time or(
                 'ojlogin' in context and context['ojlogin'].isManager):
                 return function(req, context, cid, *args, **kwargs)
             else:
-                return error('404', 'contest', context)
+                return error('404', 'contest', context, 'error.html')
         else:
                 return function(req, context, cid, *args, **kwargs)
     return wrapper
+def if_contest_start(function):
+    @wraps(function)
+    def wrapper(*args, **kwargs):
+        cid = int(kwargs['cid'])
+        if cid == -1:
+            return function(*args, **kwargs)
+
+        try:
+            contest_start_time = Contest.objects.get(contest_id = cid).start_time
+        except:
+            return error('404', 'contest', kwargs['context'])           
+        server_time = datetime.now()
+        contest_start_time = contest_start_time.replace(
+                tzinfo=None) + timedelta(hours=8)
+        if server_time >= contest_start_time or (
+            'ojlogin' in kwargs['context'] and kwargs['context']['ojlogin'].isManager):
+            return function(*args, **kwargs)
+        else:
+            return error('404', 'contest', kwargs['context'])           
+    return wrapper
+'''
 def if_contest_start(function):
     @wraps(function)
     def wrapper(context, cid, *args, **kwargs):
@@ -83,7 +104,7 @@ def if_contest_start(function):
         try:
             contest_start_time = Contest.objects.get(contest_id = cid).start_time
         except:
-            return error('404', 'contest', context)           
+            return error('404', 'contest', context, 'error.html')           
         server_time = datetime.now()
         contest_start_time = contest_start_time.replace(
                 tzinfo=None) + timedelta(hours=8)
@@ -91,9 +112,8 @@ def if_contest_start(function):
             'ojlogin' in context and context['ojlogin'].isManager):
             return function(context, cid, *args, **kwargs)
         else:
-            return error('404', 'contest', context)           
+            return error('404', 'contest', context, 'error.html')           
     return wrapper
-'''
 def problem_permission(function):
     @wraps(function)
     def wrapper(context, num, cid = -1):

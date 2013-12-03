@@ -11,7 +11,7 @@ from oj.change_info.change_info import *
 from oj.usermail.usermail import *
 from oj.qduoj_config.qduoj_config import *
 from oj.contest.contest import *
-from oj.status_problem.status_problem import status_sc, __search__
+from oj.status_problem.status_problem import status_sc, search_handle
 from oj.tools import error
 
 def base_info(req):    #the news and the session!
@@ -37,7 +37,7 @@ def problemlist(req, page = "1"):
 
 def problem(req, num):
     context = base_info(req)
-    return problem_sc(context, num)
+    return problem_sc(context=context, num=num, cid=-1)
 
 def login(req):
     context = base_info(req)
@@ -54,7 +54,7 @@ def logout(req):
 def problemid(req):
     pid = req.GET['id']
     context = base_info(req)
-    return problem_sc(context, pid)
+    return problem_sc(context=context, num=pid, cid=-1)
 #  修改
 def problem_search(req):
     search = req.GET['search']
@@ -62,7 +62,7 @@ def problem_search(req):
     problem_s = Problem.objects.filter(title = str(search))
     if len(problem_s):
         pid = problem_s[0].problem_id
-        return problem_sc(context, pid)
+        return problem_sc(context=context, num=pid, cid=-1)
     else:
         return error('search','problem',context)
 
@@ -82,12 +82,12 @@ def user_info(req, nick):
 
 def status(req, page='1'):
     context = base_info(req)
-    return status_sc(context, page, -1)
+    return status_sc(req, context, page, -1)
 
 def status_search(req, page= '1'):
     context = base_info(req)
     if req.method == 'GET':
-        return __search__(req,context, page, -1)
+        return search_handle(req,context, page, -1)
 
 def source_code(req, runid):
     context = base_info(req)
@@ -123,11 +123,11 @@ def contest_list(req, page = '1'):
 def contest(req, cid):
 
     context = base_info(req)
-    return contest_sc(context, cid)
+    return contest_sc(context=context, cid=cid)
 
 def contest_problem(req, num, cid):
     context = base_info(req)
-    return problem_sc(context, num, cid)
+    return problem_sc(context=context, num=num, cid=cid)
 
 def contest_submit_code(req, num, cid):
     context = base_info(req)
@@ -135,14 +135,14 @@ def contest_submit_code(req, num, cid):
 
 def contest_status(req, cid, page = '1'):
     context = base_info(req)
-    return status_sc(context, page, cid)
+    return status_sc(req, context, page, cid)
 
 def contest_rank(req, cid):
     context = base_info(req)
     return contest_rank_sc(context, cid)
 def contest_status_search(req, cid, page = 1):
     context = base_info(req)
-    return __search__(req, context, page, cid)
+    return search_handle(req, context, page, cid)
 
 def contest_rank_xls(req,cid):
     context = base_info(req)
