@@ -3,7 +3,7 @@
 from django.shortcuts import render_to_response
 import os, os.path
 from oj.models import Problem 
-from oj.qduoj_config.qduoj_config import ADMIN_PAGE_PROBLEM_NUM
+from oj.qduoj_config.qduoj_config import ADMIN_PAGE_PROBLEM_NUM, MAX_UPLOAD_FILE_SIZE
 from oj.util.util import paging
 from admin.uploadfile.uploadfile import *
 from admin.admin_backends import permission_asked
