@@ -67,7 +67,8 @@ def readmail_sc(req, context, fun, msgid):
     if mail_from != username and mail_to != username:
         return error('4o4', 'mails', context, 'error.html')
     
-    mail.update(is_new=False)
+    if mail_to == context['ojlogin'].nick:
+        mail.update(is_new=False)
     return render_to_response('readmail.html', {
         'context':context,
         'mail':mail[0], 
