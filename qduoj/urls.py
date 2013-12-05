@@ -98,5 +98,7 @@ urlpatterns += patterns('',
     url('^admin/down_files/proid=(?P<proid>\d+)/filename=(?P<filename>[\w.]+)/$', 'admin.views.download_testfile'),
     url('^admin/admin_list/$', 'admin.views.admin_list'),
     url('^admin/set_priority/id=(?P<nick>[\w]+)/$', 'admin.views.set_priority'),
+   # url('^admin/rejudge/$', 'admin.views.set_priority'),
+
 )
 
