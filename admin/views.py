@@ -129,3 +129,7 @@ def admin_list(req):
 def set_priority(req, nick):
     context = base_info(req)
     return set_priority_sc(req, context, nick)
+
+def rejudge(req):
+    context = base_info(req)
+    return rejudge_sc(req, context)
