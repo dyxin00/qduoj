@@ -1,0 +1,23 @@
+{%extends "admin_base.html"%}
+
+{%block title%}
+{%endblock%}
+
+{%block content%}
+        <div align =  'center'> 
+		<h1>rejudge solution</h1>
+		<form method = "post">
+            problem ID<input type = 'input' name = 'pid'>
+			<input type = 'submit' name = 'submit_pid' value = 'submit'/>
+		</form>
+		<form method = "post">
+            solution ID<input type = 'input' name = 'sid'>
+			<input type = 'submit' name = 'submit_sid' value = 'submit'/>
+		</form>
+        </br>
+        {%if error%}
+        <h1 style = "color: #ff0000">{{error}}</h1> 
+        {%endif%}
+    </div>
+
+{%endblock%}
