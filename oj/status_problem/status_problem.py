@@ -88,8 +88,8 @@ def contest_status_sc(req, context, solution, list_info, cid):
     except Contest.DoesNotExist:
         return error('contest','404',context, 'error.html')
 
-    if contest.private and not ('ojlogin' in context and context['ojlogin'].isManager):
-        return error('status','404',context, 'error.html')
+    if not contest.open_rank and not ('ojlogin' in context and context['ojlogin'].isManager):
+        return error('','contest status private',context, 'permissions_tips.html')
 
     for var in solution:
         try:

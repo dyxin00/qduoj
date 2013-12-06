@@ -8,6 +8,7 @@ class Contest(models.Model):
     defunct = models.BooleanField(default = True)
     private = models.BooleanField(default = True)
     oi_mode = models.BooleanField(default = False)
+    open_rank = models.BooleanField(default = True)
     def __unicode__(self):
         return str(self.contest_id) + ' - ' + self.title
 
@@ -19,6 +20,13 @@ class Contest_problem(models.Model):
     score = models.IntegerField(default = 100)
     def __unicode__(self):
         return 'contest_id - '+  str(self.contest_id) + ' - ' + self.title
+
+class Contest_privilege(models.Model):
+    user_nick = models.CharField(max_length=50)
+    contest_id = models.IntegerField(default=0) 
+    
+    def __unicode__(self):
+        return self.user_nick
 
 class Perm(models.Model):
     name = models.CharField(max_length=30, unique=True)

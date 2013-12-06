@@ -187,8 +187,7 @@ def rejudge_sc(req, context):
             try:
                 pid = int(req.POST['pid'])
                 Solution.objects.filter(problem_id = pid).update(result = 1)
-                return HttpResponseRedirect('/Search_status/?\
-                            problem_id=%s&user_id=&language=-1&jresult=-1'%pid)
+                return HttpResponseRedirect('/Search_status/?problem_id=%s&user_id=&language=-1&jresult=-1'%pid)
             except ValueError:
                 return render_to_response("rejudge.html",
                                           {'error' : 'input error!!'})
