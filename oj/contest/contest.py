@@ -129,8 +129,8 @@ def contest_rank_acm(context,contest_problem_id, user_id_list, contest_solution,
         except User.DoesNotExist:
             return error('contest-error','user',context, 'error.html')
         user_solution = contest_solution.filter(user_id = user_id)
-
-        solved = user_solution.filter(result = 4).count()
+        #print user_solution.filter(result=4).values('problem')
+        solved = user_solution.filter(result=4).values('problem').distinct().count()
 
         user_problem = []
         total_time = datetime.timedelta()
@@ -200,7 +200,7 @@ def contest_rank_oi(context,contest_problem_id, user_id_list, contest_solution, 
             return error('contest-error','user',context, 'error.html')
         user_solution = contest_solution.filter(user_id = user_id)
 
-        solved = user_solution.filter(result = 4).count()
+        solved = user_solution.filter(result=4).values('problem').distinct().count()
         user_problem = []
         total_score = 0.0
         for pb_id in contest_problem_id:

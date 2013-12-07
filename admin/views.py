@@ -4,6 +4,7 @@ from admin.news.news import *
 from admin.is_login.is_login import *
 from admin.adminproblem.adminproblem import *
 from admin.administer.administer import *
+from admin.contest.contest import *
 
 def base_info(req):
     '''save the base_info of the user'''
@@ -129,3 +130,11 @@ def admin_list(req):
 def set_priority(req, nick):
     context = base_info(req)
     return set_priority_sc(req, context, nick)
+
+def rejudge(req):
+    context = base_info(req)
+    return rejudge_sc(req, context)
+
+def contest_list(req, page=1):
+    context = base_info(req)
+    return contest_list_sc(req, context, page)

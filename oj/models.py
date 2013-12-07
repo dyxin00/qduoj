@@ -4,6 +4,7 @@ class Contest(models.Model):
     contest_id = models.AutoField(primary_key=True)
     title = models.CharField(max_length = 50)
     start_time = models.DateTimeField()
+    provider_id = models.IntegerField()
     end__time = models.DateTimeField()
     defunct = models.BooleanField(default = True)
     private = models.BooleanField(default = True)

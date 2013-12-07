@@ -1,7 +1,6 @@
 #coding=utf-8
 
 from django.shortcuts import render_to_response
-import os, os.path
 from oj.models import *
 from admin.is_login.is_login import *
 from oj.qduoj_config.qduoj_config import *
@@ -12,15 +11,20 @@ from admin.admin_backends import permission_asked
 from admin.forms import ProblemForm
 
 @permission_asked('contest_add')
-def admin_contest_list_sc(req, context, page):
+def contest_list_sc(req, context, page):
     page = int(page)
-    contest = Contest.objects.order_by("-start_time");
+    if ('minister' in context['ojlogin'].get_all_permission
+        or context['ojlogin'].isManager == True):
+        contest = Contest.objects.order_by("-start_time");
+    else:
+        contest = Contest.objects.filter(provider_id=context['ojlogin'].user_id)
+        contest = contest.order_by('-start_time')
     (contest_set, list_info) = paging(contest, ADMIN_PAGE_CONTEST_NUM, page)
     if contest_set == None:
         return error('404', 'page not found', context, 'admin_error.html')
     return render_to_response('admin_contest_list.html', {
         'contests':contest_set, 
-        'context':context}
+        'context':context, 'list_info':list_info}
     )
 '''
 @permission_asked('problem_add')

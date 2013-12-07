@@ -1,12 +1,13 @@
 #coding=utf-8
 
 from django.shortcuts import render_to_response
+from django.http import HttpResponseRedirect
 import os, os.path
-from oj.models import Problem 
-from oj.qduoj_config.qduoj_config import ADMIN_PAGE_PROBLEM_NUM
+from oj.models import Problem, Solution
+from oj.qduoj_config.qduoj_config import ADMIN_PAGE_PROBLEM_NUM, MAX_UPLOAD_FILE_SIZE
 from oj.util.util import paging
 from admin.uploadfile.uploadfile import *
-from admin.admin_backends import permission_asked
+from admin.admin_backends import permission_asked, is_manager
 from admin.forms import ProblemSearch, Admin_UploadFiles
 from admin.forms import ProblemForm
 from oj.tools import error
@@ -177,4 +178,29 @@ def download_testfile_sc(req, context, proid, filename):
             'pageInfo':pageInfo}
         )
     return downfile_via_url(req, targetFile, filename)
+
+@is_manager
+def rejudge_sc(req, context):
     
+    if req.method == 'POST':
+        if 'submit_pid' in req.POST:
+            try:
+                pid = int(req.POST['pid'])
+                Solution.objects.filter(problem_id = pid).update(result = 1)
+                return HttpResponseRedirect('/Search_status/?\
+                            problem_id=%s&user_id=&language=-1&jresult=-1'%pid)
+            except ValueError:
+                return render_to_response("rejudge.html",
+                                          {'error' : 'input error!!'})
+        elif 'submit_sid' in req.POST:
+            try:
+                sid = int(req.POST['sid'])
+                Solution.objects.filter(solution_id = sid).update(result = 1)
+                return HttpResponseRedirect('/status')
+            except ValueError:
+                return render_to_response("rejudge.html",
+                                          {'error':'input error!!'})
+        else:
+            return render_to_response("rejudge.html",
+                                      {'error' : 'input error!!'})
+    return render_to_response("rejudge.html")
