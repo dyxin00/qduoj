@@ -16,7 +16,7 @@ def contest_list_sc(context, page):
     if 'ojlogin' in context and context['ojlogin'].isManager:
         contest = Contest.objects.order_by("-contest_id")
     else:
-        contest = Contest.objects.filter(defunct=1).order_by("-contest_id")
+        contest = Contest.objects.filter(visible=1).order_by("-contest_id")
     (contest, list_info) = paging(contest, PAGE_CONTEST_NUM, page)
     if contest == None:
         return error('contest-error','contest', context, 'error.html')
