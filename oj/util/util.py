@@ -62,7 +62,7 @@ def if_contest_end(function):
     def wrapper(req, context, cid, *args, **kwargs):
         if cid > 0:
             try:
-                contest_end_time = Contest.objects.get(contest_id = cid).end__time
+                contest_end_time = Contest.objects.get(contest_id = cid).end_time
             except Contest.DoesNotExist:
                 return error('404', 'contest', context, 'error.html')           
             server_time = datetime.now()
