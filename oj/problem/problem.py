@@ -8,10 +8,12 @@ from oj.models import Problem, User,\
         Solution, Source_code, Contest, Contest_problem
 from oj.forms import Submit_code
 from oj.qduoj_config.qduoj_config import PAGE_PROBLEM_NUM
-from oj.util.util import paging, login_asked, if_contest_end, if_contest_start
-from oj.tools import error
+from oj.util.util import paging, login_asked,\
+        if_contest_end, if_contest_start, contest_privilege
+from oj.tools import error, jump_page
 
 @if_contest_start
+@contest_privilege
 def problem_sc(context, num, cid = -1):
     """return  problem response"""
     try:
@@ -92,9 +94,8 @@ def submit_code_sc(req, context, cid, num):
                    return HttpResponseRedirect('/status')
                else:
                    copen = Contest.objects.get(contest_id=cid)
-                   if copen.oi_mode and copen.private:
-                       return HttpResponseRedirect(
-                           '/contest/cid=%s/'%(cid))
+                   if copen.oi_mode and not copen.open_rank:
+                       return jump_page('/contest/cid=%s/'%cid,'Submitted successfully!!')
                    else:
                        return HttpResponseRedirect(
                            '/contest_status/cid=%s'%cid)
