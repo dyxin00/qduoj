@@ -22,9 +22,11 @@ contest_list
 		<thead>
 			<tr>
 			<th width=5%>ID</th>
-			<th width=10%>title</th>
+			<th width=13%>title</th>
+			<th width=5%>visible</th>
 			<th width=5%>private</th>
-			<th width=5%>score_mode</th>
+			<th width=5%>open rank</th>
+			<th width=5%>OI mode</th>
 			<th width=5%>edit</th>
 			<th width=5%>start time</th>
 			<th width=10%>end time</th>
@@ -38,7 +40,7 @@ contest_list
 					{%include "visible_of_oimode_contest.html"%}
 					<td><a href='/admin/edit_problem/proid={{problem.problem_id}}'>edit</a></td>
 					<td width = 15%>{{contest.start_time}}</td>
-					<td width = 15%>{{contest.end__time}}</td>
+					<td width = 15%>{{contest.end_time}}</td>
 				</tr>	
 			{%endfor%}
 		</tbody>

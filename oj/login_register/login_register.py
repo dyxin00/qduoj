@@ -23,9 +23,10 @@ def login_sc(req, context):
                 )   
             u = {"username":username, "password":password}
             req.session['login'] = u
-            return HttpResponseRedirect('/')
+            return HttpResponseRedirect(req.session['login_from'])
     else:
         form = Login()
+        req.session['login_from'] = req.META.get('HTTP_REFERER', '/')
     return render_to_response('login.html', {
         'form':form, 
         'error':error, 

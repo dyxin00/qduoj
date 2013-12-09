@@ -8,7 +8,6 @@ from admin.uploadfile.uploadfile import *
 from oj.util.util import paging
 from oj.tools import error
 from admin.admin_backends import permission_asked
-from admin.forms import ProblemForm
 
 @permission_asked('contest_add')
 def contest_list_sc(req, context, page):
@@ -71,7 +70,6 @@ def admin_edit_problem_sc(req, context, proid):
 @permission_asked('problem_add')
 def problem_shift_mode_sc(req, context, proid, page, fun):
     problem = Problem.objects.filter(problem_id=proid)
-    permlist = context['ojlogin'].get_all_permission
     if len(problem) == 0:
         pageInfo = "no this problem"
         return render_to_response('error.html', {
@@ -92,7 +90,7 @@ def problem_shift_mode_sc(req, context, proid, page, fun):
     if page == '0':
         problem = Problem.objects.filter(problem_id=proid)
         return render_to_response('admin_problem_list.html', {
-            'problems': problem, 'permlist':permlist}
+            'problems': problem}
         )
     else:
         return HttpResponseRedirect(

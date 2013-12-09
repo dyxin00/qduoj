@@ -1,10 +1,13 @@
-from oj.models import User
+from django.http import HttpResponseRedirect
+from django.shortcuts import render_to_response
+from oj.models import User, Problem, Contest
 from admin.main.main import *
 from admin.news.news import *
 from admin.is_login.is_login import *
 from admin.adminproblem.adminproblem import *
 from admin.administer.administer import *
 from admin.contest.contest import *
+from admin.admin_shift_mode import admin_shift_mode_sc
 
 def base_info(req):
     '''save the base_info of the user'''
@@ -80,21 +83,41 @@ def admin_edit_problem(req, proid):
     context = base_info(req)
     return admin_edit_problem_sc(req, context, proid)
 
-def problem_visible(req, proid, page):
-    '''get problem id, set it's visibility'''
+#------------------------Admin shift mode --------------------------
+def after_shift_mode(page, proid):
+    if page == '0':
+        problem = Problem.objects.filter(problem_id=proid) 
+        return render_to_response('admin_problem_list.html',{
+            'problems':problem}
+        )
+    else:
+        return HttpResponseRedirect(
+            '/admin/problem_list/page=%s' % page
+            )
+    
+def problem_shift_mode(req, proid, page, fun):
+    '''
+    get problem id, set it's mode it cotains
+    the problem's visiblity and the os_mode
+    '''
+    problem = Problem.objects.filter(problem_id=proid)
     context = base_info(req)
-    fun = 'visible'
-    return problem_shift_mode_sc(req, context, proid, page, fun)
+    admin_shift_mode_sc(req, context, problem, fun)
+    return after_shift_mode(page, proid)
 
-def problem_oi_mode(req, proid, page):
+def contest_shift_mode(req, conid, page, fun):
     '''
-    the qduoj has two mod when it runs, one is if one testdata is wrong,
-    the result is wrong , the other is you can get scores from the right
-    testdata
+    get contest id, set  it's mode it contains
+    the contest's visibility and the oi_mode private and open_rank
     '''
+    contest = Contest.objects.filter(contest_id=conid)
     context = base_info(req)
-    fun = 'oi_mode'
-    return problem_shift_mode_sc(req, context, proid, page, fun)
+    admin_shift_mode_sc(req, context, contest, fun)
+    return HttpResponseRedirect(
+        '/admin/contest_list/page=%s' % page
+        )
+
+#--------------------------------------------------------------------
 
 def if_add_data(req, proid):
     '''

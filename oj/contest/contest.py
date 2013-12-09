@@ -6,7 +6,7 @@ from StringIO import StringIO
 from django.shortcuts import render_to_response
 from oj.models import Contest, User, Contest_problem, Solution
 from oj.qduoj_config.qduoj_config import PAGE_CONTEST_NUM
-from oj.util.util import paging, if_contest_start
+from oj.util.util import paging, if_contest_start, open_rank, contest_privilege
 from oj.tools import error
 
 def contest_list_sc(context, page):
@@ -16,7 +16,7 @@ def contest_list_sc(context, page):
     if 'ojlogin' in context and context['ojlogin'].isManager:
         contest = Contest.objects.order_by("-contest_id")
     else:
-        contest = Contest.objects.filter(defunct=1).order_by("-contest_id")
+        contest = Contest.objects.filter(visible=1).order_by("-contest_id")
     (contest, list_info) = paging(contest, PAGE_CONTEST_NUM, page)
     if contest == None:
         return error('contest-error','contest', context, 'error.html')
@@ -29,8 +29,8 @@ def contest_list_sc(context, page):
                      "list_info": list_info,
                      'servertime':datetime.datetime.now()
                     })
-
 @if_contest_start
+@contest_privilege
 def contest_sc(context, cid):
 
     '''contest detailed information'''
@@ -71,7 +71,7 @@ def contest_sc(context, cid):
                               },
                              )
 
-
+@open_rank
 def contest_rank_sc(context, cid):
 
     '''contest rank'''
@@ -79,10 +79,11 @@ def contest_rank_sc(context, cid):
         contest = Contest.objects.get(contest_id=cid)
     except Contest.DoesNotExist:
         return error('contest-error','contest', context, 'error.html')
-
+    '''
     if contest.private and not (
         'ojlogin' in context and context['ojlogin'].isManager):
         return error('contest-score','404',context, 'error.html')
+    '''
 
     oi_mode = contest.oi_mode
     contest_solution = Solution.objects.filter(contest_id=cid)
@@ -249,7 +250,7 @@ def contest_rank_oi(context,contest_problem_id, user_id_list, contest_solution, 
     contest_score = sorted(contest_score, key=lambda user: -user['score'])
 
     return contest_score
-
+@open_rank
 def contest_rank_xls_sc(context,cid):
 
     '''
@@ -260,11 +261,12 @@ def contest_rank_xls_sc(context,cid):
     try:
         contest = Contest.objects.get(contest_id=cid)
     except Contest.DoesNotExist:
-        return error('contest-error','contest',context, 'error.html')
-
+        return error('contest-error', 'contest', context, 'error.html')
+    '''
     if contest.private and not (
         'ojlogin' in context and context['ojlogin'].isManager):
         return error('contest-score','404',context, 'error.html')
+    '''
 
     oi_mode = contest.oi_mode
     contest_solution = Solution.objects.filter(contest_id=cid)
