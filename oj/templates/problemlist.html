@@ -8,31 +8,41 @@
     {%if pagenum  == list_info.page%}
     <span class=red>{{pagenum}}</span>
     {% else %}
+    {%if types%}
+    <a href="/problemlist/page={{pagenum}}/?classification={{types}}">{{pagenum}}</a>
+    {%else%}
     <a href="/problemlist/page={{pagenum}}">{{pagenum}}</a>
+    {%endif%}
     {%endif%}
     {%endfor%}
 
-    </h3><center>
+    </h3>
 
     <table>
-        <tr align='center' class='evenrow'><td width='5'></td>
-            <td width='50%' colspan='1'>
+        <tr width = '90' align='center' class='evenrow'>
+            <td width='32%' colspan='1',>
                 <form class = "form-search" action= "/problemid">
                     Problem ID<input class="input-small search-query" type='text' name='id' size=5 style="height:24px">
                     <button class="btn btn-mini" type='submit'  >Go</button>
                 </form>
             </td>
-            <td width='50%' colspan='1'>
+            <td width='51%' colspan='1'>
+                <form class="form-search" action = "/">
+                    Classification：&nbsp{{classification.classification}}
+                    <button type="submit" class="btn btn-mini">Search</button>
+                </form>
+            </td>
+            <td width='30%' colspan='1'>
                 <form class="form-search" action = "/problem_search">
                     <input style="height:24px" type="text" name= 'search' class="input-large search-query">
                     <button type="submit" class="btn btn-mini">Search</button>
                 </form>
-        </td>
+            </td>
     </tr>
     </table>
 
-
-    <table id="problemset" width="90%" >
+    <center>
+    <table id="problemset" width="90%" align='center' >
         <thead>
             <tr class="toprow">
                 <!--<th width="5" class="header"></th> -->

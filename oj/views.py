@@ -33,7 +33,7 @@ def base_info(req):    #the news and the session!
 
 def problemlist(req, page = "1"):
     context = base_info(req)
-    return problemlist_sc(page, context)
+    return problemlist_sc(req, page, context)
 
 def problem(req, num):
     context = base_info(req)
