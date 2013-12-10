@@ -74,7 +74,6 @@ urlpatterns = patterns('',
 #	url('^bbs/pid=(?P<pid>\d+)/page=(?<page>\d+)\$', 'oj.views.bbs'),
 )
 
-
 urlpatterns += patterns('',
 	url('^admin/$', 'admin.views.index'),
 	#url('^admin/oj$', 'admin.views.oj'),
@@ -101,4 +100,3 @@ urlpatterns += patterns('',
     url('^admin/rejudge/$', 'admin.views.rejudge'),
 
 )
-
