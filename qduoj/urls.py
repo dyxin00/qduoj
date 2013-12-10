@@ -3,8 +3,8 @@ from django.contrib.sitemaps import views as sitemap_views
 from django.views.decorators.cache import cache_page
 from oj.sitemap import PostSitemap
 #Uncomment the next two lines to enable the admin:
-from django.contrib import admin
-admin.autodiscover()
+#from django.contrib import admin
+#admin.autodiscover()
 
 
 urlpatterns = patterns('',
@@ -27,7 +27,7 @@ urlpatterns = patterns('',
 	url('^oj/userregister/$', 'oj.views.register'),				   #register
 	url('^oj/userlogout/$', 'oj.views.logout'),                    #logout
 
-	url(r'^admin/', include(admin.site.urls)),
+#	url(r'^admin/', include(admin.site.urls)),
 
 	url('^problemid/$','oj.views.problemid'),
 	url('^problem_search/$','oj.views.problem_search'),
@@ -73,7 +73,6 @@ urlpatterns = patterns('',
 #	url('^bbs/pid=(?P<pid>\d+)\$', 'oj.views.bbs'),
 #	url('^bbs/pid=(?P<pid>\d+)/page=(?<page>\d+)\$', 'oj.views.bbs'),
 )
-'''
 urlpatterns += patterns('',
 	url('^admin/$', 'admin.views.index'),
 	#url('^admin/oj$', 'admin.views.oj'),
@@ -104,4 +103,3 @@ urlpatterns += patterns('',
        'admin.views.contest_shift_mode'
        ),
     )
-'''
