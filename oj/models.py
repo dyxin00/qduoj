@@ -4,6 +4,7 @@ class Contest(models.Model):
     contest_id = models.AutoField(primary_key=True)
     title = models.CharField(max_length = 50)
     start_time = models.DateTimeField()
+    provider_id = models.IntegerField()
     end_time = models.DateTimeField()
     visible = models.BooleanField(default = True)
     private = models.BooleanField(default = True)
@@ -93,8 +94,9 @@ class Problem(models.Model):
     hard = models.IntegerField()
     accepted = models.IntegerField(default=0)
     submit = models.IntegerField(default=0)
-    visible = models.BooleanField(default=True)
+    visible = models.BooleanField(default=False)
     oi_mode = models.BooleanField(default=False)
+    classification = models.IntegerField(default=0)
     def __unicode__(self):
         return str(self.problem_id) + ":  " + self.title
 
