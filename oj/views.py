@@ -33,7 +33,7 @@ def base_info(req):    #the news and the session!
 
 def problemlist(req, page = "1"):
     context = base_info(req)
-    return problemlist_sc(page, context)
+    return problemlist_sc(req, page, context)
 
 def problem(req, num):
     context = base_info(req)
@@ -64,7 +64,7 @@ def problem_search(req):
         pid = problem_s[0].problem_id
         return problem_sc(context=context, num=pid, cid=-1)
     else:
-        return error('search','problem',context)
+        return error('search', 'problem', context, 'error.html')
 
 
 #submit code

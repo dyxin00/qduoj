@@ -6,7 +6,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from oj.models import Problem, User,\
         Solution, Source_code, Contest, Contest_problem
-from oj.forms import Submit_code
+from oj.forms import Submit_code, Classification
 from oj.qduoj_config.qduoj_config import PAGE_PROBLEM_NUM
 from oj.util.util import paging, login_asked,\
         if_contest_end, if_contest_start, contest_privilege
@@ -41,12 +41,23 @@ def problem_sc(context, num, cid = -1):
         return error('404', 'problem ', context, 'error.html')
 
 
-def problemlist_sc(page, context):
+def problemlist_sc(req, page, context):
     """return problem_list response"""
+
     page = int(page)
     ac_list = []
-    (problemset, list_info) = paging(Problem.objects.order_by('problem_id'),
-                                    PAGE_PROBLEM_NUM,page)
+
+    types = req.GET.get('classification',None)
+
+    if types and types != '0':
+        problem = Problem.objects.filter(classification=types).order_by('problem_id')
+    else:
+        problem = Problem.objects.order_by('problem_id')
+
+    (problemset, list_info) = paging(problem, PAGE_PROBLEM_NUM, page)
+
+    classification = Classification()
+
     if 'ojlogin' in context:
         user = context['ojlogin'].nick
         solution_ac = Solution.objects.filter(result=4)
@@ -56,11 +67,15 @@ def problemlist_sc(page, context):
         ac_list = solution_ac.values_list('problem_id', flat=True).distinct()
     if problemset == None:
         return error('404', 'page ', context, 'error.html')
+
     return render_to_response('problemlist.html',
                               {"problemset":problemset,
                                "context":context,
                                "ac_list" : ac_list,
-                               'list_info':list_info}
+                               'list_info':list_info,
+                               'classification':classification,
+                               'types':types
+                              }
                              )
 
 @if_contest_end

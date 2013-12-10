@@ -94,8 +94,9 @@ class Problem(models.Model):
     hard = models.IntegerField()
     accepted = models.IntegerField(default=0)
     submit = models.IntegerField(default=0)
-    visible = models.BooleanField(default=True)
+    visible = models.BooleanField(default=False)
     oi_mode = models.BooleanField(default=False)
+    classification = models.IntegerField(default=0)
     def __unicode__(self):
         return str(self.problem_id) + ":  " + self.title
 
