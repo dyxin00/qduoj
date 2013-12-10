@@ -64,7 +64,7 @@ def problem_search(req):
         pid = problem_s[0].problem_id
         return problem_sc(context=context, num=pid, cid=-1)
     else:
-        return error('search','problem', context, 'error.html')
+        return error('search', 'problem', context, 'error.html')
 
 
 #submit code
