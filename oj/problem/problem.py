@@ -49,7 +49,7 @@ def problemlist_sc(req, page, context):
 
     types = req.GET.get('classification',None)
 
-    if types:
+    if types and types != 0:
         problem = Problem.objects.filter(classification=types).order_by('problem_id')
     else:
         problem = Problem.objects.order_by('problem_id')
