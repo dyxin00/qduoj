@@ -1,29 +1,29 @@
 
 {%if problem.visible %}
 	{% if list_info %}
-		<td><a href='/admin/problem_visible/proid={{problem.problem_id}}/page={{list_info.page}}'>True</td>
+		<td><a href='/admin/problem_shift_mode/proid={{problem.problem_id}}/page={{list_info.page}}/mode=visible'>True</td>
 	{% else %}
-		<td><a href='/admin/problem_visible/proid={{problem.problem_id}}/page=0'>True</td>
+		<td><a href='/admin/problem_shift_mode/proid={{problem.problem_id}}/page=0/mode=visible'>True</td>
 	{%endif%}
 {%else%}
 	{% if list_info %}
-		<td><a href='/admin/problem_visible/proid={{problem.problem_id}}/page={{list_info.page}}'>False</a></td>
+		<td><a href='/admin/problem_shift_mode/proid={{problem.problem_id}}/page={{list_info.page}}/mode=visible'>False</a></td>
 	{% else %}
-		<td><a href='/admin/problem_visible/proid={{problem.problem_id}}/page=0'>False</a></td>
+		<td><a href='/admin/problem_shift_mode/proid={{problem.problem_id}}/page=0/mode=visible'>False</a></td>
 	{%endif%}
 	
 {%endif%}
 
 {%if problem.oi_mode %}
 	{% if list_info %}
-		<td><a href='/admin/problem_oi_mode/proid={{problem.problem_id}}/page={{list_info.page}}'>Open</td>
+		<td><a href='/admin/problem_shift_mode/proid={{problem.problem_id}}/page={{list_info.page}}/mode=oi_mode'>Open</td>
 	{% else %}
-		<td><a href='/admin/problem_oi_mode/proid={{problem.problem_id}}/page=0'>Open</td>
+		<td><a href='/admin/problem_shift_mode/proid={{problem.problem_id}}/page=0/mode=oi_mode'>Open</td>
 	{%endif%}
 {%else%}
 	{% if list_info %}
-		<td><a href='/admin/problem_oi_mode/proid={{problem.problem_id}}/page={{list_info.page}}'>Close</a></td>
+		<td><a href='/admin/problem_shift_mode/proid={{problem.problem_id}}/page={{list_info.page}}/mode=oi_mode'>Close</a></td>
 	{% else %}
-		<td><a href='/admin/problem_oi_mode/proid={{problem.problem_id}}/page=0'>Close</a></td>
+		<td><a href='/admin/problem_shift_mode/proid={{problem.problem_id}}/page=0/mode=oi_mode'>Close</a></td>
 	{%endif%}
 {%endif%}

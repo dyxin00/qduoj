@@ -148,7 +148,7 @@ def contest_rank_acm(context,contest_problem_id, user_id_list, contest_solution,
             ac_solution = pb_id_solution.filter(result = 4)
 
             penalty = count - len(ac_solution)
-
+            
             if len(ac_solution):
 
                 ac_time = ac_solution[0].in_date
