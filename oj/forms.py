@@ -43,7 +43,7 @@ class Classification(forms.Form):
                ('10','贪心'),
                ('11','网络流'),
                ('12','博弈'),
-               ('13','数据结构')
+               ('13','数据结构'),
                ('14','递推')
               ]
     classification  = forms.ChoiceField(choices = choices)
