@@ -38,7 +38,7 @@ class Perm(models.Model):
     
 class User(models.Model):  
     user_id = models.AutoField(primary_key=True)
-    nick = models.CharField(max_length=50)
+    nick = models.CharField(max_length=50, unique = True)
     password = models.CharField(max_length=100)
     email = models.EmailField()
     perm = models.ManyToManyField(Perm, blank=True, null=True)   
@@ -79,7 +79,7 @@ class User(models.Model):
 
 class Problem(models.Model):
     problem_id = models.AutoField(primary_key=True)
-    title = models.CharField(max_length=50)
+    title = models.CharField(max_length=50, unique = True)
     description = models.TextField()
     input_data = models.TextField()
     output_data = models.TextField()
