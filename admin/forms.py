@@ -1,3 +1,4 @@
+#coding=utf8
 from django import forms
 from django.forms import ModelForm
 from oj.models import Problem, News, Perm
@@ -35,12 +36,29 @@ class ProblemForm(ModelForm):
     '''
     problem form fun:edit problem add problem
     '''
+    choices = [('0','全部'),
+               ('1','模拟'),
+               ('2','动态规划'),
+               ('3','字符串处理'),
+               ('4','搜索'),
+               ('5','数论'),
+               ('6','计算几何'),
+               ('7','图论'),
+               ('8','树结构'),
+               ('9','并查集'),
+               ('10','贪心'),
+               ('11','网络流'),
+               ('12','博弈'),
+               ('13','数据结构'),
+               ('14','递推')
+              ]
+    classification = forms.ChoiceField(choices=choices)
     class Meta:
         model = Problem
         fields = ('title', 'time_limit', 'memory_limit',
                   'hard', 'description', 'input_data', 
                   'sample_input', 'sample_output', 'output_data',
-                  'source', 'hint'
+                  'classification', 'source', 'hint'
                  )
 
 class AdminSearch(forms.Form):
