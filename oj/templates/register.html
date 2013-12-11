@@ -49,6 +49,10 @@
 				text += "!!!The User ID contains the illegal characters!!!\n"
 			}
 			
+			if(!isAccount(password.value)){
+				text += "!!!The User Password contains illegal character!!!"
+			}
+			
 			if(text.length > 2){
 				alert(text);
 				password.value = ""
