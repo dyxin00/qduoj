@@ -73,8 +73,6 @@ urlpatterns = patterns('',
 #	url('^bbs/pid=(?P<pid>\d+)\$', 'oj.views.bbs'),
 #	url('^bbs/pid=(?P<pid>\d+)/page=(?<page>\d+)\$', 'oj.views.bbs'),
 )
-
-
 urlpatterns += patterns('',
 	url('^admin/$', 'admin.views.index'),
 	#url('^admin/oj$', 'admin.views.oj'),
@@ -90,13 +88,18 @@ urlpatterns += patterns('',
 	url('^admin/add_problem/$', 'admin.views.add_problem'),
 	url('^admin/pro_search/$', 'admin.views.admin_search'),
 	url('admin/edit_problem/proid=(?P<proid>\d+)/$', 'admin.views.admin_edit_problem'),
-	url('admin/problem_visible/proid=(?P<proid>\d+)/page=(?P<page>\d+)/$', 'admin.views.problem_visible'),
-	url('admin/problem_oi_mode/proid=(?P<proid>\d+)/page=(?P<page>\d+)/$', 'admin.views.problem_oi_mode'),
+	url('admin/problem_shift_mode/proid=(?P<proid>\d+)/page=(?P<page>\d+)/mode=(?P<fun>\w+)/$', 'admin.views.problem_shift_mode'),
+	#url('admin/problem_oi_mode/proid=(?P<proid>\d+)/page=(?P<page>\d+)/$', 'admin.views.problem_oi_mode'),
 	url('^admin/problem_testdata/proid=(?P<proid>\d+)/$', 'admin.views.problem_testdata'),
 	url('^admin/if_add_data/proid=(?P<proid>\d+)/$', 'admin.views.if_add_data'),
 	url('^admin/delete_testdata/proid=(?P<proid>\d+)/filename=(?P<filename>[\w.]+)/$', 'admin.views.delete_testdata'),
     url('^admin/down_files/proid=(?P<proid>\d+)/filename=(?P<filename>[\w.]+)/$', 'admin.views.download_testfile'),
     url('^admin/admin_list/$', 'admin.views.admin_list'),
     url('^admin/set_priority/id=(?P<nick>[\w]+)/$', 'admin.views.set_priority'),
-)
-
+    url('^admin/rejudge/$', 'admin.views.rejudge'),
+    url('^admin/contest_list/$', 'admin.views.contest_list'),
+    url('^admin/contest_list/page=(?P<page>\d+)/$', 'admin.views.contest_list'),  
+    url('^admin/contest_shift_mode/conid=(?P<conid>\d+)/page=(?P<page>\d+)/mode=(?P<fun>\w+)/$',
+       'admin.views.contest_shift_mode'
+       ),
+    )

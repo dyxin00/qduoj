@@ -2,7 +2,7 @@
 from django.http import HttpResponseRedirect
 from datetime import datetime, timedelta
 from functools import wraps
-from oj.models import Contest, Problem
+from oj.models import Contest, Contest_privilege
 from django.core.paginator import Paginator
 from oj.tools import error
 
@@ -62,7 +62,7 @@ def if_contest_end(function):
     def wrapper(req, context, cid, *args, **kwargs):
         if cid > 0:
             try:
-                contest_end_time = Contest.objects.get(contest_id = cid).end__time
+                contest_end_time = Contest.objects.get(contest_id = cid).end_time
             except Contest.DoesNotExist:
                 return error('404', 'contest', context, 'error.html')           
             server_time = datetime.now()
@@ -72,7 +72,7 @@ def if_contest_end(function):
                 'ojlogin' in context and context['ojlogin'].isManager):
                 return function(req, context, cid, *args, **kwargs)
             else:
-                return error('404', 'contest', context, 'error.html')
+                return error('', 'contest has ended', context, 'permissions_tips.html')           
         else:
                 return function(req, context, cid, *args, **kwargs)
     return wrapper
@@ -84,58 +84,65 @@ def if_contest_start(function):
             return function(*args, **kwargs)
 
         try:
-            contest_start_time = Contest.objects.get(contest_id = cid).start_time
+            contest_start_time = Contest.objects.get(
+                contest_id = cid).start_time
         except:
-            return error('404', 'contest', kwargs['context'])           
+            return error('404', 'contest', kwargs['context'],'error.html')           
         server_time = datetime.now()
         contest_start_time = contest_start_time.replace(
                 tzinfo=None) + timedelta(hours=8)
         if server_time >= contest_start_time or (
-            'ojlogin' in kwargs['context'] and kwargs['context']['ojlogin'].isManager):
+            'ojlogin' in kwargs['context'] and \
+            kwargs['context']['ojlogin'].isManager):
             return function(*args, **kwargs)
         else:
-            return error('404', 'contest', kwargs['context'])           
+            return error('', 'contest does not start',
+                         kwargs['context'], 'permissions_tips.html')           
     return wrapper
-'''
-def if_contest_start(function):
+def contest_privilege(function):
+
+    @wraps(function)
+    def wrapper(*args, **kwargs):
+
+        cid = int(kwargs['cid'])
+        if cid == -1:
+            return function(*args, **kwargs)
+        try:
+            contest = Contest.objects.get(contest_id=cid)
+        except Contest.DoesNotExist:
+            return error('404', 'contest', kwargs['context'])           
+
+        if not contest.private:
+            return function(*args, **kwargs)
+        if 'ojlogin' not in kwargs['context']:
+            return HttpResponseRedirect('/oj/userlogin/')
+        user = kwargs['context']['ojlogin']
+        if user.isManager:
+            return function(*args, **kwargs)
+        privilese_list = Contest_privilege.objects.filter(contest_id= cid)
+        if privilese_list.filter(user_nick=user.nick).count():
+            return function(*args, **kwargs)
+        else:
+            return error('',
+                         'contest if private, you do not have permission to enter',
+                         kwargs['context'],
+                         'permissions_tips.html')           
+    return wrapper
+
+
+def open_rank(function):
     @wraps(function)
     def wrapper(context, cid, *args, **kwargs):
-        cid = int(cid)
         try:
-            contest_start_time = Contest.objects.get(contest_id = cid).start_time
-        except:
-            return error('404', 'contest', context, 'error.html')           
-        server_time = datetime.now()
-        contest_start_time = contest_start_time.replace(
-                tzinfo=None) + timedelta(hours=8)
-        if server_time >= contest_start_time or (
-            'ojlogin' in context and context['ojlogin'].isManager):
+            contest = Contest.objects.get(contest_id = cid)
+        except Contest.DoesNotExist:
+            return error('404', 'contest', context, error.html)           
+        if contest.open_rank or ('ojlogin' in context and\
+                                 context['ojlogin'].isManager):
             return function(context, cid, *args, **kwargs)
         else:
-            return error('404', 'contest', context, 'error.html')           
+            return error('', 'contest ranked private', context, 'permissions_tips.html')           
     return wrapper
-def problem_permission(function):
-    @wraps(function)
-    def wrapper(context, num, cid = -1):
-        pid = int(num)
-        problem = Problem.objects.get(problem_id=pid)
-        
-'''
-'''               
-def contest_end(cid):
-    try:
-        contest_end_time = Contest.objects.get(contest_id = cid).end__time
-    except Contest.DoesNotExist:
-        return True
-    server_time = datetime.now()
-    contest_end_time = contest_end_time.replace(
-        tzinfo=None) + timedelta(hours=8,minutes=1)
-    
-    if server_time < contest_end_time:
-        return False
-    else:
-        return True
-'''
 
 def login_asked(function):
     @wraps(function)

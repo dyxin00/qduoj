@@ -40,21 +40,38 @@
 <script type="text/javascript">
 	function check(){ 
 		with(document.all){
-	   if(password.value!=ensure_pw.value){
-		 alert("Repeat Password does not match with the password!");
-		 password.value = "";
-		 ensure_pw.value = "";
-	   }
-			 
-     var str = "[@/'\"#$%&^*]+";
-		 var strForText = name.value;
-		 var reg = RegExp(str);
-		 if(reg.test(strForText))
-		 {
-			alert("The User ID contains the illegal characters!(@,/,#,$,%,&, ^,*,\ ...)");
-			password.value = ""
-			ensure_pw.value = ""
-		 }  
+			var text = ""
+			if(password.value!=ensure_pw.value){
+				text += "!!!Repeat Password does not match with the password!\n\n"
+			}
+	
+			if(!isAccount(nick.value)){
+				text += "!!!The User ID contains the illegal characters!!!\n"
+			}
+			
+			if(!isAccount(password.value)){
+				text += "!!!The User Password contains illegal character!!!"
+			}
+			
+			if(text.length > 2){
+				alert(text);
+				password.value = ""
+				ensure_pw.value = ""
+			}
+			
+			function isAccount(strAccount) { 
+			{ 
+				var result=false;
+				var pattern = new RegExp("[`~!@#$^&*()=|{}':;',\\[\\].<>/?~！@#￥……&*（）——|{}【】‘；：”“’。，、？ ]");
+		
+				if(pattern.test(strAccount)){
+					return false;
+				}
+				
+				return true;
+			}
+		}
+		
 	}
 }
 </script>

@@ -10,7 +10,7 @@
         <h3>Contest&nbsp{{contest.contest_id}} - test</h3>
 
         <p>Start Time: <span class="contest_time">{{contest.start_time}}</span>
-        End Time: <span class="contest_time">{{contest.end__time}}</span></p>
+        End Time: <span class="contest_time">{{contest.end_time}}</span></p>
 
         <p>Current Time:<span id="nowdate" class="contest_time">2013-10-20 15:44:05</span>
         Status:<span class="red">Running</span>&nbsp;&nbsp;
@@ -41,7 +41,7 @@
         <tbody>
             {%for p in problem_list%}
             <tr align="center"class="{% cycle "evenrow" "oddrow" %}">
-                {%if p.problem_id in ac_list and not contest.private%}
+                {%if p.problem_id in ac_list and contest.open_rank%}
                 <td class="pass"> </td>
                 {%else%}
                 <td > </td>
@@ -53,7 +53,7 @@
                 {%else%}
                 <td> ----</td>
                 {%endif%}
-                {%if not contest.private or context.ojlogin.isManager%}
+                {%if contest.open_rank or context.ojlogin.isManager%}
                 <td>    {{p.Ac}}</td>
                 <td>    {{p.submit}}</td>
                 {%else%}

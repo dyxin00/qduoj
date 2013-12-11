@@ -1,0 +1,83 @@
+{%if contest.visible %}
+		<td><a href='/admin/contest_shift_mode/conid={{contest.contest_id}}/page={{list_info.page}}/mode=visible'>True</td>
+{%else%}
+		<td><a href='/admin/contest_shift_mode/conid={{contest.contest_id}}/page={{list_info.page}}/mode=visible'>False</a></td>
+{%endif%}
+
+{%if contest.private %}
+		<td><a href='/admin/contest_shift_mode/conid={{contest.contest_id}}/page={{list_info.page}}/mode=private'>True</a></td>
+{%else%}
+		<td><a href='/admin/contest_shift_mode/conid={{contest.contest_id}}/page={{list_info.page}}/mode=private'>False</a></td>
+{%endif%}
+
+{%if contest.open_rank %}
+		<td><a href='/admin/contest_shift_mode/conid={{contest.contest_id}}/page={{list_info.page}}/mode=open_rank'>True</td>
+{%else%}
+		<td><a href='/admin/contest_shift_mode/conid={{contest.contest_id}}/page={{list_info.page}}/mode=open_rank'>False</a></td>
+{%endif%}
+
+{%if contest.oi_mode %}
+		<td><a href='/admin/contest_shift_mode/conid={{contest.contest_id}}/page={{list_info.page}}/mode=oi_mode'>Open</td>
+{%else%}
+		<td><a href='/admin/contest_shift_mode/conid={{contest.contest_id}}/page={{list_info.page}}/mode=oi_mode'>Close</a></td>
+{%endif%}
+
+
+<!--
+{%if contest.visible %}
+	{% if list_info %}
+		<td><a href='/admin/contest_visible/proid={{contest.contest_id}}/page={{list_info.page}}'>True</td>
+	{% else %}
+		<td><a href='/admin/contest_visible/proid={{contest.contest_id}}/page=0'>True</td>
+	{%endif%}
+{%else%}
+	{% if list_info %}
+		<td><a href='/admin/contest_visible/proid={{contest.contest_id}}/page={{list_info.page}}'>False</a></td>
+	{% else %}
+		<td><a href='/admin/contest_visible/proid={{contest.contest_id}}/page=0'>False</a></td>
+	{%endif%}
+	
+{%endif%}
+
+{%if contest.private %}
+	{% if list_info %}
+		<td><a href='/admin/contest_private/proid={{contest.contest_id}}/page={{list_info.page}}'>True</td>
+	{% else %}
+		<td><a href='/admin/contest_private/proid={{contest.contest_id}}/page=0'>True</td>
+	{%endif%}
+{%else%}
+	{% if list_info %}
+		<td><a href='/admin/contest_private/proid={{contest.contest_id}}/page={{list_info.page}}'>False</a></td>
+	{% else %}
+		<td><a href='/admin/contest_private/proid={{contest.contest_id}}/page=0'>False</a></td>
+	{%endif%}
+{%endif%}
+
+{%if contest.open_rank %}
+	{% if list_info %}
+		<td><a href='/admin/contest_openrank/proid={{contest.contest_id}}/page={{list_info.page}}'>True</td>
+	{% else %}
+		<td><a href='/admin/contest_openrank/proid={{contest.contest_id}}/page=0'>True</td>
+	{%endif%}
+{%else%}
+	{% if list_info %}
+		<td><a href='/admin/contest_openrank/proid={{contest.contest_id}}/page={{list_info.page}}'>False</a></td>
+	{% else %}
+		<td><a href='/admin/contest_openrank/proid={{contest.contest_id}}/page=0'>False</a></td>
+	{%endif%}
+{%endif%}
+
+{%if contest.oi_mode %}
+	{% if list_info %}
+		<td><a href='/admin/contest_oi_mode/proid={{contest.contest_id}}/page={{list_info.page}}'>Open</td>
+	{% else %}
+		<td><a href='/admin/contest_oi_mode/proid={{contest.contest_id}}/page=0'>Open</td>
+	{%endif%}
+{%else%}
+	{% if list_info %}
+		<td><a href='/admin/contest_oi_mode/proid={{contest.contest_id}}/page={{list_info.page}}'>Close</a></td>
+	{% else %}
+		<td><a href='/admin/contest_oi_mode/proid={{contest.contest_id}}/page=0'>Close</a></td>
+	{%endif%}
+{%endif%}
+-->

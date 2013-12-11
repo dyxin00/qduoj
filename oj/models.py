@@ -4,10 +4,12 @@ class Contest(models.Model):
     contest_id = models.AutoField(primary_key=True)
     title = models.CharField(max_length = 50)
     start_time = models.DateTimeField()
-    end__time = models.DateTimeField()
-    defunct = models.BooleanField(default = True)
+    provider_id = models.IntegerField()
+    end_time = models.DateTimeField()
+    visible = models.BooleanField(default = True)
     private = models.BooleanField(default = True)
     oi_mode = models.BooleanField(default = False)
+    open_rank = models.BooleanField(default = True)
     def __unicode__(self):
         return str(self.contest_id) + ' - ' + self.title
 
@@ -19,6 +21,13 @@ class Contest_problem(models.Model):
     score = models.IntegerField(default = 100)
     def __unicode__(self):
         return 'contest_id - '+  str(self.contest_id) + ' - ' + self.title
+
+class Contest_privilege(models.Model):
+    user_nick = models.CharField(max_length=50)
+    contest_id = models.IntegerField(default=0) 
+    
+    def __unicode__(self):
+        return self.user_nick
 
 class Perm(models.Model):
     name = models.CharField(max_length=30, unique=True)
@@ -85,8 +94,9 @@ class Problem(models.Model):
     hard = models.IntegerField()
     accepted = models.IntegerField(default=0)
     submit = models.IntegerField(default=0)
-    visible = models.BooleanField(default=True)
+    visible = models.BooleanField(default=False)
     oi_mode = models.BooleanField(default=False)
+    classification = models.IntegerField(default=0)
     def __unicode__(self):
         return str(self.problem_id) + ":  " + self.title
 
