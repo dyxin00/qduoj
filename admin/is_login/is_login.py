@@ -13,7 +13,7 @@ def admin_login_sc(req, context):
         if form.is_valid():
             username = form.cleaned_data['name']
             password = form.cleaned_data['password']
-            (status, run_info) = verify_user('login', username, password)
+            (status, run_info) = verify_user('admin_login', username, password)
             if status == 2:
                 error = run_info
                 return render_to_response('admin_login.html', {

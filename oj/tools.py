@@ -10,17 +10,21 @@ def verify_user(fun, nick, password):
     '''
     run_info = {}
     user = User.objects.filter(nick=nick)
+    print nick
+    print user[0]
     if fun == 'login':
         user = user.filter(password = password)
     if len(user) == 0:
         status = 0
         run_info['error'] = 'the user name or the password is wrong'
-    elif not user[0].get_all_permission:
-        status = 2
-        run_info['error'] = 'the admin is not exists'
     else:
         status = 1
         run_info['error'] = 'the user already exists'
+
+    if fun == 'admin_login':
+        if not user[0].get_all_permission:
+            status = 2
+            run_info['error'] = 'the admin is not exists'
     return (status, run_info)
 
 def error(title, page_info, context, html_page):
