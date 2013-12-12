@@ -10,8 +10,6 @@ def verify_user(fun, nick, password):
     '''
     run_info = {}
     user = User.objects.filter(nick=nick)
-    print nick
-    print user[0]
     if fun == 'login':
         user = user.filter(password = password)
     if len(user) == 0:
