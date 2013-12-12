@@ -34,21 +34,24 @@ def login_sc(req, context):
     )
 
 def register_sc(req, context):
+    print "hehe"
     error = {}
     if req.method == "POST":
         form = Register(req.POST)
+        error['error'] = "the user already exists!"
         if form.is_valid():
             user = form.save(commit = False)
             (status, run_info) = verify_user('register', user.nick, '')
-            print run_info
             if status == 1: #status 1 user all ready exist
                 error = run_info
+                print error.error
             else:
                 user.save()
                 #first para repreasent the url, second the info of jump page
                 return jump_page('/', 'register success')
     else:
         form = Register()
+   # print error.error
     return render_to_response('register.html', {'form':form, 'error':error, 'context':context})
 
 def logout_sc(req):
