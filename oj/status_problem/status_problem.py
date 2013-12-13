@@ -2,7 +2,7 @@
 # coding=utf-8
 
 from django.shortcuts import render_to_response
-from oj.models import Contest, Solution,Problem,User, Contest_problem
+from oj.models import Contest, Solution, Problem, User, Contest_problem
 from oj.util.util import paging, Result_dic, language_ab
 from oj.qduoj_config.qduoj_config import PAGE_STATUS_NUM
 from oj.tools import error
@@ -11,8 +11,17 @@ from oj.tools import error
 def status_sc(req, context, page, cid = -1):
 
     page = int(page)
-    solution = Solution.objects.filter(
-        contest_id=cid).order_by('-solution_id')
+    user = context.get('ojlogin',None)
+
+    solution = Solution.objects.filter(contest_id = cid)
+
+    if cid == -1: 
+        if user == None:
+            solution = solution.filter(problem__visible=True)
+        elif not user.isManager:
+            solution = solution.filter(user=user) | solution.filter(problem__visible=True)
+
+    solution = solution.order_by('-solution_id')
     (solution, list_info) = paging(solution, PAGE_STATUS_NUM, page)
 
     if solution == None:
