@@ -10,4 +10,4 @@ ADMIN_PAGE_PROBLEM_NUM = 20 #the problem num of admin_page_problem_num
 ADMIN_PAGE_CONTEST_NUM = 3
 
 TEST_DATA_PATH = "/home/judge/data"      #the test data for the problem
-MAX_UPLOAD_FILE_SIZE = 5   #the max upload file size 5M
+MAX_UPLOAD_FILE_SIZE = 12   #the max upload file size 5M
