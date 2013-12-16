@@ -14,7 +14,8 @@ def admin_login_sc(req, context):
             username = form.cleaned_data['name']
             password = form.cleaned_data['password']
             (status, run_info) = verify_user('admin_login', username, password)
-            if status == 2:
+			#print run_info
+            if status == 2 or status == 0:
                 error = run_info
                 return render_to_response('admin_login.html', {
                     'form':form, 

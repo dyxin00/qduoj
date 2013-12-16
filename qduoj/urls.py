@@ -73,6 +73,7 @@ urlpatterns = patterns('',
 #	url('^bbs/pid=(?P<pid>\d+)\$', 'oj.views.bbs'),
 #	url('^bbs/pid=(?P<pid>\d+)/page=(?<page>\d+)\$', 'oj.views.bbs'),
 )
+
 urlpatterns += patterns('',
 	url('^admin/$', 'admin.views.index'),
 	#url('^admin/oj$', 'admin.views.oj'),
@@ -103,3 +104,4 @@ urlpatterns += patterns('',
        'admin.views.contest_shift_mode'
        ),
     )
+

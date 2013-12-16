@@ -48,7 +48,15 @@ def search_handle(req,context, page, cid = -1):
 
         except ValueError:
             return error('404', 'problem ', context, 'error.html')
-    solution = Solution.objects.filter(contest_id=cid).order_by('-solution_id')
+
+    u_user = context.get('ojlogin',None)
+    solution = Solution.objects.filter(contest_id = cid)
+    if cid == -1: 
+        if u_user == None:
+            solution = solution.filter(problem__visible=True)
+        elif not u_user.isManager:
+            solution = solution.filter(user=u_user) | solution.filter(problem__visible=True)
+    solution = solution.order_by('-solution_id')
 
     try:
         if problem_id != -1:

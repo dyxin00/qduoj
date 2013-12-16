@@ -1,8 +1,8 @@
 # Django settings for qduoj project.
 import os
 
-#DEBUG = True
-DEBUG = False
+DEBUG = True
+#DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -132,7 +132,7 @@ INSTALLED_APPS = (
     'admin',
     'django.contrib.sitemaps',
 	# Uncomment the next line to enable the admin:
-    #'django.contrib.admin',
+#    'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 	#'south',
