@@ -154,7 +154,7 @@ def compile_error(req, num):
     try:
         c_error = Compileinfo.objects.get(solution_id = num)
     except Compileinfo.DoesNotExist:
-        return error('Compile','Compile Error',context)
+        return error('Compile','Compile Error',context,'error.html')
     
     return render_to_response("compile_run_error.html",
                               {'context':context,"error":c_error})
@@ -165,7 +165,7 @@ def runtime_error(req, num):
     try:
         r_error = Runtimeinfo.objects.get(solution_id=num)
     except Runtimeinfo.DoesNotExist:
-        return error('Runtimeinfo','Runtimeinfo',context)
+        return error('Runtimeinfo','Runtimeinfo',context, 'error.html')
     return render_to_response("compile_run_error.html",
                               {'context':context,'error':r_error})
 
