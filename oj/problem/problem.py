@@ -46,27 +46,34 @@ def problemlist_sc(req, page, context):
 
     page = int(page)
     ac_list = []
+    user = context.get('ojlogin',None)
 
     types = req.GET.get('classification',None)
-
-    if types and types != '0':
-        problem = Problem.objects.filter(classification=types).order_by('problem_id')
-    else:
-        problem = Problem.objects.order_by('problem_id')
-
-    (problemset, list_info) = paging(problem, PAGE_PROBLEM_NUM, page)
-
     classification = Classification()
 
-    if 'ojlogin' in context:
-        user = context['ojlogin'].nick
+    problem = Problem.objects.all()
+    if user == None:
+        problem = Problem.objects.filter(visible=True) 
+    elif  not user.isManager:
+        problem = Problem.objects.filter(visible=True) |\
+                Problem.objects.filter(provider_id=user.user_id)
+
+    if types and types != '0':
+        problem = problem.filter(classification=types).order_by('problem_id')
+    else:
+        problem = problem.order_by('problem_id')
+
+    (problemset, list_info) = paging(problem, PAGE_PROBLEM_NUM, page)
+    if problemset == None:
+        return error('404', 'page ', context, 'error.html')
+
+    if user != None:
         solution_ac = Solution.objects.filter(result=4)
 
         solution_ac = solution_ac.filter(
-            user_id = User.objects.get(nick = user))
+            user_id = User.objects.get(nick = user.nick))
         ac_list = solution_ac.values_list('problem_id', flat=True).distinct()
-    if problemset == None:
-        return error('404', 'page ', context, 'error.html')
+
 
     return render_to_response('problemlist.html',
                               {"problemset":problemset,

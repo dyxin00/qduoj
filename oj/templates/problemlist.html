@@ -56,7 +56,6 @@
         </thead>
         <tbody>
             {% for problem in problemset %}
-            {% if problem.visible == True or context.ojlogin.isManager or context.ojlogin.user_id == problem.provider_id%}
             <tr class = "{% cycle 'list_one' 'list_two' %}">
                 {%if problem.problem_id in ac_list%}
                 <td class="pass"></td>
@@ -74,7 +73,6 @@
                 <td>{{problem.accepted}}</td>
                 <td>{{problem.submit}}</td>
             <tr>                        
-            {%endif%} 
             {%endfor%}
             </tbody>
         </table>
