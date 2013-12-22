@@ -19,7 +19,7 @@ def contest_list_sc(context, page):
         contest = Contest.objects.filter(visible=1).order_by("-contest_id")
     (contest, list_info) = paging(contest, PAGE_CONTEST_NUM, page)
     if contest == None:
-        return error('contest-error','contest', context, 'error.html')
+        return error('contest-error', 'contest', context, 'error.html')
 
 #    print datetime.datetime.now()
 #    print contest[0].end__time
@@ -78,7 +78,7 @@ def contest_rank_sc(context, cid):
     try:
         contest = Contest.objects.get(contest_id=cid)
     except Contest.DoesNotExist:
-        return error('contest-error','contest', context, 'error.html')
+        return error('contest-error', 'contest', context, 'error.html')
     '''
     if contest.private and not (
         'ojlogin' in context and context['ojlogin'].isManager):
@@ -114,24 +114,26 @@ def contest_rank_sc(context, cid):
                                "contest":contest,
                                "context":context})
 
-def contest_rank_acm(context,contest_problem_id, user_id_list, contest_solution, cid):
+def contest_rank_acm(context, contest_problem_id, \
+        user_id_list, contest_solution, cid):
 
     '''acm mode'''
     contest_score = []
     try:
         contest_time = Contest.objects.get(contest_id = cid).start_time
     except Contest.DoesNotExist:
-        return error('contest-error','contest',context, 'error.html')
+        return error('contest-error', 'contest', context, 'error.html')
 
     for user_id in user_id_list:
 
         try:
             user = User.objects.get(user_id=user_id).nick
         except User.DoesNotExist:
-            return error('contest-error','user',context, 'error.html')
+            return error('contest-error', 'user', context, 'error.html')
         user_solution = contest_solution.filter(user_id = user_id)
         #print user_solution.filter(result=4).values('problem')
-        solved = user_solution.filter(result=4).values('problem').distinct().count()
+        solved = user_solution.filter(result=4).values('problem')\
+                .distinct().count()
 
         user_problem = []
         total_time = datetime.timedelta()
@@ -143,16 +145,15 @@ def contest_rank_acm(context,contest_problem_id, user_id_list, contest_solution,
                 problem_name = Contest_problem.objects.filter(
                     contest_id = cid).get(problem_id = pb_id)
             except Contest_problem.DoesNotExits:
-                return error('contest-error','problem',context, 'error.html')
+                return error('contest-error', 'problem', context, 'error.html')
 
             ac_solution = pb_id_solution.filter(result = 4)
 
             penalty = count - len(ac_solution)
-            
             if len(ac_solution):
 
                 ac_time = ac_solution[0].in_date
-                ac_user_time = ac_time - contest_time 
+                ac_user_time = ac_time - contest_time
                 time_penalty = datetime.timedelta(minutes=20*penalty)
                 user_problem.append(
                     {
@@ -189,7 +190,8 @@ def contest_rank_acm(context,contest_problem_id, user_id_list, contest_solution,
                            (-user['solved'], user['penalty']))
     return contest_score
 
-def contest_rank_oi(context,contest_problem_id, user_id_list, contest_solution, cid):
+def contest_rank_oi(context, contest_problem_id, \
+                    user_id_list, contest_solution, cid):
 
     '''oi mode'''
     contest_score = []
@@ -198,10 +200,11 @@ def contest_rank_oi(context,contest_problem_id, user_id_list, contest_solution, 
         try:
             user = User.objects.get(user_id=user_id).nick
         except User.DoesNotExist:
-            return error('contest-error','user',context, 'error.html')
+            return error('contest-error', 'user', context, 'error.html')
         user_solution = contest_solution.filter(user_id = user_id)
 
-        solved = user_solution.filter(result=4).values('problem').distinct().count()
+        solved = user_solution.filter(result=4).\
+                values('problem').distinct().count()
         user_problem = []
         total_score = 0.0
         for pb_id in contest_problem_id:
@@ -213,7 +216,7 @@ def contest_rank_oi(context,contest_problem_id, user_id_list, contest_solution, 
                     contest_id = cid).get(problem_id = pb_id)
                 pb_score = con_problem.score
             except Contest_problem.DoesNotExist:
-                return error('contest-error','problem',context, 'error.html')
+                return error('contest-error', 'problem', context, 'error.html')
 
             if len(pb_id_solution):
                 score = pb_score * pb_id_solution[0].score / 100
@@ -251,7 +254,7 @@ def contest_rank_oi(context,contest_problem_id, user_id_list, contest_solution, 
 
     return contest_score
 @open_rank
-def contest_rank_xls_sc(context,cid):
+def contest_rank_xls_sc(context, cid):
 
     '''
     Generate competition excel spreadsheet,
