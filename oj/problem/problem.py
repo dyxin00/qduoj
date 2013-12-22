@@ -53,10 +53,10 @@ def problemlist_sc(req, page, context):
 
     problem = Problem.objects.all()
     if user == None:
-        problem = Problem.objects.filter(visible=True) 
+        problem = problem.filter(visible=True) 
     elif  not user.isManager:
-        problem = Problem.objects.filter(visible=True) |\
-                Problem.objects.filter(provider_id=user.user_id)
+        problem = problem.filter(visible=True) |\
+                problem.filter(provider_id=user.user_id)
 
     if types and types != '0':
         problem = problem.filter(classification=types).order_by('problem_id')

@@ -62,4 +62,3 @@ def downfile_via_url(req, targetDir, filename):
     response = HttpResponse(data, mimetype='application/ontet-stream')
     response['Content-Disposition'] = 'attachment; filename=%s' % filename
     return response
-

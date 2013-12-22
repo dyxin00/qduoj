@@ -1,8 +1,8 @@
 # Django settings for qduoj project.
 import os
 
-DEBUG = True
-#DEBUG = False
+#DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
