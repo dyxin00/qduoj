@@ -1,0 +1,12 @@
+<div id='news'>
+    <marquee id='broadcast' scrollamount=1 direction=up scrolldelay=250 onMouseOver='this.stop()' onMouseOut='this.start()';>
+    {%for new in context.news%}
+     	{%if new.visible %}
+	    	{{new.title}}<br>
+	    	{{new.content}}<br>
+	    	{{new.time}}<br>
+	    {%endif%}
+    {%endfor%} 
+    </marquee>
+</div>
+

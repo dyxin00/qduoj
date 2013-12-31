@@ -1,0 +1,23 @@
+<div class="pagination">
+<ul>
+    {%for pagenum in list_info.len%}
+   	    {%if pagenum  == list_info.page%}
+       <li class="active">
+       <a><font>{{pagenum}}</font></a>
+           </li>
+  	    {% else %}
+	    	 {%if types%}
+         <li><a href="/problemlist/page={{pagenum}}/?classification={{types}}"><font>{{pagenum}}</font></a></li>
+	    	 {%else%}
+         <li><a href="/problemlist/page={{pagenum}}"><font>{{pagenum}}</font></a></li>
+	    	 {%endif%}
+    	{%endif%}
+    {%endfor%}
+	{%if types%}
+        <li><a href="/problemlist/page={{list_info.page|add:1}}/?classification={{types}}"><font>下一页</font></a></li>
+	{%else%}
+        <li><a href="/problemlist/page={{list_info.page|add:1}}"><font>下一页</font></a></li>
+	{%endif%}
+</ul>
+</div>
+
