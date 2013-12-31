@@ -1,114 +1,97 @@
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<title>{% block title %}{% endblock %} QDUCXSYS Online Judge</title>
+		<title>{% block title %}{% endblock %} --QDUCXSYS Online Judge</title>
 		{%block metajump%}{%endblock%}
  		<link rel=stylesheet href='/static/css/hoj.css' type='text/css'/>
+ 		<link rel=stylesheet href='/static/css/qduoj.css' type='text/css'/>
  		<link rel = "shortcut icon" href="/static/image/favicon.ico"/> 
 	</head>
-	<body>
+<body>
 		<div id="wrapper">
-			<div id=head>
-				<h2><img id=logo src="/static/image/logo.png"><span class="red">QDUOJ</span></h2>
-			</div><!--end head-->
-			<div id=headlogin>
+			<div id='top_logo'>
+				<img  src="/static/image/qduoj6.png">
+			</div>
+			<div id='headlogin'>
 				{%if context%}
 					{% if context.ojlogin%}
-						<div class="userinfo">
-							<a href="/user_info/name={{context.ojlogin.nick}}" class = "wqu">{{context.ojlogin.nick}}</a> | 
-							<b><a href="/mail">mail:</a>
+			        	<div id='Acmer'>
+					        <a href="/user_info/name={{context.ojlogin.nick}}" class = "wqu">Acmer : {{context.ojlogin.nick}}</a>
+                        </div>
+                        <div id = 'login'>
+                            <a href="/mail">mail:</a>
 							(
-							{%if context.mail_count > 0%}<a href="/mail/pattern=2"><span class = "red">{{context.mail_count}}</span></a>
+                            {%if context.mail_count > 0%}
+                            <a href="/mail/pattern=2">{{context.mail_count}}</a>
 							{%else%}
 							<a href = "/mail/pattern=1">0</a>
 							{%endif%}
-							)</b> | 
-							<b>ac: {{context.ojlogin.ac}}</b><br/>
-						</div>
-						
-						<div class = 'logout'>
-							<a href="/oj/userlogout">Logout</a>
-						</div> 
+							) | 
+							Ac: {{context.ojlogin.ac}} |
+                            <a href="/oj/userlogout">&nbspLogout</a>
+                        </div>
 					{%else%}
-						<div class="userinfo">
-							<span class="green"><a href="/oj/userlogin">登录</a></span> | <span class = "green"><a href ="/oj/userregister">注册</a></span>
+			        	<div id='Acmer'>Acmer</div>
+						<div id='login'>
+                            <span><a href="/oj/userlogin">登录&nbsp&nbsp&nbsp&nbsp</a></span>  
+                            <span><a href="/oj/userregister">注册</a></span>
 						</div>
 					{%endif%}
 				{%endif%}
 			</div>
-			<div id=subhead>
-				<div id=menu class=navbar>
-					<a  class='btn'  href="/"><i class="icon-home"></i>
-						Home						
-					</a>
-
-				<!--	<a  class='btn '  hrefd="bbs.php">
-						<i class="icon-comment"></i>Web Board</a> -->
-					<a  class='btn ' href="/">
-						<i class="icon-question-sign"></i>ProblemSet</a>
-
-					<!-- <a  class='btn ' href="submitpage.php">
-						<i class="icon-pencil"></i>编辑器</a>
-					-->
-					<a  class='btn ' href="/status">
-						<i class="icon-check"></i>Status</a>
-
-					<a class='btn ' href="/rank">
-						<i class="icon-signal"></i>Ranklist</a>
-
-					<a class='btn '  href="/contest_list">
-                        <i class="icon-fire"></i><span class="red">Contest</span></a>
-
-					<a class='btn ' href="recent-contest.php">
-						<i class="icon-share"></i>Recent</a>
-
-					<a class='btn ' href="faqs.php">
-						<i class="icon-info-sign"></i>F.A.Qs</a>
-
+			<div id='subhead'>
+				<div class='navbar'>
+					<a  class='btn'  href="/"><i class="icon-home"></i>Home</a>
+					<a  class='btn ' href="/"><i class="icon-question-sign"></i>ProblemSet</a>
+					<a  class='btn ' href="/status"><i class="icon-check"></i>Status</a>
+					<a class='btn ' href="/rank"><i class="icon-signal"></i>Ranklist</a>
+					<a class='btn '  href="/contest_list"><i class="icon-fire"></i><span class="red">Contest</span></a>
+					<a class='btn ' href="recent-contest.php"><i class="icon-share"></i>Recent</a>
+					<a class='btn ' href="faqs.php"><i class="icon-info-sign"></i>F.A.Qs</a>
 				</div><!--end menu-->
 			</div><!--end subhead-->
-			<div id=broadcast class="container">
-				<marquee id=broadcast scrollamount=1 direction=up scrolldelay=250 onMouseOver='this.stop()' onMouseOut='this.start()';>
-				{%for new in context.news%}
-					{%if new.visible %}
-						{{new.title}}<br>
-						{{new.content}}<br>
-						{{new.time}}<br>
-					{%endif%}
-				{%endfor%} 
-				</marquee>
-			</div>
-			<br>
-			<div id=main>
+            <div id='middle'>
+                <div id='left_bar'>
+                    <div id='left_bar_top'>
+                    </div>
+                    <div id = 'left_bar_one'>
+                    {%block news%}
+                    {%include 'news.html'%}
+                    {%endblock%}
+                    </div>
+                    <div id=left_bar_two'>
+                    </div>
+                    <div id=left_bar_three'>
+                    </div>
+                </div>
+                <div id='right_bar'>
+                    <div id='top'>
+                        {%block right_top%}
+                        {%endblock%}
+                    </div>
+                    <div id='right_body'>
+				        {% block content %}
+				        {% endblock  %}
+                    </div>
+                    <div id='right_foot'>
+                        {%block right_foot%}
+                        {%endblock%}
+                    </div>
+                </div>
+            </div>
+				<div id='foot'>
 				<script type="text/javascript" src="/static/js/jquery-latest.js"></script> 
 				<script type="text/javascript" src="/static/js/jquery.tablesorter.js"></script> 
-				<script type="text/javascript">
-					$(document).ready(function() 
-						{ 
-						$("#problemset").tablesorter(); 
-						} 
-						); 
-					</script>
-				<div class="page_content">
-				{% block content %}
-				{% endblock  %}
-				</div>
-				<br/><br/>
-				<div id=foot>
 					<span class=center>
-					
-                        <!--	Anything about the Problems, Please Contact Admin:<a href="mailto:root@localhost">admin</a> -->
 						<br>
-						All Copyright Reserved 2013-2014 <a href='./'>QDUOJ</a><br>
-						<a href=gpl-2.0.txt><span class=green>GPL2.0</span></a> 2013-2014 <a href='http://www.qdu.edu.cn' target="_blank">QDU</a><br>
-
-
-
-					</span>
-
-			</div><!--end foot-->
-		</div><!--end main-->
-	</div><!--end wrapper-->
+                        All Copyright Reserved 2013-2014 <a href='./'>QDUOJ</a>
+                        <br>
+                        <a href=gpl-2.0.txt><span class=green>GPL2.0</span></a> 2013-2014 
+                        <a href='http://www.qdu.edu.cn' target="_blank">QDU</a>
+                        <br>
+                    </span>
+				</div><!--end foot-->
+		</div><!--end wrapper-->
 </body>
 </html>
 <!--not cached-->

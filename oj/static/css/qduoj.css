@@ -1,4 +1,5 @@
-/*
+@import url(../bootstrap/css/bootstrap.css);
+
 *
 {
     margin:0px;
@@ -8,10 +9,150 @@
 body
 {
     margin:0 auto;
-    width:1600px;
+    font-size:20px;
+    font-family:"Times New Roman", Times, serif;
+    background-repeat :repeat-x;
+    background-image :url("../image/back.png");
+    text-align:center;
 }
-*/
-.paging
+#wrapper
 {
-    margin:0,auto;
+    margin:0 auto;
+    text-align:center;
+    width:1200px;
+    min-height:1200px;
+}
+#top_logo
+{
+    width:800px;
+    font-size:150%;
+    margin:15px 90px 10px 10;
+    float:left;
+}
+#headlogin
+{
+   height:86px; 
+   width:300px;
+   float:left;
+}
+#Acmer
+{
+    height:32px;
+    width:253px;
+    text-align:center;
+    margin:0px 10px 0px 0;
+    background-image:url('../image/oj_login.png');
+    background-repeat:no-repeat;
+    color:#FFFFFF;
+    
+}
+#login
+{
+    color:#FFFFFF;
+    text-align:center;
+    float:left;
+    margin :5px 10px 0 0;
+    width:253px;
+    height:25px;
+    padding-top:5px
+}
+#headlogin a
+{
+    color:#FFFFFF; 
+    text-decoration:none;
+}
+#headlogin a:hover
+{
+    color:#521A86; 
+    text-decoration:none;
+}
+#subhead
+{
+    margin:0 auto;
+    text-align:center;
+    width:1200px;
+    height:35px;
+    font-size:110%;
+    float:left;
+}
+.navbar {
+    *position: relative;
+    *z-index: 2;
+    overflow: visible;
+    margin-bottom: 0px;
+
+}
+
+#middle
+{
+    width:1200px;
+    float:left;
+    background-color:#f9f9f9;
+}
+#middle #left_bar
+{
+   width:310px;
+   float:left;
+/*   background-image:url('../image/leftbody.png');*/
+   background-repeat:repeat-y;
+}
+#middle #left_bar_top
+{
+    height:100px;
+    float:left;
+    width:310px;
+}
+
+#middle #left_bar #broadcast
+{
+   width:310px;
+   color:red;
+   height:300px;
+}
+#middle #right_bar
+{
+   width:890px;
+   min-height:1000px;
+   background-color:#f9f9f9;
+   float:left;
+}
+#middle #right_bar #right_body
+{
+    width:880px;
+    margin:0 5px 0 5px;
+}
+#middle #right_bar #right_foot
+{
+    float:left;
+    margin:0 0 10px 50px;
+    width:890px;
+}
+#middle #right_bar #right_foot .pagination
+{
+    float:left;
+    margin-left:70px;
+}
+#middle #right_bar #top
+{
+    width:890px;
+    height:100px;
+    margin:0 0 0 0;
+    float:left;
+}
+#right_body .pass
+{
+    background: url("../image/1.png") center;
+    background-repeat: no-repeat;
+    float:left;
+}
+
+#foot
+{
+    float:left;
+    background-color:#f9f9f9;
+    width:1200px;
+    border-top-style:dashed;
+    border-top-color:#C7C7C6;
+    border-width:1px;
+    height:100px;
 }
