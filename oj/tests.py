@@ -11,6 +11,7 @@ class test(TestCase):
     def test (self):
         c = Client()
         respone = c.get('/')
+        a = 1
         self.assertEqual(respone.status_code,200)
 '''
 class SimpleTest(TestCase):
