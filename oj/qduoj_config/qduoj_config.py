@@ -1,8 +1,8 @@
 #the qduoj config
 
-PAGE_PROBLEM_NUM = 50     #the problem num of problemlist page
-PAGE_STATUS_NUM = 50      #the usernum of status page
-PAGE_RANK_NUM = 50
+PAGE_PROBLEM_NUM = 40     #the problem num of problemlist page
+PAGE_STATUS_NUM = 40      #the usernum of status page
+PAGE_RANK_NUM = 40
 PAGE_CONTEST_NUM = 40
 TEST_DATA_PATH = ""      #the test data for the problem
 

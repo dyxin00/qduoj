@@ -1,19 +1,5 @@
 {% extends "status_base.html"%}
 
-{%block page%}
-{%for pagenum in list_info.len%}
-{%if pagenum  == list_info.page%}
-	<span class=red>{{pagenum}}</span>
-{% else %}
-{%if get%}
-<a href="/Search_status/page={{pagenum}}/?problem_id={{get.problem_id}}&user_id={{get.user_id}}&language={{get.language}}&jresult={{get.jresult}}">{{pagenum}}</a>
-{%else%}
-	<a href="/status/page={{pagenum}}">{{pagenum}}</a>
-{%endif%}
-{%endif%}
-{%endfor%}
-{%endblock%}
-
 {% block status_base%}
 
 {%for solu in solution %}	
@@ -37,14 +23,8 @@
 				{% elif R == 6%}
 				<td>	<span class="btn btn-danger">{{V}}</span></td>
 				{% elif R == 11%}
-				{%if context.ojlogin.nick == solu.user.nick%}
+				{%if context.ojlogin.nick == solu.user.nick or context.ojlogin.isManager%}
 					<td>	<a class="btn btn-warning " href= "/compile_error/num={{solu.solution_id}}">{{V}}(click)</a></td>
-				{%else%}
-					<td>	<span class="btn btn-warning">{{V}}</span></td>
-				{%endif%}
-				{% elif R == 10%}
-				{%if context.ojlogin.nick == solu.user.nick%}
-					<td>	<a class="btn btn-warning" href= "/runtime_error/num={{solu.solution_id}}">{{V}}(click)</a></td>
 				{%else%}
 					<td>	<span class="btn btn-warning">{{V}}</span></td>
 				{%endif%}
@@ -73,3 +53,7 @@
 {% endfor %}
 
 {% endblock %}
+{%block right_foot%}
+{%include 'status_paging.html'%}
+{%endblock%}
+

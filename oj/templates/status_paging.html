@@ -1,0 +1,32 @@
+<div class="pagination">
+<ul>
+    {%if list_info.page > 1%}
+	{%if get%}
+        <li><a href="/Search_status/page={{list_info.page|add:-1}}/?problem_id={{get.problem_id}}&user_id={{get.user_id}}&language={{get.language}}&jresult={{get.jresult}}"><font>上一页</font></a></li>
+	{%else%}
+        <li><a href="/status/page={{list_info.page|add:-1}}"><font>上一页</font></a></li>
+	{%endif%}
+    {%endif%}
+    {%for pagenum in list_info.len%}
+   	    {%if pagenum  == list_info.page%}
+       <li class="active">
+       <a><font>{{pagenum}}</font></a>
+           </li>
+  	    {% else %}
+	    	 {%if get%}
+         <li><a href="/Search_status/page={{pagenum}}/?problem_id={{get.problem_id}}&user_id={{get.user_id}}&language={{get.language}}&jresult={{get.jresult}}"><font>{{pagenum}}</font></a></li>
+	    	 {%else%}
+         <li><a href="/status/page={{pagenum}}"><font>{{pagenum}}</font></a></li>
+	    	 {%endif%}
+    	{%endif%}
+    {%endfor%}
+    {% if list_info.page < list_info.max_page %}
+	{%if get%}
+        <li><a href="/Search_status/page={{list_info.page|add:1}}/?problem_id={{get.problem_id}}&user_id={{get.user_id}}&language={{get.language}}&jresult={{get.jresult}}"><font>下一页</font></a></li>
+	{%else%}
+        <li><a href="/status/page={{list_info.page|add:1}}"><font>下一页</font></a></li>
+	{%endif%}
+    {%endif%}
+</ul>
+</div>
+

@@ -1,5 +1,12 @@
 <div class="pagination">
 <ul>
+    {%if list_info.page > 1%}
+	{%if types%}
+        <li><a href="/problemlist/page={{list_info.page|add:-1}}/?classification={{types}}"><font>上一页</font></a></li>
+	{%else%}
+        <li><a href="/problemlist/page={{list_info.page|add:-1}}"><font>上一页</font></a></li>
+	{%endif%}
+    {%endif%}
     {%for pagenum in list_info.len%}
    	    {%if pagenum  == list_info.page%}
        <li class="active">
@@ -13,11 +20,13 @@
 	    	 {%endif%}
     	{%endif%}
     {%endfor%}
+    {% if list_info.page < list_info.max_page %}
 	{%if types%}
         <li><a href="/problemlist/page={{list_info.page|add:1}}/?classification={{types}}"><font>下一页</font></a></li>
 	{%else%}
         <li><a href="/problemlist/page={{list_info.page|add:1}}"><font>下一页</font></a></li>
 	{%endif%}
+    {%endif%}
 </ul>
 </div>
 

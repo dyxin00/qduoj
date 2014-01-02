@@ -50,6 +50,7 @@ def paging(tuple_info, page_number, page):
         page_num.append(i + 1)
     list_info['len'] = page_num
     list_info['page'] = page
+    list_info['max_page'] = p.num_pages
 
     if page <= 0 or page > p.num_pages:
         return (None,None)

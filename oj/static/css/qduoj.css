@@ -24,9 +24,9 @@ body
 }
 #top_logo
 {
-    width:800px;
+    width:700px;
     font-size:150%;
-    margin:15px 90px 10px 10;
+    margin:15px 170px 10px 10px;
     float:left;
 }
 #headlogin
@@ -85,16 +85,22 @@ body
 
 #middle
 {
-    width:1200px;
+    width:1600px;
     float:left;
     background-color:#f9f9f9;
 }
 #middle #left_bar
 {
-   width:310px;
+   width:309px;
    float:left;
-/*   background-image:url('../image/leftbody.png');*/
+   background-image:url('../image/leftbody.png');
+   min-height:1650px;
    background-repeat:repeat-y;
+   /*
+   border-right-style:dashed;
+   border-right-color:#C7C7C6;
+   border-width:1px;
+   */
 }
 #middle #left_bar_top
 {
@@ -119,7 +125,7 @@ body
 #middle #right_bar #right_body
 {
     width:880px;
-    margin:0 5px 0 5px;
+    margin:0 5px 0 0px;
 }
 #middle #right_bar #right_foot
 {
