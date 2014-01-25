@@ -12,7 +12,7 @@ body
     font-size:20px;
     font-family:"Times New Roman", Times, serif;
     background-repeat :repeat-x;
-    background-image :url("../image/back.png");
+    background-image :url("../image/back_top.png");
     text-align:center;
 }
 #wrapper
@@ -155,8 +155,10 @@ body
 #foot
 {
     float:left;
-    background-color:#f9f9f9;
+    background-image:url("../image/back_top.png");
+    background-repeat :repeat-x;
     width:1200px;
+
     border-top-style:dashed;
     border-top-color:#C7C7C6;
     border-width:1px;
