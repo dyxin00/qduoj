@@ -21,13 +21,10 @@ def contest_list_sc(context, page):
     if contest == None:
         return error('contest-error', 'contest', context, 'error.html')
 
-#    print datetime.datetime.now()
-#    print contest[0].end__time
     return render_to_response("contest_list.html",
                     { "context" : context,
                      "contest":contest,
                      "list_info": list_info,
-                     'servertime':datetime.datetime.now()
                     })
 @if_contest_start
 @contest_privilege
@@ -79,31 +76,28 @@ def contest_rank_sc(context, cid):
         contest = Contest.objects.get(contest_id=cid)
     except Contest.DoesNotExist:
         return error('contest-error', 'contest', context, 'error.html')
-    '''
-    if contest.private and not (
-        'ojlogin' in context and context['ojlogin'].isManager):
-        return error('contest-score','404',context, 'error.html')
-    '''
 
     oi_mode = contest.oi_mode
     contest_solution = Solution.objects.filter(contest_id=cid)
-    user_id_list = contest_solution.values_list('user', flat=True).distinct()
+    user_id_list = contest_solution.values('user', 'user__nick').distinct()
+    
+    contest_problem = Contest_problem.objects.filter(
+        contest_id=cid).order_by('num')
 
-    contest_problem = Contest_problem.objects.filter (contest_id=cid)
-    contest_problem = contest_problem.order_by('num')
-
-    contest_problem_id = contest_problem.values_list(
-                                                    'problem_id',
-                                                     flat=True
-                                                    ).distinct()
 
     if oi_mode:
+        contest_problem_list = contest_problem.values(
+            'problem_id','score').distinct()
         contest_score = contest_rank_oi(context,
-                                    contest_problem_id,
+                                    contest_problem_list,
                                      user_id_list,
                                      contest_solution,
                                      cid)
     else:
+        contest_problem_id = contest_problem.values_list(
+                                                    'problem_id',
+                                                     flat=True
+                                                    ).distinct()
         contest_score = contest_rank_acm(context,
                                      contest_problem_id,
                                      user_id_list,
@@ -112,74 +106,57 @@ def contest_rank_sc(context, cid):
     return render_to_response("contest_rank.html",
                               {"contest_score":contest_score,
                                "contest":contest,
-                               "context":context})
+                               "context":context,
+                               "problem" : contest_problem
+                              })
 
 def contest_rank_acm(context, contest_problem_id, \
         user_id_list, contest_solution, cid):
 
     '''acm mode'''
     contest_score = []
-    try:
-        contest_time = Contest.objects.get(contest_id = cid).start_time
-    except Contest.DoesNotExist:
-        return error('contest-error', 'contest', context, 'error.html')
+    contest_time = Contest.objects.get(contest_id = cid).start_time
 
-    for user_id in user_id_list:
+    for user in user_id_list:
 
-        try:
-            user = User.objects.get(user_id=user_id).nick
-        except User.DoesNotExist:
-            return error('contest-error', 'user', context, 'error.html')
-        user_solution = contest_solution.filter(user_id = user_id)
-        #print user_solution.filter(result=4).values('problem')
-        solved = user_solution.filter(result=4).values('problem')\
-                .distinct().count()
+        user_solution = contest_solution.filter(user_id = user['user'])
 
+        solved = 0
         user_problem = []
         total_time = datetime.timedelta()
+        
         for pb_id in contest_problem_id:
 
             pb_id_solution = user_solution.filter(problem_id = pb_id)
-            count = pb_id_solution.count()
-            try:
-                problem_name = Contest_problem.objects.filter(
-                    contest_id = cid).get(problem_id = pb_id)
-            except Contest_problem.DoesNotExits:
-                return error('contest-error', 'problem', context, 'error.html')
-
             ac_solution = pb_id_solution.filter(result = 4)
+            penalty = pb_id_solution.exclude(result=4).count()
 
-            penalty = count - len(ac_solution)
-            if len(ac_solution):
+            if ac_solution:
 
                 ac_time = ac_solution[0].in_date
                 ac_user_time = ac_time - contest_time
                 time_penalty = datetime.timedelta(minutes=20*penalty)
                 user_problem.append(
                     {
-                        'problem_name' : problem_name.title,
                         'submit': 1,
                         'ac_user_time':ac_user_time,
                         'penalty': penalty,
-                        'pid' :pb_id
                     })
 
                 total_time = total_time + ac_user_time + time_penalty
+                solved += 1
 
             else:
                 user_problem.append(
                     {
-                        'problem_name':problem_name.title,
-                        'submit': 0,
                         'penalty':penalty,
-                        'pid' :pb_id
+                        'submit' : 0,
                     }
                     )
         contest_score.append(
                 {
-                    'rank': 0,
-                    'user' : user,
-                    'user_id' : user_id,
+                    'user' : user['user__nick'],
+                    'user_id' : user['user'],
                     'solved' : solved,
                     'penalty':total_time,
                     'problem' :user_problem,
@@ -190,60 +167,50 @@ def contest_rank_acm(context, contest_problem_id, \
                            (-user['solved'], user['penalty']))
     return contest_score
 
-def contest_rank_oi(context, contest_problem_id, \
+def contest_rank_oi(context, contest_problem, \
                     user_id_list, contest_solution, cid):
 
     '''oi mode'''
     contest_score = []
 
-    for user_id in user_id_list:
-        try:
-            user = User.objects.get(user_id=user_id).nick
-        except User.DoesNotExist:
-            return error('contest-error', 'user', context, 'error.html')
-        user_solution = contest_solution.filter(user_id = user_id)
+    for user in user_id_list:
 
-        solved = user_solution.filter(result=4).\
-                values('problem').distinct().count()
+        user_solution = contest_solution.filter(user_id = user['user'])
+        solved = 0
         user_problem = []
         total_score = 0.0
-        for pb_id in contest_problem_id:
+
+        for problem in contest_problem:
 
             pb_id_solution = user_solution.filter(
-                problem_id = pb_id).order_by('-solution_id')
-            try:
-                con_problem = Contest_problem.objects.filter(
-                    contest_id = cid).get(problem_id = pb_id)
-                pb_score = con_problem.score
-            except Contest_problem.DoesNotExist:
-                return error('contest-error', 'problem', context, 'error.html')
+                problem_id = problem['problem_id']).order_by('-solution_id')
+            pb_score = problem['score']
 
-            if len(pb_id_solution):
-                score = pb_score * pb_id_solution[0].score / 100
+            if pb_id_solution:
+
+                spb_score = pb_id_solution[0].score
+                submit  = spb_score
+                score = round(pb_score * spb_score / 100, 2)
+
                 user_problem.append(
                     {
-                        'problem_name' : con_problem.title,
                         'problem_score': score,
-                        'submit' : 1,
-                        'pid' :pb_id
+                        'submit' : submit,
                     }
                     )
                 total_score = total_score + score
+                if spb_score == 100:
+                    solved += 1
             else:
                 user_problem.append(
                     {
-                        'problem_name' :con_problem.title,
-                        'problem_score': 0.0,
-                        'submit' : 0,
-                        'pid' :pb_id
-                    }
-                    )
+                        'submit' : -1,
+                    })
 
         contest_score.append(
                 {
-                    'rank': 0,
-                    'user' : user,
-                    'user_id' : user_id,
+                    'user' : user['user__nick'],
+                    'user_id' : user['user'],
                     'solved' : solved,
                     'score':total_score,
                     'problem' :user_problem
@@ -265,26 +232,23 @@ def contest_rank_xls_sc(context, cid):
         contest = Contest.objects.get(contest_id=cid)
     except Contest.DoesNotExist:
         return error('contest-error', 'contest', context, 'error.html')
-    '''
-    if contest.private and not (
-        'ojlogin' in context and context['ojlogin'].isManager):
-        return error('contest-score','404',context, 'error.html')
-    '''
 
     oi_mode = contest.oi_mode
     contest_solution = Solution.objects.filter(contest_id=cid)
-    user_id_list = contest_solution.values_list('user', flat=True).distinct()
+    user_id_list = contest_solution.values('user', 'user__nick').distinct()
 
-    contest_problem = Contest_problem.objects.filter (contest_id=cid)
-    contest_problem = contest_problem.order_by('num')
 
+    contest_problem = Contest_problem.objects.filter(
+        contest_id=cid).order_by('num')
     contest_problem_id = contest_problem.values_list(
                                                     'problem_id',
                                                      flat=True
                                                     ).distinct()
     if oi_mode:
+        contest_problem_list = contest_problem.\
+                values('problem_id','score').distinct()
         contest_score = contest_rank_oi(context,
-                                    contest_problem_id,
+                                    contest_problem_list,
                                      user_id_list,
                                      contest_solution,
                                      cid)
@@ -304,6 +268,8 @@ def contest_rank_xls_oi(contest_score, cid, title):
 
     '''oi mode excel'''
 
+    problem = Contest_problem.objects.filter(
+        contest_id=cid).order_by('num')
     wbk = Workbook(encoding='utf-8')
     sheet = wbk.add_sheet(u"contest-score-%s"%title)
 
@@ -314,10 +280,9 @@ def contest_rank_xls_oi(contest_score, cid, title):
     sheet.write(n, 2, u"Solved")
     sheet.write(n, 3, u"Score")
     i = 4
-    problem = contest_score[0]
 
-    for var in problem['problem']:
-        sheet.write(n, i, u"%s"%var['problem_name'])
+    for var in problem:
+        sheet.write(n, i, u"%s"%var.title)
         i += 1
     i = n + 1
     for var in contest_score:
@@ -328,7 +293,7 @@ def contest_rank_xls_oi(contest_score, cid, title):
         sheet.write(i, 3, u'%s'%var['score'])
         j = 4
         for score in var['problem']:
-            if score['submit'] != 0:
+            if score['submit'] != -1:
                 sheet.write(i, j, u'%s'%score['problem_score'])
             j += 1
         i += 1
@@ -346,6 +311,8 @@ def contest_rank_xls_acm(contest_score, cid, title):
 
     '''Acm mode excel'''
 
+    problem = Contest_problem.objects.filter(
+        contest_id=cid).order_by('num')
     wbk = Workbook(encoding='utf-8')
     sheet = wbk.add_sheet(u"contest-score-%s"%title)
 
@@ -356,10 +323,9 @@ def contest_rank_xls_acm(contest_score, cid, title):
     sheet.write(n, 2, u"Solved")
     sheet.write(n, 3, u"penalty")
     i = 4
-    problem = contest_score[0]
 
-    for var in problem['problem']:
-        sheet.write(n, i, u"%s"%var['problem_name'])
+    for var in problem:
+        sheet.write(n, i, u"%s"%var.title)
         i += 1
     i = n + 1
     for var in contest_score:

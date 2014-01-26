@@ -1,0 +1,31 @@
+{%for var in contest_score%}
+<tr class="{%cycle "evenrow" "oddrow"%}" align="center" >
+    {%if forloop.first%}
+    <td class="badge badge-warning">Winner</td>
+    {%else%}
+    <td>{{forloop.counter}}</td>
+    {%endif%}
+    {%if context.ojlogin.nick == var.user%}
+    <td><a  href="/user_info/name={{var.user}}/">{{var.user}}</a></td>
+    <td><a href="/contest_search_status/cid={{contest.contest_id}}/?problem_id=&user_id={{var.user}}&language=-1&jresult=-1">{{var.solved}}</a></td>
+    {%else%}
+    <td>{{var.user}}</td>
+    <td>{{var.solved}}</td>
+    {%endif%}
+
+    <td>{{var.score}}</td>
+    {%for v in var.problem%}
+        {%if v.submit == 0%}
+                <td  class ="well"style="background-color:ffa0a0">{{v.problem_score}}</td>
+        {%elif v.submit == 100%}
+                <td class="well" style="background-color:aaaaff">{{v.problem_score}}</td>
+        {%elif v.submit > 0 and v.submit < 100%}
+                <td  class ="well"style="background-color:#50AF67">{{v.problem_score}}</td>
+        {%else%}
+                <td ></td>
+        {%endif%}
+    {%endfor%}
+    </tr>
+{%endfor%}
+
+
